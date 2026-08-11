@@ -1,0 +1,55 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# ASP.NET Core
+wwwroot/dist/
+appsettings.Development.json
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+.cache/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Publish output
+publish/
+wwwroot/
+
+# Temporary files
+*.tmp
+*.temp
+
+# User-specific files
+*.rsuser
