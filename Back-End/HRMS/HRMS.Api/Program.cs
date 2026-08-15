@@ -1,3 +1,4 @@
+using HRMS.Api.Middlewares;
 using HRMS.Application;
 using HRMS.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,7 @@ var app = builder.Build();
 
 
 // Middleware
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -26,6 +26,7 @@ namespace HRMS.Infrastructure
             services.AddScoped(
                 typeof(IRepository<>),
                 typeof(Repository<>));
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             // Unit Of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -28,24 +28,24 @@ namespace HRMS.Application.Features.Employees.Commands.CreateEmployee
         {
             // Business Rule Check
             var existingEmployees = await _employeeRepository.FindAsync(
-                x => x.Email == request.Email);
+                x => x.Email == request.Employee.Email);
 
             if (existingEmployees.Count > 0)
             {
-                throw new BadRequestException("Employee with this email already exists.");
+                throw new ConflictException("Employee with this email already exists.");
             }
 
             // Entity Creation
             var employee = new Employee
             {
                 Id = Guid.NewGuid(),
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                DepartmentId = request.DepartmentId,
-                DesignationId = request.DesignationId,
-                OrganizationId = request.OrganizationId
+                FirstName = request.Employee.FirstName,
+                LastName = request.Employee.LastName,
+                Email = request.Employee.Email,
+                PhoneNumber = request.Employee.EmployeeNumber,
+                DepartmentId = request.Employee.DepartmentId,
+                DesignationId = request.Employee.DesignationId,
+                OrganizationId = request.Employee.OrganizationId
             };
 
             // Persistence
