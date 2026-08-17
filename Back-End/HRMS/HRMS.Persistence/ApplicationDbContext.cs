@@ -21,6 +21,7 @@ namespace HRMS.Persistence
         public DbSet<AppUser> Users => Set<AppUser>();
         public DbSet<Employee> Employees => Set<Employee>();
         public DbSet<Department> Departments => Set<Department>();
+        public DbSet<Designation> Designations => Set<Designation>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<Permission> Permissions => Set<Permission>();
 
