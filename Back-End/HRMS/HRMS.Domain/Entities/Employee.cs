@@ -69,5 +69,9 @@ namespace HRMS.Domain.Entities
 
         public virtual ICollection<Employee> Subordinates { get; set; }
             = new HashSet<Employee>();
+
+        // Employee can have multiple leave requests
+        public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
+            = new List<LeaveRequest>();
     }
 }

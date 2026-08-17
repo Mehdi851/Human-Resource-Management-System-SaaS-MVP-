@@ -24,6 +24,8 @@ namespace HRMS.Persistence
         public DbSet<Designation> Designations => Set<Designation>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<Permission> Permissions => Set<Permission>();
+        public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
+        public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
