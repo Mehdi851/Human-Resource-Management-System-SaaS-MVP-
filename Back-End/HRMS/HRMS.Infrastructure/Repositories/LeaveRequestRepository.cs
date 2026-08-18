@@ -1,4 +1,5 @@
 ﻿using HRMS.Application.Common.Interfaces;
+using HRMS.Application.Common.Models;
 using HRMS.Domain.Entities;
 using HRMS.Domain.Enums;
 using HRMS.Persistence;
@@ -199,6 +200,153 @@ namespace HRMS.Infrastructure.Repositories
                     !x.IsDeleted)
                 .OrderByDescending(x => x.StartDate)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<LeaveRequest?> GetDetailsByIdAsync(
+            Guid id,
+            Guid organizationId,
+            CancellationToken cancellationToken = default)
+                {
+                    return await _context.LeaveRequests
+                        .AsNoTracking()
+                        .Include(x => x.Employee)
+                            .ThenInclude(x => x.Department)
+                        .Include(x => x.LeaveType)
+                        .FirstOrDefaultAsync(
+                            x =>
+                                x.Id == id &&
+                                x.OrganizationId == organizationId &&
+                                !x.IsDeleted,
+                            cancellationToken);
+                }
+
+        public async Task<PagedResponse<LeaveRequest>> GetPagedAsync(
+    Guid organizationId,
+    Guid? employeeId = null,
+    Guid? departmentId = null,
+    string? status = null,
+    string? search = null,
+    DateOnly? startDate = null,
+    DateOnly? endDate = null,
+    int pageNumber = 1,
+    int pageSize = 10,
+    string? sortBy = null,
+    bool sortDescending = false,
+    CancellationToken cancellationToken = default)
+        {
+            var query = _context.LeaveRequests
+                .AsNoTracking()
+                .Include(x => x.Employee)
+                    .ThenInclude(x => x.Department)
+                .Include(x => x.LeaveType)
+                .Where(x =>
+                    x.OrganizationId == organizationId &&
+                    !x.IsDeleted)
+                .AsQueryable();
+
+            // Employee filtering
+            if (employeeId.HasValue)
+            {
+                query = query.Where(x =>
+                    x.EmployeeId == employeeId.Value);
+            }
+
+            // Department filtering
+            if (departmentId.HasValue)
+            {
+                query = query.Where(x =>
+                    x.Employee.DepartmentId == departmentId.Value);
+            }
+
+            // Status filtering
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                if (Enum.TryParse<LeaveRequestStatus>(
+                    status,
+                    true,
+                    out var leaveRequestStatus))
+                {
+                    query = query.Where(x =>
+                        x.Status == leaveRequestStatus);
+                }
+            }
+
+            // Search by employee name, employee number, leave type, or reason
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim();
+
+                query = query.Where(x =>
+                    x.Employee.FirstName.Contains(search) ||
+                    x.Employee.LastName.Contains(search) ||
+                    (x.Employee.EmployeeNumber != null &&
+                     x.Employee.EmployeeNumber.Contains(search)) ||
+                    x.LeaveType.Name.Contains(search) ||
+                    (x.Reason != null &&
+                     x.Reason.Contains(search)));
+            }
+
+            // Date range filtering
+            if (startDate.HasValue)
+            {
+                query = query.Where(x =>
+                    x.EndDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(x =>
+                    x.StartDate <= endDate.Value);
+            }
+
+            // Sorting
+            query = sortBy?.ToLower() switch
+            {
+                "employee" => sortDescending
+                    ? query.OrderByDescending(x => x.Employee.LastName)
+                    : query.OrderBy(x => x.Employee.LastName),
+
+                "leavetype" => sortDescending
+                    ? query.OrderByDescending(x => x.LeaveType.Name)
+                    : query.OrderBy(x => x.LeaveType.Name),
+
+                "startdate" => sortDescending
+                    ? query.OrderByDescending(x => x.StartDate)
+                    : query.OrderBy(x => x.StartDate),
+
+                "enddate" => sortDescending
+                    ? query.OrderByDescending(x => x.EndDate)
+                    : query.OrderBy(x => x.EndDate),
+
+                "totaldays" => sortDescending
+                    ? query.OrderByDescending(x => x.TotalDays)
+                    : query.OrderBy(x => x.TotalDays),
+
+                "status" => sortDescending
+                    ? query.OrderByDescending(x => x.Status)
+                    : query.OrderBy(x => x.Status),
+
+                _ => query.OrderByDescending(x => x.StartDate)
+            };
+
+            var totalCount = await query.CountAsync(
+                cancellationToken);
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return new PagedResponse<LeaveRequest>
+            {
+                Items = items,
+
+                PageNumber = pageNumber,
+
+                PageSize = pageSize,
+
+                //TotalCount = totalCount
+            };
         }
     }
 }
