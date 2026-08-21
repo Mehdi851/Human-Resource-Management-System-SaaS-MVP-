@@ -33,9 +33,9 @@ namespace HRMS.Persistence.Configurations
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
-            builder.HasMany(x => x.UserRoles)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId);
+            //builder.HasMany(x => x.UserRoles)
+            //    .WithOne(x => x.User)
+            //    .HasForeignKey(x => x.UserId);
         }
     }
 }

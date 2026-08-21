@@ -1,5 +1,6 @@
 ﻿using HRMS.Domain.Common;
 using HRMS.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace HRMS.Domain.Entities
 {
-    public class Role : BaseEntity
+    public class Role : IdentityRole<Guid>
     {
         [Required]
         public Guid OrganizationId { get; set; }
