@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace HRMS.Persistence
@@ -26,6 +27,7 @@ namespace HRMS.Persistence
         public DbSet<Permission> Permissions => Set<Permission>();
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
+        public DbSet<Attendance> Attendances => Set<Attendance>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,6 +35,59 @@ namespace HRMS.Persistence
                 Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
+
+            builder.Entity<Attendance>(entity =>
+            {
+                entity.ToTable("Attendances");
+
+                entity.HasKey(a => a.Id);
+
+                entity.Property(a => a.OrganizationId)
+                    .IsRequired();
+
+                entity.Property(a => a.EmployeeId)
+                    .IsRequired();
+
+                entity.Property(a => a.AttendanceDate)
+                    .HasColumnType("date")
+                    .IsRequired();
+
+                entity.Property(a => a.CheckInTime)
+                    .HasColumnType("time");
+
+                entity.Property(a => a.CheckOutTime)
+                    .HasColumnType("time");
+
+                entity.Property(a => a.Status)
+                    .IsRequired();
+
+                entity.Property(a => a.WorkingHours)
+                    .HasColumnType("time");
+
+                entity.Property(a => a.Remarks)
+                    .HasMaxLength(500);
+
+                // Organization relationship
+                entity.HasOne(a => a.Organization)
+                    .WithMany()
+                    .HasForeignKey(a => a.OrganizationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Employee relationship
+                // Attendance history must survive employee deletion.
+                entity.HasOne(a => a.Employee)
+                    .WithMany()
+                    .HasForeignKey(a => a.EmployeeId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // One attendance record per employee per calendar date.
+                entity.HasIndex(a => new
+                {
+                    a.EmployeeId,
+                    a.AttendanceDate
+                })
+                .IsUnique();
+            });
         }
 
         public override async Task<int> SaveChangesAsync(
