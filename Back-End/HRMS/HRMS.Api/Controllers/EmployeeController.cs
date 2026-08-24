@@ -1,10 +1,12 @@
-﻿using HRMS.Application.Common.Helpers;
+﻿using HRMS.Application.Authentication.Authorization;
+using HRMS.Application.Common.Helpers;
 using HRMS.Application.Features.Employees.Commands.CreateEmployee;
 using HRMS.Application.Features.Employees.Commands.DeleteEmployee;
 using HRMS.Application.Features.Employees.Commands.UpdateEmployee;
 using HRMS.Application.Features.Employees.Queries.GetEmployeeById;
 using HRMS.Application.Features.Employees.Queries.GetEmployees;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +23,8 @@ namespace HRMS.Api.Controllers
             _mediator = mediator;
         }
         // POST: api/employee
+        [Authorize(
+        Policy = AuthorizationPolicies.HRAdminOrSuperAdmin)]
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] CreateEmployeeCommand command)

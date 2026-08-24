@@ -10,7 +10,7 @@ using System.Text;
 
 namespace HRMS.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser, Role, Guid>
+    public class ApplicationDbContext : IdentityDbContext<AppUser, ApplicationRole, Guid>
     {
 
         public ApplicationDbContext(
@@ -24,7 +24,7 @@ namespace HRMS.Persistence
         public DbSet<Employee> Employees => Set<Employee>();
         public DbSet<Department> Departments => Set<Department>();
         public DbSet<Designation> Designations => Set<Designation>();
-        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<ApplicationRole> Roles => Set<ApplicationRole>();
         public DbSet<Permission> Permissions => Set<Permission>();
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
@@ -92,6 +92,34 @@ namespace HRMS.Persistence
                     a.AttendanceDate
                 })
                 .IsUnique();
+            });
+
+            builder.Entity<RefreshToken>(entity =>
+            {
+                entity.ToTable("RefreshTokens");
+
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.Token)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.HasIndex(x => x.Token)
+                    .IsUnique();
+
+                entity.Property(x => x.ExpiresAt)
+                    .IsRequired();
+
+                entity.Property(x => x.CreatedAt)
+                    .IsRequired();
+
+                entity.Property(x => x.IsRevoked)
+                    .IsRequired();
+
+                entity.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
         private static void ConfigureIdentity(ModelBuilder builder)

@@ -13,5 +13,6 @@ namespace HRMS.Application.Features.Designations.Commands.UpdateDesignation
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
+        public string Message { get; internal set; }
     }
 }

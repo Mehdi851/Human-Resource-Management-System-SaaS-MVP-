@@ -1,4 +1,5 @@
-﻿using HRMS.Application.Common.Interfaces;
+﻿using HRMS.Application.Authentication.Services;
+using HRMS.Application.Common.Interfaces;
 using HRMS.Infrastructure.Repositories;
 using HRMS.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,11 @@ namespace HRMS.Infrastructure
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
+
+            //JWT Reps
+            services.AddScoped<IJwtTokenService, JwtTokenService>(); 
+            services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
+            services.AddScoped<IRefreshTokenService,RefreshTokenService>();
             // Unit Of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

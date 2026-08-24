@@ -29,7 +29,8 @@ namespace HRMS.Domain.Entities
         public Organization Organization { get; set; } = null!;
 
         public Employee? Employee { get; set; }
+        public bool IsActive { get; set; } = true;
 
-        
+
     }
 }

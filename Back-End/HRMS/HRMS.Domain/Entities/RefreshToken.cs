@@ -19,5 +19,6 @@ namespace HRMS.Domain.Entities
         public DateTime? RevokedAt { get; set; }
 
         public bool IsRevoked { get; set; }
+        public AppUser User { get; set; } = default!;
     }
 }

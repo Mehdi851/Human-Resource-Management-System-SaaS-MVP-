@@ -1,10 +1,17 @@
 using HRMS.Api.Middlewares;
+using HRMS.Api.Services;
 using HRMS.Application;
+using HRMS.Application.Authentication.Authorization;
+using HRMS.Application.Authentication.Configuration;
+using HRMS.Application.Authentication.Services;
 using HRMS.Domain.Entities;
 using HRMS.Infrastructure;
 using HRMS.Persistence;
 using HRMS.Persistence.Seeding;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Services
@@ -17,7 +24,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 //Identntiy 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options =>
+    .AddIdentityCore<AppUser>(options =>
     {
         options.Password.RequiredLength = 8;
 
@@ -31,6 +38,92 @@ builder.Services
     .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+// Current User Service
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService,CurrentUserService>();
+// JWT 
+
+// JWT Settings
+var jwtSettings =
+    builder.Configuration
+        .GetSection(JwtSettings.SectionName)
+        .Get<JwtSettings>()
+    ?? throw new InvalidOperationException(
+        "JWT settings are not configured.");
+
+// JWT Authentication
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            jwtSettings.Secret)),
+
+                ClockSkew = TimeSpan.Zero
+            };
+    });
+
+builder.Services.AddAuthorization();
+
+//Role Based Authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        AuthorizationPolicies.SuperAdminOnly,
+        policy =>
+        {
+            policy.RequireRole(
+                ApplicationRoles.SuperAdmin);
+        });
+
+    options.AddPolicy(
+        AuthorizationPolicies.HRAdminOnly,
+        policy =>
+        {
+            policy.RequireRole(
+                ApplicationRoles.HRAdmin);
+        });
+
+    options.AddPolicy(
+        AuthorizationPolicies.HRAdminOrSuperAdmin,
+        policy =>
+        {
+            policy.RequireRole(
+                ApplicationRoles.HRAdmin,
+                ApplicationRoles.SuperAdmin);
+        });
+
+    options.AddPolicy(
+        AuthorizationPolicies.EmployeeAccess,
+        policy =>
+        {
+            policy.RequireRole(
+                ApplicationRoles.Employee,
+                ApplicationRoles.HRAdmin,
+                ApplicationRoles.SuperAdmin);
+        });
+});
 // DB
 
 // DI
@@ -61,6 +154,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
