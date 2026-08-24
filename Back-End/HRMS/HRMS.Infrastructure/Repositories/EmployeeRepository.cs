@@ -241,5 +241,21 @@ namespace HRMS.Infrastructure.Repositories
         //            TotalRecords = totalRecords
         //        };
         //    }
+
+
+        public async Task<IReadOnlyList<Employee>>
+    GetActiveEmployeesByOrganizationIdAsync(
+        Guid organizationId,
+        CancellationToken cancellationToken = default)
+        {
+            return await _context.Employees
+                .AsNoTracking()
+                .Where(e =>
+                    e.OrganizationId == organizationId &&
+                    !e.IsDeleted)
+                .OrderBy(e => e.FirstName)
+                .ThenBy(e => e.LastName)
+                .ToListAsync(cancellationToken);
+        }
     }
 }

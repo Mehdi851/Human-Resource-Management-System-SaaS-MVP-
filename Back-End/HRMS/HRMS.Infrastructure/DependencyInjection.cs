@@ -33,6 +33,8 @@ namespace HRMS.Infrastructure
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+            services.AddScoped<IPayrollRepository, PayrollRepository>();
+            services.AddScoped<ISalaryStructureRepository, SalaryStructureRepository>();
 
 
             //JWT Reps

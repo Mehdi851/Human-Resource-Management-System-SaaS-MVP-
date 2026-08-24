@@ -39,5 +39,8 @@ namespace HRMS.Application.Common.Interfaces
             Task<PagedResponse<EmployeeListItemDto>> GetPagedEmployeesAsync(
                 GetEmployeesQuery query,
                 CancellationToken cancellationToken = default);
+            Task<IReadOnlyList<Employee>> GetActiveEmployeesByOrganizationIdAsync(
+                Guid organizationId,
+                CancellationToken cancellationToken = default);
     }
     }

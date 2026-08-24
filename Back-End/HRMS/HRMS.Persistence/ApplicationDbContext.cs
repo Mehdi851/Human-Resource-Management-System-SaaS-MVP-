@@ -1,5 +1,6 @@
 ﻿using HRMS.Domain.Common;
 using HRMS.Domain.Entities;
+using HRMS.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,6 +32,12 @@ namespace HRMS.Persistence
         public DbSet<Attendance> Attendances => Set<Attendance>();
         public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
+        public DbSet<SalaryStructure> SalaryStructures { get; set; }
+
+        public DbSet<Payroll> Payrolls { get; set; }
+
+        public DbSet<PayrollItem> PayrollItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(
@@ -40,6 +47,9 @@ namespace HRMS.Persistence
 
             ConfigureIdentity(builder);
             ConfigureRefreshToken(builder);
+            builder.ApplyConfiguration(new SalaryStructureConfiguration());
+            builder.ApplyConfiguration(new PayrollConfiguration());
+            builder.ApplyConfiguration(new PayrollItemConfiguration());
 
             builder.Entity<Attendance>(entity =>
             {
