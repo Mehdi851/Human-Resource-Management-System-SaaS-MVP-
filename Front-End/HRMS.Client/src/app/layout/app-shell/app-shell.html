@@ -1,0 +1,30 @@
+<div
+  class="app-shell"
+  [class.app-shell--sidebar-collapsed]="sidebarCollapsed()"
+  [class.app-shell--mobile-sidebar-open]="mobileSidebarOpen()"
+>
+  <app-sidebar
+    [collapsed]="sidebarCollapsed()"
+    [mobileOpen]="mobileSidebarOpen()"
+    (navigationSelected)="closeMobileSidebar()"
+  />
+
+  @if (mobileSidebarOpen()) {
+    <button
+      type="button"
+      class="app-shell__overlay"
+      aria-label="Close navigation"
+      (click)="closeMobileSidebar()"
+    ></button>
+  }
+
+  <div class="app-shell__main">
+    <app-topbar
+      (sidebarToggle)="toggleSidebar()"
+    />
+
+    <main class="app-shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<header class="topbar">
+  <div class="topbar__left">
+    <button
+  type="button"
+  class="topbar__icon-button"
+  aria-label="Toggle navigation menu"
+  (click)="onSidebarToggle()"
+>
+  <mat-icon aria-hidden="true">
+    menu
+  </mat-icon>
+</button>
+    <div class="topbar__context">
+      <span class="topbar__context-title">HRMS</span>
+      <span class="topbar__context-subtitle">
+        Employee Management System
+      </span>
+    </div>
+  </div>
+
+  <div class="topbar__right">
+    <button
+      type="button"
+      class="topbar__profile"
+      [matMenuTriggerFor]="profileMenu"
+      aria-label="Open account menu"
+    >
+      <span class="topbar__avatar" aria-hidden="true">
+        JM
+      </span>
+
+      <span class="topbar__user">
+        <span class="topbar__user-name">
+          Muhammad Jawad Mehdi
+        </span>
+
+        <span class="topbar__user-role">
+          Admin
+        </span>
+      </span>
+
+      <mat-icon
+        class="topbar__profile-chevron"
+        aria-hidden="true"
+      >
+        expand_more
+      </mat-icon>
+    </button>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item type="button">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        <span>Profile</span>
+      </button>
+
+      <button mat-menu-item type="button">
+        <mat-icon aria-hidden="true">settings</mat-icon>
+        <span>Settings</span>
+      </button>
+
+      <button mat-menu-item type="button">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>

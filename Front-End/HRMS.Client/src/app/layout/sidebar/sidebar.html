@@ -1,0 +1,54 @@
+<aside
+  class="sidebar"
+  [class.sidebar--collapsed]="collapsed()"
+  [class.sidebar--mobile-open]="mobileOpen()"
+  aria-label="Application navigation"
+>
+  <div class="sidebar__brand">
+    <div
+      class="sidebar__brand-mark"
+      aria-hidden="true"
+    >
+      HRMS
+    </div>
+
+    <div class="sidebar__brand-text">
+      <span class="sidebar__brand-name">
+        HRMS
+      </span>
+
+      <span class="sidebar__brand-subtitle">
+        Employee Management
+      </span>
+    </div>
+  </div>
+
+  <nav
+    class="sidebar__navigation"
+    aria-label="Main navigation"
+  >
+    @for (item of navigationItems; track item.route) {
+      <a
+        class="sidebar__nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="sidebar__nav-item--active"
+        [routerLinkActiveOptions]="{
+          exact: item.route === '/dashboard'
+        }"
+        [attr.aria-label]="item.label"
+        [matTooltip]="item.label"
+        [matTooltipDisabled]="!collapsed()"
+        matTooltipPosition="right"
+        (click)="onNavigationSelected()"
+      >
+        <mat-icon aria-hidden="true">
+          {{ item.icon }}
+        </mat-icon>
+
+        <span class="sidebar__nav-label">
+          {{ item.label }}
+        </span>
+      </a>
+    }
+  </nav>
+</aside>
