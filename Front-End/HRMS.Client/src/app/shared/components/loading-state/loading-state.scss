@@ -1,0 +1,17 @@
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  min-height: 160px;
+  padding: var(--spacing-6);
+  color: var(--color-neutral-600);
+  text-align: center;
+}
+
+.loading-state .spinner-border {
+  width: 24px;
+  height: 24px;
+  color: var(--color-primary-600);
+}

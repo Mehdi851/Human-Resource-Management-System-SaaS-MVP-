@@ -1,0 +1,21 @@
+<div
+  class="error-state"
+  role="alert"
+  aria-live="assertive"
+>
+  <div class="error-state-icon" aria-hidden="true">
+    !
+  </div>
+
+  <h3>{{ title() }}</h3>
+
+  <p>{{ message() }}</p>
+
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="retry.emit()"
+  >
+    {{ actionLabel() }}
+  </button>
+</div>

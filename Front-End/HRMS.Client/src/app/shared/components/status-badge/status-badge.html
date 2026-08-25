@@ -1,0 +1,13 @@
+<span
+  class="status-badge"
+  [class.status-active]="status().toLowerCase() === 'active'"
+  [class.status-inactive]="status().toLowerCase() === 'inactive'"
+  [class.status-pending]="status().toLowerCase() === 'pending'"
+  [class.status-approved]="status().toLowerCase() === 'approved'"
+  [class.status-rejected]="status().toLowerCase() === 'rejected'"
+  [class.status-present]="status().toLowerCase() === 'present'"
+  [class.status-absent]="status().toLowerCase() === 'absent'"
+  [class.status-late]="status().toLowerCase() === 'late'"
+>
+  {{ status() }}
+</span>
