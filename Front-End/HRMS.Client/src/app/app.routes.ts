@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 import { AppShellComponent } from './layout/app-shell/app-shell';
+import { AuthLayout } from './features/auth/auth-layout/auth-layout';
+import { Login } from './features/auth/login/login';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { ResetPassword } from './features/auth/reset-password/reset-password';
 
 export const routes: Routes = [
     {
@@ -59,6 +63,24 @@ export const routes: Routes = [
           import('./features/organization/organization')
             .then(m => m.Organization)
       }
-    ]
-  }
+    ],
+    },
+    {
+    path: '',
+    component: AuthLayout,
+    children: [
+      {
+        path: 'login',
+        component: Login,
+      },
+      {
+      path: 'forgot-password',
+      component: ForgotPassword,
+      },
+      {
+      path: 'reset-password',
+      component: ResetPassword,
+      },
+    ],
+},
 ];

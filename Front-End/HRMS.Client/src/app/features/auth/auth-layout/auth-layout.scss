@@ -1,0 +1,132 @@
+.auth-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background: var(--app-surface, #f8f9fa);
+  padding: 2rem 1.25rem;
+}
+
+.auth-layout__content {
+  width: 100%;
+  max-width: 460px;
+  min-height: calc(100vh - 4rem);
+  min-height: calc(100dvh - 4rem);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-layout__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  padding: 1rem 0 2.5rem;
+}
+
+.auth-layout__brand-mark {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: var(--app-primary, #2563eb);
+  color: #fff;
+
+  font-size: 1.125rem;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgb(37 99 235 / 15%);
+}
+
+.auth-layout__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.auth-layout__brand-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--app-text-primary, #212529);
+}
+
+.auth-layout__brand-subtitle {
+  margin-top: 0.2rem;
+
+  font-size: 0.75rem;
+  color: var(--app-text-secondary, #6c757d);
+}
+
+.auth-layout__main {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
+.auth-layout__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding-top: 2rem;
+
+  font-size: 0.75rem;
+  color: var(--app-text-secondary, #6c757d);
+}
+
+@media (max-width: 575.98px) {
+  .auth-layout {
+    padding: 1rem;
+  }
+
+  .auth-layout__content {
+    min-height: calc(100vh - 2rem);
+    min-height: calc(100dvh - 2rem);
+  }
+
+  .auth-layout__brand {
+    padding-bottom: 2rem;
+  }
+
+  .auth-layout__footer {
+    padding-top: 1.5rem;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-layout *,
+  .auth-layout *::before,
+  .auth-layout *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .login-card,
+  .forgot-password-card,
+  .reset-password-card {
+    transition:
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  .login-card:hover,
+  .forgot-password-card:hover,
+  .reset-password-card:hover {
+    box-shadow: 0 12px 30px rgb(0 0 0 / 6%);
+    transform: translateY(-1px);
+  }
+}
