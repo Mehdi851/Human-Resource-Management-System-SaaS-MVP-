@@ -1,0 +1,39 @@
+<article class="stat-card">
+  <div class="stat-card__header">
+    <span class="stat-card__label">
+      {{ label() }}
+    </span>
+
+    @if (icon()) {
+      <span
+        class="stat-card__icon"
+        aria-hidden="true"
+      >
+        {{ icon() }}
+      </span>
+    }
+  </div>
+
+  <div class="stat-card__value">
+    {{ value() }}
+  </div>
+
+  <div class="stat-card__footer">
+    @if (trend()) {
+      <span
+        class="stat-card__trend"
+        [class.stat-card__trend--positive]="trendDirection() === 'positive'"
+        [class.stat-card__trend--negative]="trendDirection() === 'negative'"
+        [class.stat-card__trend--neutral]="trendDirection() === 'neutral'"
+      >
+        {{ trend() }}
+      </span>
+    }
+
+    @if (supportingText()) {
+      <span class="stat-card__supporting-text">
+        {{ supportingText() }}
+      </span>
+    }
+  </div>
+</article>

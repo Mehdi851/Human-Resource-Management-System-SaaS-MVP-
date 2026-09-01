@@ -1,0 +1,108 @@
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 150px;
+  padding: 1.25rem;
+  background: var(--bs-white, #ffffff);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+.stat-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stat-card__label {
+  min-width: 0;
+  color: var(--bs-secondary-color, #64748b);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.stat-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.625rem;
+  background: var(--bs-tertiary-bg, #f8f9fa);
+  color: var(--bs-primary, #0d6efd);
+  font-size: 1rem;
+}
+
+.stat-card__value {
+  margin-top: 1rem;
+  color: var(--bs-emphasis-color, #212529);
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.stat-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.stat-card__trend {
+  font-weight: 500;
+}
+
+.stat-card__trend--positive {
+  color: var(--bs-success-text-emphasis, #146c43);
+}
+
+.stat-card__trend--negative {
+  color: var(--bs-danger-text-emphasis, #b02a37);
+}
+
+.stat-card__trend--neutral {
+  color: var(--bs-secondary-color, #64748b);
+}
+
+.stat-card__supporting-text {
+  color: var(--bs-secondary-color, #64748b);
+}
+
+.stat-card {
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(13, 110, 253, 0.18);
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / 4%),
+    0 4px 12px rgb(0 0 0 / 3%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .dashboard-panel,
+  .quick-action {
+    transition: none;
+  }
+}
+.dashboard-header__action:focus-visible,
+.dashboard-panel__link:focus-visible,
+.quick-action:focus-visible {
+  outline: 2px solid var(--bs-primary, #0d6efd);
+  outline-offset: 3px;
+}

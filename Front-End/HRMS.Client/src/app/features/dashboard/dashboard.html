@@ -1,1 +1,477 @@
-<p>dashboard works!</p>
+
+
+<div class="dashboard-page">
+  <section class="dashboard-header" aria-labelledby="dashboard-title">
+    <div class="dashboard-header__content">
+      <h1 id="dashboard-title" class="dashboard-header__title">
+        Dashboard
+      </h1>
+
+      <p class="dashboard-header__description">
+        Overview of your organization's workforce and HR activity.
+      </p>
+    </div>
+
+    <div class="dashboard-header__actions">
+      <a
+        routerLink="/employees"
+        class="btn btn-primary dashboard-header__action"
+        aria-label="Add a new employee"
+      >
+        <span aria-hidden="true">+</span>
+        Add Employee
+      </a>
+    </div>
+  </section>
+  <section
+    class="dashboard-stats"
+    aria-labelledby="dashboard-stats-title"
+  >
+    <h2 id="dashboard-stats-title" class="visually-hidden">
+      Workforce statistics
+    </h2>
+
+    <div class="dashboard-stats__grid">
+      @for (stat of stats; track stat.label) {
+        <app-stat-card
+          [label]="stat.label"
+          [value]="stat.value"
+          [supportingText]="stat.supportingText"
+          [icon]="stat.icon"
+          [trend]="stat.trend"
+          [trendDirection]="stat.trendDirection"
+        />
+      }
+    </div>
+  </section>
+
+  <section
+    class="dashboard-overview"
+    aria-label="Workforce overview"
+  >
+    <div class="dashboard-overview__grid">
+
+      <!-- Attendance Overview -->
+      <article
+        class="dashboard-panel dashboard-panel--attendance"
+        aria-labelledby="attendance-overview-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="attendance-overview-title"
+              class="dashboard-panel__title"
+            >
+              Attendance Overview
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Today's workforce attendance.
+            </p>
+          </div>
+
+          <span
+            class="dashboard-panel__icon"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+        </div>
+
+        <div class="attendance-summary">
+          @for (item of attendanceSummary; track item.label) {
+            <div class="attendance-summary__item">
+              <div class="attendance-summary__label">
+                <span>{{ item.label }}</span>
+                <strong>{{ item.value }}</strong>
+              </div>
+
+              <div
+                class="attendance-summary__track"
+                aria-hidden="true"
+              >
+                <span
+                  class="attendance-summary__bar"
+                  [style.width.%]="item.percentage"
+                ></span>
+              </div>
+
+              <span class="visually-hidden">
+                {{ item.percentage }} percent of the workforce.
+              </span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <!-- Leave Overview -->
+      <article
+        class="dashboard-panel dashboard-panel--leave"
+        aria-labelledby="leave-overview-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="leave-overview-title"
+              class="dashboard-panel__title"
+            >
+              Leave Overview
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Current leave request summary.
+            </p>
+          </div>
+
+          <span
+            class="dashboard-panel__icon"
+            aria-hidden="true"
+          >
+            ◷
+          </span>
+        </div>
+
+        <div class="leave-summary">
+          @for (item of leaveSummary; track item.label) {
+            <div class="leave-summary__item">
+              <span class="leave-summary__label">
+                {{ item.label }}
+              </span>
+
+              <strong class="leave-summary__value">
+                {{ item.value }}
+              </strong>
+            </div>
+          }
+        </div>
+
+        <div class="dashboard-panel__footer">
+          <a
+            routerLink="/leave"
+            class="dashboard-panel__link"
+          >
+            View Leave
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section
+    class="dashboard-organization"
+    aria-label="Organization overview"
+  >
+    <div class="dashboard-organization__grid">
+
+      <!-- Employee Distribution -->
+      <article
+        class="dashboard-panel dashboard-panel--distribution"
+        aria-labelledby="employee-distribution-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="employee-distribution-title"
+              class="dashboard-panel__title"
+            >
+              Employee Distribution
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Workforce distribution across departments.
+            </p>
+          </div>
+
+          <span
+            class="dashboard-panel__icon"
+            aria-hidden="true"
+          >
+            ▦
+          </span>
+        </div>
+
+        <div class="employee-distribution">
+          @for (item of employeeDistribution; track item.department) {
+            <div class="employee-distribution__item">
+              <div class="employee-distribution__header">
+                <span class="employee-distribution__department">
+                  {{ item.department }}
+                </span>
+
+                <strong class="employee-distribution__count">
+                  {{ item.employees }}
+                </strong>
+              </div>
+
+              <div
+                class="employee-distribution__track"
+                aria-hidden="true"
+              >
+                <span
+                  class="employee-distribution__bar"
+                  [style.width.%]="item.percentage"
+                ></span>
+              </div>
+
+              <span class="visually-hidden">
+                {{ item.employees }} employees,
+                {{ item.percentage }} percent of the workforce.
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="dashboard-panel__footer">
+          <a
+            routerLink="/departments"
+            class="dashboard-panel__link"
+          >
+            View Departments
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Payroll Summary -->
+      <article
+        class="dashboard-panel dashboard-panel--payroll"
+        aria-labelledby="payroll-summary-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="payroll-summary-title"
+              class="dashboard-panel__title"
+            >
+              Payroll Summary
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Current month's payroll status.
+            </p>
+          </div>
+
+          <span
+            class="dashboard-panel__icon"
+            aria-hidden="true"
+          >
+            Rs
+          </span>
+        </div>
+
+        <div class="payroll-summary">
+          <div class="payroll-summary__total">
+            <span class="payroll-summary__label">
+              Total Payroll
+            </span>
+
+            <strong class="payroll-summary__amount">
+              {{ payrollSummary.totalPayroll }}
+            </strong>
+          </div>
+
+          <div class="payroll-summary__progress">
+            <div class="payroll-summary__progress-header">
+              <span>Payroll Processed</span>
+              <strong>{{ payrollSummary.processedPercentage }}%</strong>
+            </div>
+
+            <div
+              class="payroll-summary__track"
+              role="progressbar"
+              [attr.aria-valuenow]="payrollSummary.processedPercentage"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-label="Payroll processing progress"
+            >
+              <span
+                class="payroll-summary__bar"
+                [style.width.%]="payrollSummary.processedPercentage"
+              ></span>
+            </div>
+          </div>
+
+          <div class="payroll-summary__employees">
+            <div>
+              <span class="payroll-summary__label">
+                Employees Paid
+              </span>
+
+              <strong>
+                {{ payrollSummary.employeesPaid }}
+                /
+                {{ payrollSummary.totalEmployees }}
+              </strong>
+            </div>
+
+            <div>
+              <span class="payroll-summary__label">
+                Remaining
+              </span>
+
+              <strong>
+                {{
+                  payrollSummary.totalEmployees -
+                  payrollSummary.employeesPaid
+                }}
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-panel__footer">
+          <a
+            routerLink="/payroll"
+            class="dashboard-panel__link"
+          >
+            View Payroll
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section
+    class="dashboard-activity"
+    aria-label="Recent activity and quick actions"
+  >
+    <div class="dashboard-activity__grid">
+
+      <!-- Recent Activity -->
+      <article
+        class="dashboard-panel dashboard-panel--activity"
+        aria-labelledby="recent-activity-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="recent-activity-title"
+              class="dashboard-panel__title"
+            >
+              Recent Activity
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Latest activity across your organization.
+            </p>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          @for (activity of recentActivities; track activity.title) {
+            <div class="activity-item">
+
+              <span
+                class="activity-item__icon"
+                [attr.data-type]="activity.type"
+                aria-hidden="true"
+              >
+                @switch (activity.type) {
+                  @case ('employee') {
+                    +
+                  }
+
+                  @case ('leave') {
+                    ◷
+                  }
+
+                  @case ('attendance') {
+                    ✓
+                  }
+
+                  @case ('department') {
+                    ▦
+                  }
+                }
+              </span>
+
+              <div class="activity-item__content">
+                <div class="activity-item__title">
+                  {{ activity.title }}
+                </div>
+
+                <p class="activity-item__description">
+                  {{ activity.description }}
+                </p>
+
+                <time class="activity-item__time">
+                  {{ activity.time }}
+                </time>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <div class="dashboard-panel__footer">
+          <a
+            routerLink="/"
+            class="dashboard-panel__link"
+          >
+            View all activity
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Quick Actions -->
+      <article
+        class="dashboard-panel dashboard-panel--quick-actions"
+        aria-labelledby="quick-actions-title"
+      >
+        <div class="dashboard-panel__header">
+          <div>
+            <h2
+              id="quick-actions-title"
+              class="dashboard-panel__title"
+            >
+              Quick Actions
+            </h2>
+
+            <p class="dashboard-panel__description">
+              Common HR tasks and shortcuts.
+            </p>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          @for (action of quickActions; track action.title) {
+            <a
+              class="quick-action"
+              [routerLink]="action.route"
+            >
+              <span
+                class="quick-action__icon"
+                aria-hidden="true"
+              >
+                {{ action.icon }}
+              </span>
+
+              <span class="quick-action__content">
+                <span class="quick-action__title">
+                  {{ action.title }}
+                </span>
+
+                <span class="quick-action__description">
+                  {{ action.description }}
+                </span>
+              </span>
+
+              <span
+                class="quick-action__arrow"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+          }
+        </div>
+      </article>
+
+    </div>
+  </section>  
+</div>
