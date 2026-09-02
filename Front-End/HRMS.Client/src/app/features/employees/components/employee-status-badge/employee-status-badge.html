@@ -1,0 +1,10 @@
+<span
+  class="status-badge"
+  [class.status-badge--active]="status() === 'Active'"
+  [class.status-badge--inactive]="status() === 'Inactive'"
+  [class.status-badge--leave]="status() === 'On Leave'"
+>
+  <span class="status-badge__dot" aria-hidden="true"></span>
+
+  <span>{{ status() }}</span>
+</span>

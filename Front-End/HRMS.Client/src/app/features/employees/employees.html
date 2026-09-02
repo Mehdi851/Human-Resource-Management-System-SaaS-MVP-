@@ -1,1 +1,768 @@
-<p>employees works!</p>
+<section class="employee-list-page">
+
+  <!-- ============================================ -->
+  <!-- Page Header -->
+  <!-- ============================================ -->
+
+  <header class="page-header">
+
+    <div class="page-header__content">
+
+      <h1 class="page-header__title">
+        Employees
+      </h1>
+
+      <p class="page-header__description">
+        Manage your organization's employees and workforce information.
+      </p>
+
+    </div>
+
+    <div class="page-header__actions">
+
+      <a
+        class="btn btn-primary"
+        routerLink="/employees/create"
+      >
+        <span
+          class="btn__icon"
+          aria-hidden="true"
+        >
+          +
+        </span>
+
+        <span>
+          Add Employee
+        </span>
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- ============================================ -->
+  <!-- Employee List Card -->
+  <!-- ============================================ -->
+
+  <div class="employee-list-card">
+
+
+    <!-- ========================================== -->
+    <!-- Search & Filters Toolbar -->
+    <!-- ========================================== -->
+
+    <div class="employee-list-toolbar">
+
+
+      <!-- Search -->
+      <div class="employee-list-toolbar__search">
+
+        <label
+          class="visually-hidden"
+          for="employee-search"
+        >
+          Search employees
+        </label>
+
+        <div class="search-field">
+
+          <span
+            class="search-field__icon"
+            aria-hidden="true"
+          >
+            ⌕
+          </span>
+
+          <input
+            id="employee-search"
+            type="search"
+            class="form-control search-field__input"
+            placeholder="Search by name, employee ID or email..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearch($event)"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- Filters -->
+      <div class="employee-list-toolbar__filters">
+
+
+        <!-- Department -->
+        <select
+          class="form-select filter-select"
+          aria-label="Filter by department"
+          [ngModel]="selectedDepartment()"
+          (ngModelChange)="onDepartmentChange($event)"
+        >
+
+          @for (
+            department of departments();
+            track department
+          ) {
+
+            <option [value]="department">
+              {{ department }}
+            </option>
+
+          }
+
+        </select>
+
+
+        <!-- Designation -->
+        <select
+          class="form-select filter-select"
+          aria-label="Filter by designation"
+          [ngModel]="selectedDesignation()"
+          (ngModelChange)="onDesignationChange($event)"
+        >
+
+          @for (
+            designation of designations();
+            track designation
+          ) {
+
+            <option [value]="designation">
+              {{ designation }}
+            </option>
+
+          }
+
+        </select>
+
+
+        <!-- Status -->
+        <select
+          class="form-select filter-select"
+          aria-label="Filter by employment status"
+          [ngModel]="selectedStatus()"
+          (ngModelChange)="onStatusChange($event)"
+        >
+
+          @for (
+            status of statuses;
+            track status
+          ) {
+
+            <option [value]="status">
+              {{ status }}
+            </option>
+
+          }
+
+        </select>
+
+
+        <!-- Clear Filters -->
+        @if (hasActiveFilters()) {
+
+          <button
+            type="button"
+            class="clear-filters-button"
+            (click)="clearFilters()"
+          >
+            Clear
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- Results -->
+    <!-- ========================================== -->
+
+    @if (filteredEmployees().length > 0) {
+
+
+      <!-- ======================================== -->
+      <!-- Desktop / Tablet Employee Table -->
+      <!-- ======================================== -->
+
+      <div class="employee-table-wrapper">
+
+        <table class="employee-table">
+
+          <caption class="visually-hidden">
+            Employee directory
+          </caption>
+
+
+          <thead>
+
+            <tr>
+
+              <th scope="col">
+                Employee
+              </th>
+
+              <th scope="col">
+                Employee ID
+              </th>
+
+              <th scope="col">
+                Department
+              </th>
+
+              <th scope="col">
+                Designation
+              </th>
+
+              <th scope="col">
+                Joining Date
+              </th>
+
+              <th scope="col">
+                Status
+              </th>
+
+              <th
+                scope="col"
+                class="employee-table__actions-column"
+              >
+                <span class="visually-hidden">
+                  Actions
+                </span>
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              employee of paginatedEmployees();
+              track employee.id
+            ) {
+
+              <tr>
+
+
+                <!-- Employee -->
+                <td>
+
+                  <div class="employee-cell">
+
+                    <div
+                      class="employee-avatar"
+                      aria-hidden="true"
+                    >
+                      {{
+                        employee.firstName.charAt(0)
+                      }}{{
+                        employee.lastName.charAt(0)
+                      }}
+                    </div>
+
+
+                    <div class="employee-cell__content">
+
+                      <a
+                        class="employee-cell__name"
+                        [routerLink]="[
+                          '/employees',
+                          employee.id
+                        ]"
+                      >
+                        {{ employee.firstName }}
+                        {{ employee.lastName }}
+                      </a>
+
+                      <span class="employee-cell__email">
+                        {{ employee.email }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Employee ID -->
+                <td>
+
+                  <span class="employee-code">
+                    {{ employee.employeeCode }}
+                  </span>
+
+                </td>
+
+
+                <!-- Department -->
+                <td>
+
+                  <span class="employee-table__text">
+                    {{ employee.department }}
+                  </span>
+
+                </td>
+
+
+                <!-- Designation -->
+                <td>
+
+                  <span class="employee-table__text">
+                    {{ employee.designation }}
+                  </span>
+
+                </td>
+
+
+                <!-- Joining Date -->
+                <td>
+
+                  <span class="employee-table__text">
+                    {{
+                      employee.joiningDate
+                        | date: 'MMM d, y'
+                    }}
+                  </span>
+
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  <app-employee-status-badge
+                    [status]="employee.employmentStatus"
+                  />
+
+                </td>
+
+
+                <!-- Actions -->
+                <td>
+
+                  <div class="employee-row-actions">
+
+                    <a
+                      class="row-action"
+                      [routerLink]="[
+                        '/employees',
+                        employee.id
+                      ]"
+                      aria-label="View employee"
+                    >
+                      View
+                    </a>
+
+
+                    <a
+                      class="row-action"
+                      [routerLink]="[
+                        '/employees',
+                        employee.id,
+                        'edit'
+                      ]"
+                      aria-label="Edit employee"
+                    >
+                      Edit
+                    </a>
+
+
+                     <button
+                        type="button"
+                        class="row-action row-action--danger"
+                        (click)="openDeleteConfirmation(employee)"
+                      >
+                        Delete
+                      </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- Mobile Employee Cards -->
+      <!-- ======================================== -->
+
+      <div class="employee-mobile-list">
+
+        @for (
+          employee of paginatedEmployees();
+          track employee.id
+        ) {
+
+          <article class="employee-mobile-card">
+
+
+            <!-- Mobile Card Header -->
+            <div class="employee-mobile-card__header">
+
+              <div class="employee-cell">
+
+                <div
+                  class="employee-avatar"
+                  aria-hidden="true"
+                >
+                  {{
+                    employee.firstName.charAt(0)
+                  }}{{
+                    employee.lastName.charAt(0)
+                  }}
+                </div>
+
+
+                <div class="employee-cell__content">
+
+                  <a
+                    class="employee-cell__name"
+                    [routerLink]="[
+                      '/employees',
+                      employee.id
+                    ]"
+                  >
+                    {{ employee.firstName }}
+                    {{ employee.lastName }}
+                  </a>
+
+                  <span class="employee-cell__email">
+                    {{ employee.email }}
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="mobile-more-button"
+                aria-label="More employee actions"
+              >
+                ⋮
+              </button>
+
+            </div>
+
+
+            <!-- Mobile Card Details -->
+            <div class="employee-mobile-card__body">
+
+
+              <div class="mobile-detail">
+
+                <span class="mobile-detail__label">
+                  Employee ID
+                </span>
+
+                <span class="mobile-detail__value">
+                  {{ employee.employeeCode }}
+                </span>
+
+              </div>
+
+
+              <div class="mobile-detail">
+
+                <span class="mobile-detail__label">
+                  Department
+                </span>
+
+                <span class="mobile-detail__value">
+                  {{ employee.department }}
+                </span>
+
+              </div>
+
+
+              <div class="mobile-detail">
+
+                <span class="mobile-detail__label">
+                  Designation
+                </span>
+
+                <span class="mobile-detail__value">
+                  {{ employee.designation }}
+                </span>
+
+              </div>
+
+
+              <div class="mobile-detail">
+
+                <span class="mobile-detail__label">
+                  Status
+                </span>
+
+                <app-employee-status-badge
+                  [status]="employee.employmentStatus"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- Mobile Card Footer -->
+            <div class="employee-mobile-card__footer">
+
+              <a
+                class="mobile-card-action"
+                [routerLink]="[
+                  '/employees',
+                  employee.id
+                ]"
+              >
+                View
+              </a>
+
+
+              <a
+                class="mobile-card-action"
+                [routerLink]="[
+                  '/employees',
+                  employee.id,
+                  'edit'
+                ]"
+              >
+                Edit
+              </a>
+              <button
+                  type="button"
+                  class="mobile-card-action mobile-card-action--danger"
+                  (click)="openDeleteConfirmation(employee)"
+                >
+                  Delete
+                </button>
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- Pagination -->
+      <!-- ======================================== -->
+
+      <footer class="employee-list-pagination">
+
+
+        <span class="employee-list-pagination__summary">
+
+          Showing
+          {{ showingFrom() }}–{{ showingTo() }}
+          of
+          {{ filteredEmployees().length }}
+
+        </span>
+
+
+        <div
+          class="employee-list-pagination__controls"
+          aria-label="Employee list pagination"
+        >
+
+
+          <!-- Previous -->
+          <button
+            type="button"
+            class="pagination-button"
+            [disabled]="currentPage() === 1"
+            (click)="previousPage()"
+            aria-label="Previous page"
+          >
+            ←
+          </button>
+
+
+          <!-- Page Numbers -->
+          @for (
+            page of pageNumbers();
+            track page
+          ) {
+
+            <button
+              type="button"
+              class="pagination-button"
+              [class.pagination-button--active]="
+                currentPage() === page
+              "
+              [attr.aria-current]="
+                currentPage() === page
+                  ? 'page'
+                  : null
+              "
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+
+          }
+
+
+          <!-- Next -->
+          <button
+            type="button"
+            class="pagination-button"
+            [disabled]="
+              currentPage() === totalPages()
+            "
+            (click)="nextPage()"
+            aria-label="Next page"
+          >
+            →
+          </button>
+
+        </div>
+
+      </footer>
+
+
+    } @else {
+
+
+      <!-- ======================================== -->
+      <!-- Empty Search / Filter Result -->
+      <!-- ======================================== -->
+
+      <div
+        class="employee-empty-result"
+        role="status"
+        aria-live="polite"
+      >
+
+        <div
+          class="employee-empty-result__icon"
+          aria-hidden="true"
+        >
+          ⌕
+        </div>
+
+
+        <h2 class="employee-empty-result__title">
+          No employees found
+        </h2>
+
+
+        <p class="employee-empty-result__description">
+          There are no employees matching your
+          current search or filters.
+        </p>
+
+
+        @if (hasActiveFilters()) {
+
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="clearFilters()"
+          >
+            Clear Filters
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</section>
+
+
+@if (showDeleteModal()) {
+
+  <div
+    class="delete-modal-backdrop"
+    role="presentation"
+  >
+
+    <div
+      class="delete-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-modal-title"
+      aria-describedby="delete-modal-description"
+    >
+
+      <!-- Icon -->
+
+      <div
+        class="delete-modal__icon"
+        aria-hidden="true"
+      >
+        !
+      </div>
+
+
+      <!-- Content -->
+
+      <div class="delete-modal__content">
+
+        <h2
+          id="delete-modal-title"
+          class="delete-modal__title"
+        >
+          Delete Employee?
+        </h2>
+
+        <p
+          id="delete-modal-description"
+          class="delete-modal__description"
+        >
+          Are you sure you want to delete
+          <strong>
+            {{ employeePendingDelete()?.firstName }}
+            {{ employeePendingDelete()?.lastName }}
+          </strong>?
+          This action cannot be undone.
+        </p>
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="delete-modal__actions">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closeDeleteConfirmation()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDelete()"
+        >
+          Delete Employee
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

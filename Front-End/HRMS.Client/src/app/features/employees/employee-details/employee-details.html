@@ -1,0 +1,384 @@
+@if (employee(); as employee) {
+
+  <section class="employee-details-page">
+
+    <!-- ========================================== -->
+    <!-- Top Navigation -->
+    <!-- ========================================== -->
+
+    <div class="details-navigation">
+
+      <a
+        routerLink="/employees"
+        class="back-link"
+      >
+        <span
+          class="back-link__icon"
+          aria-hidden="true"
+        >
+          ←
+        </span>
+
+        <span>
+          Back to Employees
+        </span>
+      </a>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- Profile Header -->
+    <!-- ========================================== -->
+
+    <section class="profile-header">
+
+      <div class="profile-header__main">
+
+        <!-- Avatar -->
+
+        <div
+          class="profile-avatar"
+          aria-hidden="true"
+        >
+          {{ initials() }}
+        </div>
+
+
+        <!-- Identity -->
+
+        <div class="profile-identity">
+
+          <div class="profile-identity__name-row">
+
+            <h1 class="profile-identity__name">
+              {{ fullName() }}
+            </h1>
+
+            <app-employee-status-badge
+              [status]="employee.employmentStatus"
+            />
+
+          </div>
+
+          <p class="profile-identity__designation">
+            {{ employee.designation }}
+          </p>
+
+          <p class="profile-identity__department">
+            {{ employee.department }}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- Header Actions -->
+
+      <div class="profile-header__actions">
+
+        <a
+          class="btn btn-outline-secondary"
+          [routerLink]="[
+            '/employees',
+            employee.id,
+            'edit'
+          ]"
+        >
+          Edit Employee
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- Employee Information -->
+    <!-- ========================================== -->
+
+    <div class="details-grid">
+
+
+      <!-- ======================================== -->
+      <!-- Contact Information -->
+      <!-- ======================================== -->
+
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+
+            <h2 class="details-card__title">
+              Contact Information
+            </h2>
+
+            <p class="details-card__description">
+              Employee contact details
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Email Address
+            </span>
+
+            <a
+              class="detail-item__value detail-item__value--link"
+              [href]="'mailto:' + employee.email"
+            >
+              {{ employee.email }}
+            </a>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Phone Number
+            </span>
+
+            <a
+              class="detail-item__value detail-item__value--link"
+              [href]="'tel:' + employee.phone"
+            >
+              {{ employee.phone }}
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ======================================== -->
+      <!-- Employment Information -->
+      <!-- ======================================== -->
+
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+
+            <h2 class="details-card__title">
+              Employment Information
+            </h2>
+
+            <p class="details-card__description">
+              Organization and employment details
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Employee ID
+            </span>
+
+            <span class="detail-item__value">
+              {{ employee.employeeCode }}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Department
+            </span>
+
+            <span class="detail-item__value">
+              {{ employee.department }}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Designation
+            </span>
+
+            <span class="detail-item__value">
+              {{ employee.designation }}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Joining Date
+            </span>
+
+            <span class="detail-item__value">
+              {{
+                employee.joiningDate
+                  | date: 'MMMM d, y'
+              }}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item__label">
+              Employment Status
+            </span>
+
+            <span class="detail-item__value">
+              <app-employee-status-badge
+                [status]="employee.employmentStatus"
+              />
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ======================================== -->
+      <!-- Employee Overview -->
+      <!-- ======================================== -->
+
+      <section class="details-card details-card--full">
+
+        <div class="details-card__header">
+
+          <div>
+
+            <h2 class="details-card__title">
+              Employee Overview
+            </h2>
+
+            <p class="details-card__description">
+              Summary of employee information
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="overview-grid">
+
+          <div class="overview-item">
+
+            <span class="overview-item__label">
+              Employee
+            </span>
+
+            <span class="overview-item__value">
+              {{ fullName() }}
+            </span>
+
+          </div>
+
+
+          <div class="overview-item">
+
+            <span class="overview-item__label">
+              Employee ID
+            </span>
+
+            <span class="overview-item__value">
+              {{ employee.employeeCode }}
+            </span>
+
+          </div>
+
+
+          <div class="overview-item">
+
+            <span class="overview-item__label">
+              Department
+            </span>
+
+            <span class="overview-item__value">
+              {{ employee.department }}
+            </span>
+
+          </div>
+
+
+          <div class="overview-item">
+
+            <span class="overview-item__label">
+              Designation
+            </span>
+
+            <span class="overview-item__value">
+              {{ employee.designation }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </section>
+
+
+} @else {
+
+
+  <!-- ========================================== -->
+  <!-- Employee Not Found -->
+  <!-- ========================================== -->
+
+  <section class="employee-not-found">
+
+    <div
+      class="employee-not-found__icon"
+      aria-hidden="true"
+    >
+      !
+    </div>
+
+    <h1 class="employee-not-found__title">
+      Employee Not Found
+    </h1>
+
+    <p class="employee-not-found__description">
+      The employee you're looking for could not
+      be found.
+    </p>
+
+    <a
+      routerLink="/employees"
+      class="btn btn-primary"
+    >
+      Back to Employees
+    </a>
+
+  </section>
+
+}

@@ -4,6 +4,9 @@ import { AuthLayout } from './features/auth/auth-layout/auth-layout';
 import { Login } from './features/auth/login/login';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
 import { ResetPassword } from './features/auth/reset-password/reset-password';
+import { EmployeeDetails } from './features/employees/employee-details/employee-details';
+import { Employees } from './features/employees/employees';
+import { EmployeeForm } from './features/employees/employee-form/employee-form';
 
 export const routes: Routes = [
     {
@@ -23,9 +26,24 @@ export const routes: Routes = [
       },
       {
         path: 'employees',
-        loadComponent: () =>
-          import('./features/employees/employees')
-            .then(m => m.Employees)
+        children: [
+          {
+            path: '',
+            component: Employees,
+          },
+          {
+          path: 'create',
+          component: EmployeeForm,
+          },
+          {
+            path: ':id/edit',
+            component: EmployeeForm,
+          },
+          {
+            path: ':id',
+            component: EmployeeDetails,
+          },
+        ],
       },
       {
         path: 'departments',
