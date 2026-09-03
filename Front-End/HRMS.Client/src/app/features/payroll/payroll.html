@@ -1,1 +1,331 @@
-<p>payroll works!</p>
+<div class="payroll-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Payroll</h1>
+      <p class="page-description">
+        Manage employee payroll, salary records, and payroll periods.
+      </p>
+    </div>
+
+    <a
+      class="btn btn-primary"
+      routerLink="/payroll/create">
+      Create Payroll
+    </a>
+  </div>
+
+  <!-- Summary Cards -->
+  <section class="summary-grid" aria-label="Payroll summary">
+    <article class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-label">Current Period</span>
+      </div>
+
+      <div class="summary-value summary-value-text">
+        {{ currentPeriod() }}
+      </div>
+
+      <span class="summary-meta">Payroll period</span>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-label">Total Employees</span>
+      </div>
+
+      <div class="summary-value">
+        {{ totalEmployees() }}
+      </div>
+
+      <span class="summary-meta">Payroll records</span>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-label">Gross Payroll</span>
+      </div>
+
+      <div class="summary-value">
+        {{ formatCurrency(grossPayroll()) }}
+      </div>
+
+      <span class="summary-meta">Before deductions</span>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card-header">
+        <span class="summary-label">Net Payroll</span>
+      </div>
+
+      <div class="summary-value">
+        {{ formatCurrency(netPayroll()) }}
+      </div>
+
+      <span class="summary-meta">After deductions</span>
+    </article>
+  </section>
+<!-- Payroll Processing Workflow -->
+<section class="workflow-card" aria-labelledby="workflow-title">
+  <div class="workflow-header">
+    <div>
+      <h2 id="workflow-title" class="section-title">
+        Payroll Processing
+      </h2>
+
+      <p class="section-description">
+        Track the current payroll processing stage for
+        {{ currentPeriod() }}.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="processPayroll()">
+      Process Payroll
+    </button>
+  </div>
+
+  <div
+    class="workflow"
+    aria-label="Payroll processing workflow">
+
+    @for (step of workflowSteps; track step; let last = $last) {
+      <div class="workflow-item">
+
+        <div
+          class="workflow-step"
+          [class]="getWorkflowStepClass(step)">
+
+          <span
+            class="workflow-indicator"
+            aria-hidden="true">
+            @if (getWorkflowStepClass(step) === 'workflow-complete') {
+              ✓
+            } @else {
+              {{ $index + 1 }}
+            }
+          </span>
+
+          <span class="workflow-label">
+            {{ step }}
+          </span>
+        </div>
+
+        @if (!last) {
+          <div
+            class="workflow-connector"
+            [class.workflow-connector-complete]="
+              getWorkflowStepClass(step) === 'workflow-complete'
+            "
+            aria-hidden="true">
+          </div>
+        }
+
+      </div>
+    }
+  </div>
+</section>
+  <!-- Payroll Period -->
+  <section class="period-card">
+    <div class="period-info">
+      <span class="section-label">Payroll Period</span>
+      <strong>{{ currentPeriod() }}</strong>
+    </div>
+
+    <div class="period-status">
+      <span class="section-label">Status</span>
+      <span class="status-badge status-warning">
+        Processing
+      </span>
+    </div>
+
+    <div class="period-selector">
+      <label for="payroll-period">Period</label>
+
+      <select
+        id="payroll-period"
+        class="form-select"
+        [value]="selectedPeriod()"
+        (change)="setPeriod($event)">
+        <option value="September 2026">September 2026</option>
+        <option value="August 2026">August 2026</option>
+        <option value="July 2026">July 2026</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="filter-card" aria-label="Payroll filters">
+    <div class="filter-field search-field">
+      <label for="payroll-search">Search employee</label>
+
+      <input
+        id="payroll-search"
+        type="search"
+        class="form-control"
+        placeholder="Search by name or employee ID"
+        [value]="searchTerm()"
+        (input)="setSearchTerm($event)" />
+    </div>
+
+    <div class="filter-field">
+      <label for="department-filter">Department</label>
+
+      <select
+        id="department-filter"
+        class="form-select"
+        [value]="selectedDepartment()"
+        (change)="setDepartment($event)">
+        @for (department of departments(); track department) {
+          <option [value]="department">
+            {{ department }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="status-filter">Status</label>
+
+      <select
+        id="status-filter"
+        class="form-select"
+        [value]="selectedStatus()"
+        (change)="setStatus($event)">
+        <option value="All Statuses">All Statuses</option>
+
+        @for (status of statuses; track status) {
+          <option [value]="status">
+            {{ status }}
+          </option>
+        }
+      </select>
+    </div>
+  </section>
+
+  <!-- Payroll Table -->
+  <section class="table-card">
+    <div class="table-card-header">
+      <div>
+        <h2 class="section-title">Payroll Records</h2>
+        <p class="section-description">
+          Employee payroll records for {{ currentPeriod() }}.
+        </p>
+      </div>
+
+      <span class="record-count">
+        {{ filteredPayroll().length }} records
+      </span>
+    </div>
+
+    @if (filteredPayroll().length > 0) {
+      <div class="table-responsive">
+        <table class="table payroll-table">
+          <thead>
+            <tr>
+              <th scope="col">Employee</th>
+              <th scope="col">Employee ID</th>
+              <th scope="col">Department</th>
+              <th scope="col" class="text-end">Basic Salary</th>
+              <th scope="col" class="text-end">Allowances</th>
+              <th scope="col" class="text-end">Deductions</th>
+              <th scope="col" class="text-end">Gross Salary</th>
+              <th scope="col" class="text-end">Net Salary</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="actions-column">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (record of filteredPayroll(); track record.id) {
+              <tr>
+                <td>
+                  <div class="employee-cell">
+                    <div class="employee-avatar" aria-hidden="true">
+                      {{ record.employeeName.charAt(0) }}
+                    </div>
+
+                    <span class="employee-name">
+                      {{ record.employeeName }}
+                    </span>
+                  </div>
+                </td>
+
+                <td class="employee-id">
+                  {{ record.employeeId }}
+                </td>
+
+                <td>
+                  {{ record.department }}
+                </td>
+
+                <td class="text-end">
+                  {{ formatCurrency(record.basicSalary) }}
+                </td>
+
+                <td class="text-end">
+                  {{ formatCurrency(record.allowances) }}
+                </td>
+
+                <td class="text-end">
+                  {{ formatCurrency(record.deductions) }}
+                </td>
+
+                <td class="text-end salary-strong">
+                  {{ formatCurrency(record.grossSalary) }}
+                </td>
+
+                <td class="text-end salary-strong">
+                  {{ formatCurrency(record.netSalary) }}
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class]="getStatusClass(record.status)">
+                    {{ record.status }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="table-actions">
+                    <a
+                      class="btn btn-sm btn-outline-secondary"
+                      [routerLink]="['/payroll', record.id]">
+                      View
+                    </a>
+
+                    <a
+                      class="btn btn-sm btn-outline-primary"
+                      [routerLink]="['/payroll', record.id, 'edit']">
+                      Edit
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">
+          $
+        </div>
+
+        <h3>No payroll records</h3>
+
+        <p>
+          Payroll records will appear here once payroll is created.
+        </p>
+
+        <a
+          class="btn btn-primary"
+          routerLink="/payroll/create">
+          Create Payroll
+        </a>
+      </div>
+    }
+  </section>
+</div>

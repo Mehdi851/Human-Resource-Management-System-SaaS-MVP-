@@ -1,0 +1,403 @@
+<div class="payroll-form-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <a
+        class="back-link"
+        routerLink="/payroll">
+        ← Back to Payroll
+      </a>
+
+      <h1 class="page-title">
+        {{ isEditMode ? 'Edit Payroll' : 'Create Payroll' }}
+      </h1>
+
+      <p class="page-description">
+        {{
+          isEditMode
+            ? 'Update the payroll record and salary information.'
+            : 'Create a payroll record for an employee.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  @if (isEditMode && !payroll()) {
+
+    <!-- Not Found -->
+    <section class="not-found-state">
+      <div class="not-found-icon" aria-hidden="true">
+        !
+      </div>
+
+      <h2>Payroll Not Found</h2>
+
+      <p>
+        The payroll record you're trying to edit could not be found.
+        It may have been removed or the ID may be invalid.
+      </p>
+
+      <a
+        class="btn btn-primary"
+        routerLink="/payroll">
+        Back to Payroll
+      </a>
+    </section>
+
+  } @else {
+
+    <form
+      class="payroll-form"
+      [formGroup]="payrollForm"
+      (ngSubmit)="onSubmit()"
+      novalidate>
+
+      <!-- Employee & Period -->
+      <section class="form-card">
+        <div class="card-header">
+          <h2>Payroll Information</h2>
+          <p>
+            Select the employee and payroll period.
+          </p>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label for="employee">
+              Employee <span class="required">*</span>
+            </label>
+
+            <select
+              id="employee"
+              class="form-select"
+              formControlName="employeeId">
+
+              <option value="" disabled>
+                Select employee
+              </option>
+
+              @for (employee of employees; track employee.employeeId) {
+                <option [value]="employee.employeeId">
+                  {{ employee.employeeName }} ({{ employee.employeeId }})
+                </option>
+              }
+            </select>
+
+            @if (
+              payrollForm.controls.employeeId.touched &&
+              payrollForm.controls.employeeId.invalid
+            ) {
+              <div class="validation-message">
+                Employee is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="period">
+              Payroll Period <span class="required">*</span>
+            </label>
+
+            <select
+              id="period"
+              class="form-select"
+              formControlName="period">
+
+              <option value="September 2026">
+                September 2026
+              </option>
+
+              <option value="August 2026">
+                August 2026
+              </option>
+
+              <option value="July 2026">
+                July 2026
+              </option>
+            </select>
+
+            @if (
+              payrollForm.controls.period.touched &&
+              payrollForm.controls.period.invalid
+            ) {
+              <div class="validation-message">
+                Payroll period is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="status">
+              Status <span class="required">*</span>
+            </label>
+
+            <select
+              id="status"
+              class="form-select"
+              formControlName="status">
+
+              @for (status of statuses; track status) {
+                <option [value]="status">
+                  {{ status }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="employee-department">
+              Department
+            </label>
+
+            <input
+              id="employee-department"
+              type="text"
+              class="form-control"
+              [value]="selectedEmployee()?.department ?? ''"
+              readonly />
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Earnings -->
+      <section class="form-card">
+        <div class="card-header">
+          <h2>Earnings</h2>
+          <p>
+            Enter the employee's salary and allowances.
+          </p>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label for="basic-salary">
+              Basic Salary <span class="required">*</span>
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="basic-salary"
+                type="number"
+                class="form-control"
+                formControlName="basicSalary"
+                min="0"
+                step="100" />
+            </div>
+
+            @if (
+              payrollForm.controls.basicSalary.touched &&
+              payrollForm.controls.basicSalary.invalid
+            ) {
+              <div class="validation-message">
+                Enter a valid basic salary.
+              </div>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="housing-allowance">
+              Housing Allowance
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="housing-allowance"
+                type="number"
+                class="form-control"
+                formControlName="housingAllowance"
+                min="0"
+                step="50" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="transport-allowance">
+              Transport Allowance
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="transport-allowance"
+                type="number"
+                class="form-control"
+                formControlName="transportAllowance"
+                min="0"
+                step="50" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="other-allowances">
+              Other Allowances
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="other-allowances"
+                type="number"
+                class="form-control"
+                formControlName="otherAllowances"
+                min="0"
+                step="50" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="total-row">
+          <span>Gross Salary</span>
+          <strong>
+            {{ formatCurrency(grossSalary()) }}
+          </strong>
+        </div>
+      </section>
+
+      <!-- Deductions -->
+      <section class="form-card">
+        <div class="card-header">
+          <h2>Deductions</h2>
+          <p>
+            Enter applicable payroll deductions.
+          </p>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label for="tax-deduction">
+              Tax Deduction
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="tax-deduction"
+                type="number"
+                class="form-control"
+                formControlName="taxDeduction"
+                min="0"
+                step="50" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="insurance-deduction">
+              Insurance Deduction
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="insurance-deduction"
+                type="number"
+                class="form-control"
+                formControlName="insuranceDeduction"
+                min="0"
+                step="25" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="other-deductions">
+              Other Deductions
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+
+              <input
+                id="other-deductions"
+                type="number"
+                class="form-control"
+                formControlName="otherDeductions"
+                min="0"
+                step="25" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="total-row">
+          <span>Total Deductions</span>
+          <strong>
+            {{ formatCurrency(totalDeductions()) }}
+          </strong>
+        </div>
+      </section>
+
+      <!-- Net Salary -->
+      <section class="net-summary-card">
+        <div>
+          <span class="summary-label">
+            Net Salary
+          </span>
+
+          <p>
+            Estimated final salary after deductions.
+          </p>
+        </div>
+
+        <strong>
+          {{ formatCurrency(netSalary()) }}
+        </strong>
+      </section>
+
+      <!-- Remarks -->
+      <section class="form-card">
+        <div class="card-header">
+          <h2>Additional Information</h2>
+          <p>
+            Add optional notes about this payroll record.
+          </p>
+        </div>
+
+        <div class="form-field">
+          <label for="remarks">
+            Remarks
+          </label>
+
+          <textarea
+            id="remarks"
+            class="form-control"
+            formControlName="remarks"
+            rows="4"
+            placeholder="Enter any relevant payroll notes...">
+          </textarea>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <div class="form-actions">
+
+        <a
+          class="btn btn-outline-secondary"
+          routerLink="/payroll">
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn btn-primary">
+          {{ isEditMode ? 'Update Payroll' : 'Save Payroll' }}
+        </button>
+
+      </div>
+
+    </form>
+  }
+
+</div>

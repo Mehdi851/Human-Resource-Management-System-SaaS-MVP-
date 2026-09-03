@@ -1,0 +1,221 @@
+<div class="payroll-details-page">
+
+  @if (payroll(); as record) {
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <button
+          type="button"
+          class="back-button"
+          (click)="goBack()"
+          aria-label="Go back">
+          <span aria-hidden="true">←</span>
+          Back to Payroll
+        </button>
+
+        <h1 class="page-title">Payroll Details</h1>
+
+        <p class="page-description">
+          Review the payroll record and salary information for this employee.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <a
+          class="btn btn-outline-primary"
+          [routerLink]="['/payroll', record.id, 'edit']">
+          Edit Payroll
+        </a>
+      </div>
+    </div>
+
+    <!-- Employee Overview -->
+    <section class="details-card employee-overview">
+      <div class="employee-avatar" aria-hidden="true">
+        {{ record.employeeName.charAt(0) }}
+      </div>
+
+      <div class="employee-information">
+        <h2>{{ record.employeeName }}</h2>
+
+        <div class="employee-meta">
+          <span>{{ record.employeeId }}</span>
+          <span class="meta-separator" aria-hidden="true">•</span>
+          <span>{{ record.department }}</span>
+        </div>
+      </div>
+
+      <div class="employee-status">
+        <span class="section-label">Status</span>
+
+        <span
+          class="status-badge"
+          [class]="getStatusClass(record.status)">
+          {{ record.status }}
+        </span>
+      </div>
+    </section>
+
+    <!-- Payroll Information -->
+    <section class="details-card">
+      <div class="card-header">
+        <div>
+          <h2 class="section-title">Payroll Information</h2>
+          <p class="section-description">
+            Payroll period and record status.
+          </p>
+        </div>
+      </div>
+
+      <div class="information-grid">
+        <div class="information-item">
+          <span class="information-label">Payroll Period</span>
+          <span class="information-value">{{ record.period }}</span>
+        </div>
+
+        <div class="information-item">
+          <span class="information-label">Employee ID</span>
+          <span class="information-value">{{ record.employeeId }}</span>
+        </div>
+
+        <div class="information-item">
+          <span class="information-label">Department</span>
+          <span class="information-value">{{ record.department }}</span>
+        </div>
+
+        <div class="information-item">
+          <span class="information-label">Status</span>
+
+          <span
+            class="status-badge"
+            [class]="getStatusClass(record.status)">
+            {{ record.status }}
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Earnings -->
+    <section class="details-card">
+      <div class="card-header">
+        <div>
+          <h2 class="section-title">Earnings</h2>
+          <p class="section-description">
+            Salary and employee allowances for this payroll period.
+          </p>
+        </div>
+      </div>
+
+      <div class="amount-list">
+
+        <div class="amount-row">
+          <span>Basic Salary</span>
+          <strong>{{ formatCurrency(record.basicSalary) }}</strong>
+        </div>
+
+        <div class="amount-row">
+          <span>Allowances</span>
+          <strong>{{ formatCurrency(record.allowances) }}</strong>
+        </div>
+
+        <div class="amount-row amount-total">
+          <span>Gross Salary</span>
+          <strong>{{ formatCurrency(record.grossSalary) }}</strong>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Deductions -->
+    <section class="details-card">
+      <div class="card-header">
+        <div>
+          <h2 class="section-title">Deductions</h2>
+          <p class="section-description">
+            Applicable deductions for this payroll period.
+          </p>
+        </div>
+      </div>
+
+      <div class="amount-list">
+
+        <div class="amount-row">
+          <span>Total Deductions</span>
+          <strong>{{ formatCurrency(record.deductions) }}</strong>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Net Salary -->
+    <section class="net-salary-card">
+      <div>
+        <span class="net-salary-label">Net Salary</span>
+
+        <p class="net-salary-description">
+          Final salary after applicable deductions.
+        </p>
+      </div>
+
+      <strong class="net-salary-value">
+        {{ formatCurrency(record.netSalary) }}
+      </strong>
+    </section>
+
+    <!-- Remarks -->
+    @if (record.remarks) {
+      <section class="details-card">
+        <div class="card-header">
+          <div>
+            <h2 class="section-title">Remarks</h2>
+          </div>
+        </div>
+
+        <p class="remarks">
+          {{ record.remarks }}
+        </p>
+      </section>
+    }
+
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="goBack()">
+        Back
+      </button>
+
+      <a
+        class="btn btn-primary"
+        [routerLink]="['/payroll', record.id, 'edit']">
+        Edit Payroll
+      </a>
+    </div>
+
+  } @else {
+
+    <!-- Not Found -->
+    <section class="not-found-state">
+      <div class="not-found-icon" aria-hidden="true">
+        !
+      </div>
+
+      <h1>Payroll Not Found</h1>
+
+      <p>
+        The payroll record you're looking for could not be found.
+        It may have been removed or the ID may be invalid.
+      </p>
+
+      <a
+        class="btn btn-primary"
+        routerLink="/payroll">
+        Back to Payroll
+      </a>
+    </section>
+
+  }
+
+</div>

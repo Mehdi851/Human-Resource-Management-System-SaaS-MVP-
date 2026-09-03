@@ -114,7 +114,28 @@ export const routes: Routes = [
         path: 'payroll',
         loadComponent: () =>
           import('./features/payroll/payroll')
-            .then(m => m.Payroll)
+            .then(component => component.Payroll)
+      },
+
+      {
+        path: 'payroll/create',
+        loadComponent: () =>
+          import('./features/payroll/payroll-form/payroll-form')
+            .then(component => component.PayrollForm)
+      },
+
+      {
+        path: 'payroll/:id/edit',
+        loadComponent: () =>
+          import('./features/payroll/payroll-form/payroll-form')
+            .then(component => component.PayrollForm)
+      },
+
+      {
+        path: 'payroll/:id',
+        loadComponent: () =>
+          import('./features/payroll/payroll-details/payroll-details')
+            .then(component => component.PayrollDetails)
       },
       {
         path: 'organization',
