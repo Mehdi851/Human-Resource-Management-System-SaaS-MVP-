@@ -56,9 +56,9 @@ export class SidebarComponent {
       route: '/attendance'
     },
     {
-      label: 'Leave',
+      label: 'Leaves',
       icon: 'event',
-      route: '/leave'
+      route: '/leaves'
     },
     {
       label: 'Payroll',

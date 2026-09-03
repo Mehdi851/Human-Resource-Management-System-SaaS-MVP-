@@ -1,0 +1,330 @@
+<div class="leave-details-page">
+
+  @if (leaveRequest(); as leave) {
+
+    <!-- Page Header -->
+    <div class="page-header">
+
+      <div class="page-header__content">
+
+        <a
+          routerLink="/leaves"
+          class="back-link"
+        >
+          <span aria-hidden="true">←</span>
+          Back to Leave Management
+        </a>
+
+        <div class="page-title-row">
+
+          <div>
+            <h1>Leave Request</h1>
+
+            <p>
+              Review employee leave request details.
+            </p>
+          </div>
+
+          <app-leave-status-badge
+            [status]="leave.status"
+          />
+
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="page-actions">
+
+        @if (leave.status === 'Pending') {
+
+          <a
+            [routerLink]="[
+              '/leaves',
+              leave.id,
+              'edit'
+            ]"
+            class="btn btn-outline-primary"
+          >
+            Edit
+          </a>
+
+          <button
+              type="button"
+              class="btn btn-outline-danger"
+              (click)="openAction('reject')"
+            >
+              Reject
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="openAction('approve')"
+            >
+              Approve
+            </button>
+
+        } @else {
+
+          <a
+            [routerLink]="[
+              '/leaves',
+              leave.id,
+              'edit'
+            ]"
+            class="btn btn-outline-primary"
+          >
+            Edit
+          </a>
+
+        }
+        @if (showActionDialog()) {
+
+          <app-leave-action-dialog
+            [action]="activeAction()!"
+            [employeeName]="leaveRequest()?.employeeName ?? ''"
+            (confirmed)="confirmAction($event)"
+            (cancelled)="closeAction()"
+          />
+
+        }
+      </div>
+
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="details-grid">
+
+      <!-- Leave Information -->
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2>Leave Details</h2>
+
+            <p>
+              Information about this leave request.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              Leave Type
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.leaveType }}
+            </span>
+          </div>
+
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              Status
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.status }}
+            </span>
+          </div>
+
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              Start Date
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.startDate }}
+            </span>
+          </div>
+
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              End Date
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.endDate }}
+            </span>
+          </div>
+
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              Duration
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.duration }}
+              {{ leave.duration === 1 ? 'day' : 'days' }}
+            </span>
+          </div>
+
+
+          <div class="detail-field">
+            <span class="detail-field__label">
+              Submitted Date
+            </span>
+
+            <span class="detail-field__value">
+              {{ leave.submittedDate }}
+            </span>
+          </div>
+
+
+          <div class="detail-field detail-field--full">
+            <span class="detail-field__label">
+              Reason
+            </span>
+
+            <p class="detail-field__reason">
+              {{ leave.reason }}
+            </p>
+          </div>
+
+
+          @if (leave.rejectionReason) {
+
+            <div class="detail-field detail-field--full">
+
+              <span class="detail-field__label">
+                Rejection Reason
+              </span>
+
+              <p class="detail-field__reason">
+                {{ leave.rejectionReason }}
+              </p>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- Employee Summary -->
+      <section class="details-card employee-summary">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2>Employee Summary</h2>
+
+            <p>
+              Employee associated with this request.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="employee-summary__body">
+
+          <div class="employee-avatar">
+            {{ leave.employeeName.charAt(0) }}
+          </div>
+
+          <div class="employee-summary__identity">
+
+            <h3>
+              {{ leave.employeeName }}
+            </h3>
+
+            <span>
+              {{ leave.employeeCode }}
+            </span>
+
+          </div>
+
+
+          <div class="employee-summary__details">
+
+            <div class="summary-field">
+
+              <span class="summary-field__label">
+                Department
+              </span>
+
+              <span class="summary-field__value">
+                {{ leave.department }}
+              </span>
+
+            </div>
+
+
+            <div class="summary-field">
+
+              <span class="summary-field__label">
+                Designation
+              </span>
+
+              <span class="summary-field__value">
+                {{ leave.designation }}
+              </span>
+
+            </div>
+
+
+            <div class="summary-field">
+
+              <span class="summary-field__label">
+                Employee ID
+              </span>
+
+              <span class="summary-field__value">
+                {{ leave.employeeCode }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  } @else {
+
+    <!-- Not Found -->
+    <section class="not-found">
+
+      <div
+        class="not-found__icon"
+        aria-hidden="true"
+      >
+        !
+      </div>
+
+      <h1>Leave Not Found</h1>
+
+      <p>
+        The leave request you're looking for doesn't exist
+        or is no longer available.
+      </p>
+
+      <a
+        routerLink="/leaves"
+        class="btn btn-primary"
+      >
+        Back to Leave Management
+      </a>
+
+    </section>
+
+  }
+
+</div>

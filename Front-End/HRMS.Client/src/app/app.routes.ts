@@ -7,6 +7,9 @@ import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { EmployeeDetails } from './features/employees/employee-details/employee-details';
 import { Employees } from './features/employees/employees';
 import { EmployeeForm } from './features/employees/employee-form/employee-form';
+import { LeaveForm } from './features/leaves/leave-form/leave-form';
+import { LeaveDetails } from './features/leaves/leave-details/leave-details';
+import { Leave } from './features/leaves/leave';
 
 export const routes: Routes = [
     {
@@ -64,10 +67,25 @@ export const routes: Routes = [
             .then(m => m.Attendance)
       },
       {
-        path: 'leave',
-        loadComponent: () =>
-          import('./features/leave/leave')
-            .then(m => m.Leave)
+        path: 'leaves',
+        children: [
+          {
+            path: '',
+            component: Leave,
+          },
+          {
+            path: 'create',
+            component: LeaveForm,
+          },
+          {
+            path: ':id/edit',
+            component: LeaveForm,
+          },
+          {
+            path: ':id',
+            component: LeaveDetails,
+          },
+        ],
       },
       {
         path: 'payroll',

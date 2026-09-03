@@ -1,0 +1,14 @@
+<span
+  class="status-badge"
+  [class.status-badge--pending]="status === 'Pending'"
+  [class.status-badge--approved]="status === 'Approved'"
+  [class.status-badge--rejected]="status === 'Rejected'"
+  [class.status-badge--cancelled]="status === 'Cancelled'"
+>
+  <span
+    class="status-badge__indicator"
+    aria-hidden="true"
+  ></span>
+
+  {{ status }}
+</span>

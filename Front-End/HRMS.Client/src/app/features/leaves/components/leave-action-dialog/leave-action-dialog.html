@@ -1,0 +1,116 @@
+<div
+  class="dialog-backdrop"
+  role="presentation"
+  (click)="cancel()"
+>
+
+  <section
+    class="action-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'leave-action-title'"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="action-dialog__header">
+
+      <div
+        class="action-dialog__icon"
+        [class.action-dialog__icon--danger]="isRejectAction"
+        aria-hidden="true"
+      >
+        {{ isRejectAction ? '!' : '✓' }}
+      </div>
+
+      <button
+        type="button"
+        class="dialog-close"
+        aria-label="Close confirmation dialog"
+        (click)="cancel()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Content -->
+    <div class="action-dialog__body">
+
+      <h2 id="leave-action-title">
+        {{ title }}
+      </h2>
+
+      <p>
+        {{ description }}
+      </p>
+
+
+      @if (isRejectAction) {
+
+        <div class="form-field">
+
+          <label
+            for="rejectionReason"
+            class="form-label"
+          >
+            Rejection Reason
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <textarea
+            id="rejectionReason"
+            class="form-control"
+            rows="4"
+            maxlength="500"
+            [(ngModel)]="rejectionReason"
+            placeholder="Enter the reason for rejecting this leave request"
+          ></textarea>
+
+          <div class="field-help">
+            Please provide a clear reason for the employee.
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="action-dialog__footer">
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="btn"
+        [class.btn-primary]="!isRejectAction"
+        [class.btn-danger]="isRejectAction"
+        [disabled]="
+          isRejectAction &&
+          !rejectionReason.trim()
+        "
+        (click)="confirm()"
+      >
+        {{ actionLabel }}
+      </button>
+
+    </div>
+
+  </section>
+
+</div>

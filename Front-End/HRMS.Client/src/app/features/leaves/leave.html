@@ -1,0 +1,543 @@
+<div class="leaves-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Leave Management</h1>
+      <p>Manage employee leave requests and approvals.</p>
+    </div>
+
+    <a
+      routerLink="/leaves/create"
+      class="btn btn-primary"
+    >
+      Apply Leave
+    </a>
+  </div>
+
+
+  <!-- Summary Cards -->
+  <section class="summary-grid">
+
+    <article class="summary-card">
+      <div class="summary-card__content">
+        <span class="summary-card__label">
+          Pending Requests
+        </span>
+
+        <strong class="summary-card__value">
+          {{ pendingCount() }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card__content">
+        <span class="summary-card__label">
+          Approved
+        </span>
+
+        <strong class="summary-card__value">
+          {{ approvedCount() }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card__content">
+        <span class="summary-card__label">
+          Rejected
+        </span>
+
+        <strong class="summary-card__value">
+          {{ rejectedCount() }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-card__content">
+        <span class="summary-card__label">
+          On Leave Today
+        </span>
+
+        <strong class="summary-card__value">
+          {{ onLeaveTodayCount() }}
+        </strong>
+      </div>
+    </article>
+
+  </section>
+
+
+  <!-- Filters -->
+  <section class="filter-card">
+
+    <div class="filter-card__header">
+      <div>
+        <h2>Leave Requests</h2>
+        <span>
+          {{ filteredLeaveRequests().length }}
+          {{ filteredLeaveRequests().length === 1 ? 'request' : 'requests' }}
+        </span>
+      </div>
+
+      @if (hasActiveFilters()) {
+        <button
+          type="button"
+          class="btn btn-link filter-clear"
+          (click)="clearFilters()"
+        >
+          Clear Filters
+        </button>
+      }
+    </div>
+
+
+    <div class="filters">
+
+      <!-- Search -->
+      <div class="filter-field filter-field--search">
+        <label
+          for="leave-search"
+          class="form-label"
+        >
+          Search
+        </label>
+
+        <input
+          id="leave-search"
+          type="search"
+          class="form-control"
+          placeholder="Search employee or ID"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="updateSearch($event)"
+        />
+      </div>
+
+
+      <!-- Leave Type -->
+      <div class="filter-field">
+        <label
+          for="leave-type"
+          class="form-label"
+        >
+          Leave Type
+        </label>
+
+        <select
+          id="leave-type"
+          class="form-select"
+          [ngModel]="selectedLeaveType()"
+          (ngModelChange)="updateLeaveType($event)"
+        >
+          <option value="">All Types</option>
+
+          @for (type of leaveTypes; track type) {
+            <option [value]="type">
+              {{ type }}
+            </option>
+          }
+        </select>
+      </div>
+
+
+      <!-- Status -->
+      <div class="filter-field">
+        <label
+          for="leave-status"
+          class="form-label"
+        >
+          Status
+        </label>
+
+        <select
+          id="leave-status"
+          class="form-select"
+          [ngModel]="selectedStatus()"
+          (ngModelChange)="updateStatus($event)"
+        >
+          <option value="">All Statuses</option>
+
+          @for (status of statuses; track status) {
+            <option [value]="status">
+              {{ status }}
+            </option>
+          }
+        </select>
+      </div>
+
+
+      <!-- Start Date -->
+      <div class="filter-field">
+        <label
+          for="leave-start-date"
+          class="form-label"
+        >
+          From
+        </label>
+
+        <input
+          id="leave-start-date"
+          type="date"
+          class="form-control"
+          [ngModel]="startDate()"
+          (ngModelChange)="updateStartDate($event)"
+        />
+      </div>
+
+
+      <!-- End Date -->
+      <div class="filter-field">
+        <label
+          for="leave-end-date"
+          class="form-label"
+        >
+          To
+        </label>
+
+        <input
+          id="leave-end-date"
+          type="date"
+          class="form-control"
+          [ngModel]="endDate()"
+          (ngModelChange)="updateEndDate($event)"
+        />
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Desktop Table -->
+ @if (filteredLeaveRequests().length > 0) {
+
+  <!-- Desktop Table -->
+  <section class="leave-table-card leave-table-card--desktop">
+
+    <div class="table-responsive leave-table-wrapper">
+
+      <table class="table leave-table">
+
+        <thead>
+          <tr>
+            <th scope="col">Employee</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="actions-column">
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (
+            leave of filteredLeaveRequests();
+            track leave.id
+          ) {
+
+            <tr>
+
+              <td>
+                <div class="employee-cell">
+                  <strong>
+                    {{ leave.employeeName }}
+                  </strong>
+
+                  <span>
+                    {{ leave.employeeCode }}
+                  </span>
+                </div>
+              </td>
+
+              <td>
+                <app-leave-type-badge
+                  [type]="leave.leaveType"
+                />
+              </td>
+
+              <td>
+                {{ leave.startDate }}
+              </td>
+
+              <td>
+                {{ leave.endDate }}
+              </td>
+
+              <td>
+                {{ leave.duration }}
+                {{ leave.duration === 1 ? 'day' : 'days' }}
+              </td>
+
+              <td>
+                <span
+                  class="reason-cell"
+                  [title]="leave.reason"
+                >
+                  {{ leave.reason }}
+                </span>
+              </td>
+
+              <td>
+                <app-leave-status-badge
+                  [status]="leave.status"
+                />
+              </td>
+
+              <td>
+                <div class="action-buttons">
+
+                  <a
+                    [routerLink]="['/leaves', leave.id]"
+                    class="btn btn-sm btn-outline-secondary"
+                    [attr.aria-label]="
+                      'View leave request for ' + leave.employeeName
+                    "
+                  >
+                    View
+                  </a>
+
+                  @if (leave.status === 'Pending') {
+
+                    <a
+                      [routerLink]="[
+                        '/leaves',
+                        leave.id,
+                        'edit'
+                      ]"
+                      class="btn btn-sm btn-outline-primary"
+                      [attr.aria-label]="
+                        'Edit leave request for ' + leave.employeeName
+                      "
+                    >
+                      Edit
+                    </a>
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-success"
+                        [attr.aria-label]="
+                          'Approve leave request for ' + leave.employeeName
+                        "
+                        (click)="openAction('approve', leave.id)"
+                      >
+                        Approve
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        [attr.aria-label]="
+                          'Reject leave request for ' + leave.employeeName
+                        "
+                        (click)="openAction('reject', leave.id)"
+                      >
+                        Reject
+                      </button>
+
+                  }
+
+                </div>
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- Mobile Cards -->
+  <section class="leave-cards">
+
+    @for (
+      leave of filteredLeaveRequests();
+      track leave.id
+    ) {
+
+      <article class="leave-card">
+
+        <div class="leave-card__header">
+
+          <div class="employee-cell">
+            <strong>
+              {{ leave.employeeName }}
+            </strong>
+
+            <span>
+              {{ leave.employeeCode }}
+            </span>
+          </div>
+
+          <span
+            class="status-badge"
+            [class.status-badge--pending]="leave.status === 'Pending'"
+            [class.status-badge--approved]="leave.status === 'Approved'"
+            [class.status-badge--rejected]="leave.status === 'Rejected'"
+            [class.status-badge--cancelled]="leave.status === 'Cancelled'"
+          >
+            {{ leave.status }}
+          </span>
+
+        </div>
+
+
+        <div class="leave-card__body">
+
+          <div class="leave-card__field">
+            <span class="leave-card__label">
+              Leave Type
+            </span>
+
+            <app-leave-type-badge
+              [type]="leave.leaveType"
+            />
+          </div>
+
+
+          <div class="leave-card__field">
+            <span class="leave-card__label">
+              Dates
+            </span>
+
+            <span class="leave-card__value">
+              {{ leave.startDate }}
+              <span aria-hidden="true">→</span>
+              {{ leave.endDate }}
+            </span>
+          </div>
+
+
+          <div class="leave-card__field">
+            <span class="leave-card__label">
+              Duration
+            </span>
+
+            <span class="leave-card__value">
+              {{ leave.duration }}
+              {{ leave.duration === 1 ? 'day' : 'days' }}
+            </span>
+          </div>
+
+
+          <div class="leave-card__field leave-card__field--reason">
+            <span class="leave-card__label">
+              Reason
+            </span>
+
+            <span class="leave-card__value">
+              {{ leave.reason }}
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="leave-card__footer">
+
+          <a
+            [routerLink]="['/leaves', leave.id]"
+            class="btn btn-sm btn-outline-secondary"
+          >
+            View
+          </a>
+
+          @if (leave.status === 'Pending') {
+
+            <a
+              [routerLink]="[
+                '/leaves',
+                leave.id,
+                'edit'
+              ]"
+              class="btn btn-sm btn-outline-primary"
+            >
+              Edit
+            </a>
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-success"
+            >
+              Approve
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger"
+            >
+              Reject
+            </button>
+
+          }
+
+        </div>
+
+      </article>
+
+    }
+
+  </section>
+
+}
+
+
+<!-- Empty State -->
+@if (filteredLeaveRequests().length === 0) {
+
+  <section class="empty-state">
+
+    <div
+      class="empty-state__icon"
+      aria-hidden="true"
+    >
+      <span>⌕</span>
+    </div>
+
+    <h2>No leave requests found</h2>
+
+    <p>
+      We couldn't find any leave requests matching
+      your current search or filters.
+    </p>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="clearFilters()"
+    >
+      Clear Filters
+    </button>
+
+  </section>
+
+}
+
+</div>
+
+@if (activeAction(); as action) {
+
+  @if (selectedLeaveForAction(); as leave) {
+
+    <app-leave-action-dialog
+      [action]="action.action"
+      [employeeName]="leave.employeeName"
+      (confirmed)="confirmAction($event)"
+      (cancelled)="closeAction()"
+    />
+
+  }
+
+}

@@ -1,0 +1,353 @@
+<div class="leave-form-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <a
+        routerLink="/leaves"
+        class="back-link"
+      >
+        <span aria-hidden="true">←</span>
+        Back to Leave Management
+      </a>
+
+      <h1>
+        {{ isEditMode()
+          ? 'Edit Leave Request'
+          : 'Apply Leave'
+        }}
+      </h1>
+
+      <p>
+        {{
+          isEditMode()
+            ? 'Update the employee leave request details.'
+            : 'Submit a new leave request for an employee.'
+        }}
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Form Card -->
+  <section class="form-card">
+
+    <div class="form-card__header">
+      <h2>Leave Information</h2>
+
+      <p>
+        Enter the details for this leave request.
+      </p>
+    </div>
+
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      novalidate
+    >
+
+      <div class="form-card__body">
+
+
+        <!-- Employee -->
+        <div class="form-field">
+
+          <label
+            for="employee"
+            class="form-label"
+          >
+            Employee
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <select
+            id="employee"
+            class="form-select"
+            formControlName="employee"
+            [class.is-invalid]="
+              isFieldInvalid(employeeControl)
+            "
+          >
+
+            <option value="">
+              Select employee
+            </option>
+
+            <option value="EMP-001">
+              Ali Raza — EMP-001
+            </option>
+
+            <option value="EMP-002">
+              Sara Ahmed — EMP-002
+            </option>
+
+            <option value="EMP-003">
+              Usman Khan — EMP-003
+            </option>
+
+            <option value="EMP-004">
+              Ayesha Malik — EMP-004
+            </option>
+
+            <option value="EMP-005">
+              Hamza Shah — EMP-005
+            </option>
+
+            <option value="EMP-006">
+              Fatima Noor — EMP-006
+            </option>
+
+            <option value="EMP-007">
+              Bilal Ahmed — EMP-007
+            </option>
+
+            <option value="EMP-008">
+              Hina Tariq — EMP-008
+            </option>
+
+          </select>
+
+          @if (isFieldInvalid(employeeControl)) {
+            <div class="invalid-feedback">
+              Please select an employee.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Leave Type -->
+        <div class="form-field">
+
+          <label
+            for="leaveType"
+            class="form-label"
+          >
+            Leave Type
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <select
+            id="leaveType"
+            class="form-select"
+            formControlName="leaveType"
+            [class.is-invalid]="
+              isFieldInvalid(leaveTypeControl)
+            "
+          >
+
+            <option value="">
+              Select leave type
+            </option>
+
+            @for (type of leaveTypes; track type) {
+
+              <option [value]="type">
+                {{ type }}
+              </option>
+
+            }
+
+          </select>
+
+          @if (isFieldInvalid(leaveTypeControl)) {
+            <div class="invalid-feedback">
+              Please select a leave type.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Start Date -->
+        <div class="form-field">
+
+          <label
+            for="startDate"
+            class="form-label"
+          >
+            Start Date
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <input
+            id="startDate"
+            type="date"
+            class="form-control"
+            formControlName="startDate"
+            [class.is-invalid]="
+              isFieldInvalid(startDateControl) ||
+              !!getDateError()
+            "
+          />
+
+          @if (isFieldInvalid(startDateControl)) {
+
+            <div class="invalid-feedback">
+              Start date is required.
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- End Date -->
+        <div class="form-field">
+
+          <label
+            for="endDate"
+            class="form-label"
+          >
+            End Date
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <input
+            id="endDate"
+            type="date"
+            class="form-control"
+            formControlName="endDate"
+            [class.is-invalid]="
+              isFieldInvalid(endDateControl) ||
+              !!getDateError()
+            "
+          />
+
+          @if (isFieldInvalid(endDateControl)) {
+
+            <div class="invalid-feedback">
+              End date is required.
+            </div>
+
+          }
+
+          @if (
+            !isFieldInvalid(endDateControl) &&
+            getDateError()
+          ) {
+
+            <div class="invalid-feedback">
+              {{ getDateError() }}
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Reason -->
+        <div class="form-field form-field--full">
+
+          <label
+            for="reason"
+            class="form-label"
+          >
+            Reason
+            <span
+              class="required"
+              aria-hidden="true"
+            >
+              *
+            </span>
+          </label>
+
+          <textarea
+            id="reason"
+            class="form-control"
+            rows="5"
+            maxlength="500"
+            placeholder="Enter the reason for this leave request"
+            formControlName="reason"
+            [class.is-invalid]="
+              isFieldInvalid(reasonControl)
+            "
+          ></textarea>
+
+          <div class="field-help">
+            <span>
+              Minimum 10 characters.
+            </span>
+
+            <span>
+              {{ reasonControl.value.length }}/500
+            </span>
+          </div>
+
+          @if (isFieldInvalid(reasonControl)) {
+
+            @if (reasonControl.hasError('required')) {
+
+              <div class="invalid-feedback">
+                Please provide a reason for the leave request.
+              </div>
+
+            } @else if (
+              reasonControl.hasError('minlength')
+            ) {
+
+              <div class="invalid-feedback">
+                Reason must contain at least 10 characters.
+              </div>
+
+            }
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Form Footer -->
+      <div class="form-card__footer">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          {{
+            isEditMode()
+              ? 'Update Leave Request'
+              : 'Submit Leave Request'
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</div>
