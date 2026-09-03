@@ -1,0 +1,250 @@
+<section class="attendance-details-page">
+
+  @if (attendanceRecord(); as record) {
+
+    <!-- Page Header -->
+
+    <header class="page-header">
+
+      <div class="page-header__content">
+
+        <div>
+
+          <div class="page-header__back">
+            <a
+              routerLink="/attendance"
+              class="back-link">
+              <span aria-hidden="true">←</span>
+              Back to Attendance
+            </a>
+          </div>
+
+          <h1 class="page-header__title">
+            Attendance Record
+          </h1>
+
+          <p class="page-header__description">
+            View employee attendance and working-hour details.
+          </p>
+
+        </div>
+
+        <div class="page-header__actions">
+
+          <a
+            class="btn btn-outline-secondary"
+            [routerLink]="['/attendance', record.id, 'edit']">
+            Edit
+          </a>
+
+          <a
+            class="btn btn-primary"
+            routerLink="/attendance/create">
+            Mark Attendance
+          </a>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- Record -->
+
+    <div class="details-layout">
+
+      <!-- Attendance Record Card -->
+
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2 class="details-card__title">
+              Attendance Information
+            </h2>
+
+            <p class="details-card__description">
+              Attendance details for this employee.
+            </p>
+          </div>
+
+          <span
+            class="status-badge"
+            [attr.data-status]="record.status">
+
+            <span
+              class="status-indicator"
+              aria-hidden="true">
+            </span>
+
+            {{ record.status }}
+
+          </span>
+
+        </div>
+
+
+        <div class="details-grid">
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Employee
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.employeeName }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Employee ID
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.employeeId }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Department
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.department }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Date
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.date }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Check In
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.checkIn || '—' }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Check Out
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.checkOut || '—' }}
+            </span>
+          </div>
+
+
+          <div class="detail-item">
+            <span class="detail-item__label">
+              Working Hours
+            </span>
+
+            <span class="detail-item__value detail-item__value--strong">
+              {{ record.workingHours }}
+            </span>
+          </div>
+
+
+          <div class="detail-item detail-item--full">
+            <span class="detail-item__label">
+              Remarks
+            </span>
+
+            <span class="detail-item__value">
+              {{ record.remarks || 'No remarks added.' }}
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Employee Summary -->
+
+      <aside class="employee-summary">
+
+        <div class="employee-summary__avatar">
+          {{ record.employeeName.charAt(0) }}
+        </div>
+
+        <h2 class="employee-summary__name">
+          {{ record.employeeName }}
+        </h2>
+
+        <p class="employee-summary__id">
+          {{ record.employeeId }}
+        </p>
+
+        <div class="employee-summary__divider"></div>
+
+        <dl class="employee-summary__details">
+
+          <div>
+            <dt>Department</dt>
+            <dd>{{ record.department }}</dd>
+          </div>
+
+          <div>
+            <dt>Attendance Date</dt>
+            <dd>{{ record.date }}</dd>
+          </div>
+
+        </dl>
+
+      </aside>
+
+    </div>
+
+  } @else {
+
+    <!-- Not Found -->
+
+    <div class="attendance-not-found">
+
+      <div
+        class="attendance-not-found__icon"
+        aria-hidden="true">
+        !
+      </div>
+
+      <h1 class="attendance-not-found__title">
+        Attendance Not Found
+      </h1>
+
+      <p class="attendance-not-found__description">
+        The attendance record you're looking for could not be found.
+        It may have been removed or the ID may be invalid.
+      </p>
+
+      <a
+        routerLink="/attendance"
+        class="btn btn-primary">
+        Back to Attendance
+      </a>
+
+    </div>
+
+  }
+
+</section>

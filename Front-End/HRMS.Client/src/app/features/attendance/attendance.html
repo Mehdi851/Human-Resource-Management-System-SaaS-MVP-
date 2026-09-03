@@ -1,1 +1,546 @@
-<p>attendance works!</p>
+<section class="attendance-page">
+
+  <header class="page-header">
+    <div class="page-header__content">
+      <div>
+        <h1 class="page-header__title">
+          Attendance Management
+        </h1>
+
+        <p class="page-header__description">
+          Monitor employee attendance, working hours, and daily attendance status.
+        </p>
+      </div>
+
+      <div class="page-header__actions">
+        <button
+          type="button"
+          class="btn btn-primary"
+           routerLink="/attendance/create">
+          Mark Attendance
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="attendance-content">
+
+    <!-- Summary -->
+
+    <section
+      class="summary-grid"
+      aria-label="Attendance summary">
+
+      <app-attendance-summary-card
+        title="Present Today"
+        [value]="42"
+        description="Employees present"
+        icon="✓">
+      </app-attendance-summary-card>
+
+      <app-attendance-summary-card
+        title="Absent Today"
+        [value]="5"
+        description="Employees absent"
+        icon="−">
+      </app-attendance-summary-card>
+
+      <app-attendance-summary-card
+        title="Late Today"
+        [value]="4"
+        description="Late arrivals"
+        icon="◷">
+      </app-attendance-summary-card>
+
+      <app-attendance-summary-card
+        title="On Leave"
+        [value]="3"
+        description="Employees on leave"
+        icon="○">
+      </app-attendance-summary-card>
+
+    </section>
+
+    <!-- Filters -->
+
+    <section
+      class="filter-card"
+      aria-labelledby="attendance-filter-title">
+
+      <div class="filter-card__header">
+        <div>
+          <h2
+            id="attendance-filter-title"
+            class="filter-card__title">
+            Attendance Records
+          </h2>
+
+          <p class="filter-card__description">
+            Search and filter attendance records.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          (click)="clearFilters()">
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="filter-grid">
+
+        <!-- Search -->
+
+        <div class="filter-field filter-field--search">
+          <label
+            for="attendance-search"
+            class="form-label">
+            Search
+          </label>
+
+          <input
+            id="attendance-search"
+            type="search"
+            class="form-control"
+            placeholder="Employee name or ID"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="updateSearch($event)" />
+        </div>
+
+        <!-- Department -->
+
+        <div class="filter-field">
+          <label
+            for="attendance-department"
+            class="form-label">
+            Department
+          </label>
+
+          <select
+            id="attendance-department"
+            class="form-select"
+            [ngModel]="selectedDepartment()"
+            (ngModelChange)="updateDepartment($event)">
+
+            <option value="">
+              All Departments
+            </option>
+
+            @for (department of departments; track department) {
+              <option [value]="department">
+                {{ department }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+        <!-- Status -->
+
+        <div class="filter-field">
+          <label
+            for="attendance-status"
+            class="form-label">
+            Attendance Status
+          </label>
+
+          <select
+            id="attendance-status"
+            class="form-select"
+            [ngModel]="selectedStatus()"
+            (ngModelChange)="updateStatus($event)">
+
+            <option value="">
+              All Statuses
+            </option>
+
+            @for (status of statuses; track status) {
+              <option [value]="status">
+                {{ status }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+        <!-- Date -->
+
+        <div class="filter-field">
+          <label
+            for="attendance-date"
+            class="form-label">
+            Date
+          </label>
+
+          <input
+            id="attendance-date"
+            type="date"
+            class="form-control"
+            [ngModel]="selectedDate()"
+            (ngModelChange)="updateDate($event)" />
+        </div>
+
+      </div>
+
+      <div class="filter-results">
+        <span>
+          {{ filteredRecords().length }} attendance
+          {{ filteredRecords().length === 1 ? 'record' : 'records' }}
+          found
+        </span>
+      </div>
+
+    </section>
+
+    <!-- Attendance list  -->
+     <!-- Attendance List -->
+
+<section class="attendance-list">
+
+  <div class="attendance-list__header">
+    <div>
+      <h2 class="attendance-list__title">
+        Attendance List
+      </h2>
+
+      <p class="attendance-list__description">
+        Daily attendance records for employees.
+      </p>
+    </div>
+  </div>
+
+  @if (filteredRecords().length > 0) {
+
+    <!-- Desktop / Tablet Table -->
+
+    <div class="attendance-table-wrapper">
+
+      <table class="table attendance-table">
+
+        <caption class="visually-hidden">
+          Employee attendance records
+        </caption>
+
+        <thead>
+          <tr>
+            <th scope="col">Employee</th>
+            <th scope="col">Employee ID</th>
+            <th scope="col">Department</th>
+            <th scope="col">Date</th>
+            <th scope="col">Check In</th>
+            <th scope="col">Check Out</th>
+            <th scope="col">Working Hours</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (record of filteredRecords(); track record.id) {
+
+            <tr>
+
+              <td>
+                <div class="employee-cell">
+
+                  <div
+                    class="employee-avatar"
+                    aria-hidden="true">
+                    {{ record.employeeName.charAt(0) }}
+                  </div>
+
+                  <div class="employee-info">
+                    <span class="employee-name">
+                      {{ record.employeeName }}
+                    </span>
+                  </div>
+
+                </div>
+              </td>
+
+              <td>
+                <span class="secondary-text">
+                  {{ record.employeeId }}
+                </span>
+              </td>
+
+              <td>
+                {{ record.department }}
+              </td>
+
+              <td>
+                {{ record.date }}
+              </td>
+
+              <td>
+                @if (record.checkIn) {
+                  <span class="time-value">
+                    {{ record.checkIn }}
+                  </span>
+                } @else {
+                  <span class="muted-value">—</span>
+                }
+              </td>
+
+              <td>
+                @if (record.checkOut) {
+                  <span class="time-value">
+                    {{ record.checkOut }}
+                  </span>
+                } @else {
+                  <span class="muted-value">—</span>
+                }
+              </td>
+
+              <td>
+                <span class="working-hours">
+                  {{ record.workingHours }}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [attr.data-status]="record.status">
+
+                  <span
+                    class="status-indicator"
+                    aria-hidden="true">
+                  </span>
+
+                  {{ record.status }}
+
+                </span>
+              </td>
+
+              <td>
+               <div class="table-actions">
+
+                  <a
+                    class="btn btn-sm btn-outline-secondary"
+                    [routerLink]="['/attendance', record.id]">
+                    View
+                  </a>
+
+                  <a
+                    class="btn btn-sm btn-outline-primary"
+                    [routerLink]="[
+                      '/attendance',
+                      record.id,
+                      'edit'
+                    ]">
+                    Edit
+                  </a>
+                </div>
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- Mobile Cards -->
+
+    <div
+      class="attendance-mobile-list"
+      aria-label="Attendance records">
+
+      @for (record of filteredRecords(); track record.id) {
+
+        <article class="attendance-mobile-card">
+
+          <!-- Card Header -->
+
+          <div class="attendance-mobile-card__header">
+
+            <div class="employee-cell">
+
+              <div
+                class="employee-avatar"
+                aria-hidden="true">
+                {{ record.employeeName.charAt(0) }}
+              </div>
+
+              <div class="employee-info">
+
+                <h3 class="employee-name">
+                  {{ record.employeeName }}
+                </h3>
+
+                <span class="secondary-text">
+                  {{ record.employeeId }}
+                </span>
+
+              </div>
+
+            </div>
+
+            <span
+              class="status-badge"
+              [attr.data-status]="record.status">
+
+              <span
+                class="status-indicator"
+                aria-hidden="true">
+              </span>
+
+              {{ record.status }}
+
+            </span>
+
+          </div>
+
+
+          <!-- Card Details -->
+
+          <div class="attendance-mobile-card__details">
+
+            <div class="attendance-detail">
+
+              <span class="attendance-detail__label">
+                Department
+              </span>
+
+              <span class="attendance-detail__value">
+                {{ record.department }}
+              </span>
+
+            </div>
+
+
+            <div class="attendance-detail">
+
+              <span class="attendance-detail__label">
+                Date
+              </span>
+
+              <span class="attendance-detail__value">
+                {{ record.date }}
+              </span>
+
+            </div>
+
+
+            <div class="attendance-detail">
+
+              <span class="attendance-detail__label">
+                Check In
+              </span>
+
+              <span class="attendance-detail__value">
+                @if (record.checkIn) {
+                  {{ record.checkIn }}
+                } @else {
+                  —
+                }
+              </span>
+
+            </div>
+
+
+            <div class="attendance-detail">
+
+              <span class="attendance-detail__label">
+                Check Out
+              </span>
+
+              <span class="attendance-detail__value">
+                @if (record.checkOut) {
+                  {{ record.checkOut }}
+                } @else {
+                  —
+                }
+              </span>
+
+            </div>
+
+
+            <div class="attendance-detail">
+
+              <span class="attendance-detail__label">
+                Working Hours
+              </span>
+
+              <span class="attendance-detail__value attendance-detail__value--strong">
+                {{ record.workingHours }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- Card Actions -->
+
+          <div class="attendance-mobile-card__actions">
+
+            <a
+              class="btn btn-sm btn-light"
+              [routerLink]="['/attendance', record.id]">
+              View
+            </a>
+
+            <a
+              class="btn btn-sm btn-outline-secondary"
+              [routerLink]="['/attendance', record.id, 'edit']">
+              Edit
+            </a>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  } @else {
+
+     <div
+    class="attendance-empty-state"
+    role="status"
+    aria-live="polite">
+
+    <div
+      class="attendance-empty-state__icon"
+      aria-hidden="true">
+      <span>⌕</span>
+    </div>
+
+    <div class="attendance-empty-state__content">
+
+      <h3 class="attendance-empty-state__title">
+        No attendance records found
+      </h3>
+
+      <p class="attendance-empty-state__description">
+        We couldn't find any attendance records matching
+        your current search or filters.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="clearFilters()">
+        Clear Filters
+      </button>
+
+    </div>
+
+  </div>
+
+  }
+
+</section>
+
+  </div>
+
+</section>

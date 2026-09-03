@@ -67,6 +67,29 @@ export const routes: Routes = [
             .then(m => m.Attendance)
       },
       {
+        path: 'attendance/create',
+        loadComponent: () =>
+          import(
+            './features/attendance/attendance-form/attendance-form'
+          ).then(m => m.AttendanceForm)
+      },
+
+      {
+        path: 'attendance/:id/edit',
+        loadComponent: () =>
+          import(
+            './features/attendance/attendance-form/attendance-form'
+          ).then(m => m.AttendanceForm)
+      },
+
+      {
+        path: 'attendance/:id',
+        loadComponent: () =>
+          import(
+            './features/attendance/attendance-details/attendance-details'
+          ).then(m => m.AttendanceDetails)
+      },
+      {
         path: 'leaves',
         children: [
           {

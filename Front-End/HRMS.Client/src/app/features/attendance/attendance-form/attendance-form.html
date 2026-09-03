@@ -1,0 +1,316 @@
+<section class="attendance-form-page">
+
+  <!-- Page Header -->
+
+  <header class="page-header">
+
+    <div class="page-header__content">
+
+      <div>
+
+        @if (isEditMode && existingRecord) {
+
+            <a
+                [routerLink]="['/attendance', recordId]"
+                class="back-link">
+                <span aria-hidden="true">←</span>
+                Back to Attendance Record
+            </a>
+
+            } @else {
+
+            <a
+                routerLink="/attendance"
+                class="back-link">
+                <span aria-hidden="true">←</span>
+                Back to Attendance
+            </a>
+
+            }
+
+       <h1 class="page-header__title">
+        {{ isEditMode ? 'Edit Attendance' : 'Mark Attendance' }}
+        </h1>
+
+        <p class="page-header__description">
+        {{
+            isEditMode
+            ? 'Update the attendance details for this employee.'
+            : 'Record attendance details for an employee.'
+        }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- Form -->
+
+  @if (!isEditMode || existingRecord) {
+
+  <form
+    class="attendance-form"
+    [formGroup]="attendanceForm"
+    (ngSubmit)="saveAttendance()"
+    novalidate>
+
+   <section class="form-card">
+
+      <div class="form-card__header">
+
+        <div>
+          <h2 class="form-card__title">
+            Attendance Information
+            </h2>
+
+            <p class="form-card__description">
+            {{
+                isEditMode
+                ? 'Review and update the attendance information below.'
+                : 'Enter the employee attendance information below.'
+            }}
+            </p>
+        </div>
+
+      </div>
+
+
+      <div class="form-card__body">
+
+        <!-- Employee -->
+
+        <div class="form-field">
+
+          <label
+            for="employeeId"
+            class="form-label">
+            Employee
+            <span class="required-mark" aria-hidden="true">*</span>
+          </label>
+
+          <select
+            id="employeeId"
+            class="form-select"
+            formControlName="employeeId"
+            [class.is-invalid]="isInvalid('employeeId')">
+
+            <option value="">
+              Select employee
+            </option>
+
+            @for (employee of employees; track employee.id) {
+              <option [value]="employee.id">
+                {{ employee.name }} — {{ employee.id }}
+              </option>
+            }
+
+          </select>
+
+          @if (isInvalid('employeeId')) {
+            <div class="field-error">
+              Please select an employee.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Date -->
+
+        <div class="form-field">
+
+          <label
+            for="date"
+            class="form-label">
+            Attendance Date
+            <span class="required-mark" aria-hidden="true">*</span>
+          </label>
+
+          <input
+            id="date"
+            type="date"
+            class="form-control"
+            formControlName="date"
+            [class.is-invalid]="isInvalid('date')" />
+
+          @if (isInvalid('date')) {
+            <div class="field-error">
+              Please select an attendance date.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Time Row -->
+
+        <div class="form-field-row">
+
+          <!-- Check In -->
+
+          <div class="form-field">
+
+            <label
+              for="checkIn"
+              class="form-label">
+              Check In
+            </label>
+
+            <input
+              id="checkIn"
+              type="time"
+              class="form-control"
+              formControlName="checkIn" />
+
+          </div>
+
+
+          <!-- Check Out -->
+
+          <div class="form-field">
+
+            <label
+              for="checkOut"
+              class="form-label">
+              Check Out
+            </label>
+
+            <input
+              id="checkOut"
+              type="time"
+              class="form-control"
+              formControlName="checkOut" />
+
+          </div>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="form-field">
+
+          <label
+            for="status"
+            class="form-label">
+            Attendance Status
+            <span class="required-mark" aria-hidden="true">*</span>
+          </label>
+
+          <select
+            id="status"
+            class="form-select"
+            formControlName="status"
+            [class.is-invalid]="isInvalid('status')">
+
+            @for (statusOption of attendanceStatuses; track statusOption) {
+              <option [value]="statusOption">
+                {{ statusOption }}
+              </option>
+            }
+
+          </select>
+
+          @if (isInvalid('status')) {
+            <div class="field-error">
+              Please select an attendance status.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Remarks -->
+
+        <div class="form-field">
+
+          <div class="form-label-row">
+
+            <label
+              for="remarks"
+              class="form-label">
+              Remarks
+            </label>
+
+            <span class="character-count">
+              {{ remarks.value.length }}/500
+            </span>
+
+          </div>
+
+          <textarea
+            id="remarks"
+            class="form-control"
+            rows="4"
+            maxlength="500"
+            placeholder="Add any relevant remarks..."
+            formControlName="remarks"
+            [class.is-invalid]="isInvalid('remarks')">
+          </textarea>
+
+          @if (isInvalid('remarks')) {
+            <div class="field-error">
+              Remarks cannot exceed 500 characters.
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+
+      <div class="form-card__footer">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+       <button
+        type="submit"
+        class="btn btn-primary">
+        {{ isEditMode ? 'Update Attendance' : 'Save Attendance' }}
+        </button>
+
+      </div>
+
+    </section>
+
+  </form>
+
+} @else {
+
+  <div class="attendance-not-found">
+
+    <div
+      class="attendance-not-found__icon"
+      aria-hidden="true">
+      !
+    </div>
+
+    <h1 class="attendance-not-found__title">
+      Attendance Not Found
+    </h1>
+
+    <p class="attendance-not-found__description">
+      The attendance record you're trying to edit could not be found.
+    </p>
+
+    <a
+      routerLink="/attendance"
+      class="btn btn-primary">
+      Back to Attendance
+    </a>
+
+  </div>
+
+}
+  
+</section>
