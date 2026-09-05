@@ -1,219 +1,101 @@
 import { Routes } from '@angular/router';
+
 import { AppShellComponent } from './layout/app-shell/app-shell';
 import { AuthLayout } from './features/auth/auth-layout/auth-layout';
-import { Login } from './features/auth/login/login';
-import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
-import { ResetPassword } from './features/auth/reset-password/reset-password';
-import { EmployeeDetails } from './features/employees/employee-details/employee-details';
-import { Employees } from './features/employees/employees';
-import { EmployeeForm } from './features/employees/employee-form/employee-form';
-import { LeaveForm } from './features/leaves/leave-form/leave-form';
-import { LeaveDetails } from './features/leaves/leave-details/leave-details';
-import { Leave } from './features/leaves/leave';
 
 export const routes: Routes = [
-    {
+  {
     path: '',
     component: AppShellComponent,
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'dashboard'
+        redirectTo: 'dashboard',
       },
+
       {
         path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard')
-            .then(m => m.Dashboard)
+        loadChildren: () =>
+          import('./features/dashboard/dashboard.routes')
+            .then(m => m.DASHBOARD_ROUTES),
       },
+
       {
         path: 'employees',
-        children: [
-          {
-            path: '',
-            component: Employees,
-          },
-          {
-          path: 'create',
-          component: EmployeeForm,
-          },
-          {
-            path: ':id/edit',
-            component: EmployeeForm,
-          },
-          {
-            path: ':id',
-            component: EmployeeDetails,
-          },
-        ],
+        loadChildren: () =>
+          import('./features/employees/employee.routes')
+            .then(m => m.EMPLOYEE_ROUTES),
       },
-       {
-    path: 'departments',
-    children: [
+
       {
-        path: '',
-        loadComponent: () =>
-          import('./features/departments/departments')
-            .then(m => m.Departments)
+        path: 'departments',
+        loadChildren: () =>
+          import('./features/departments/department.routes')
+            .then(m => m.DEPARTMENT_ROUTES),
       },
-      {
-      path: 'create',
-      loadComponent: () =>
-        import('./features/departments/department-form/department-form')
-          .then(m => m.DepartmentForm)
-    },
-      
-      {
-        path: ':id',
-        loadComponent: () =>
-          import('./features/departments/department-details/department-details')
-            .then(m => m.DepartmentDetails)
-      }
-    ]
-  },
+
       {
         path: 'designations',
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/designations/designations')
-                .then(m => m.Designations)
-          },
-          {
-            path: 'create',
-            loadComponent: () =>
-              import('./features/designations/designation-form/designation-form')
-                .then(m => m.DesignationForm)
-          },
-          {
-            path: ':id/edit',
-            loadComponent: () =>
-              import('./features/designations/designation-form/designation-form')
-                .then(m => m.DesignationForm)
-          },
-          {
-            path: ':id',
-            loadComponent: () =>
-              import('./features/designations/designation-details/designation-details')
-                .then(m => m.DesignationDetails)
-          }
-        ]
+        loadChildren: () =>
+          import('./features/designations/designation.routes')
+            .then(m => m.DESIGNATION_ROUTES),
       },
+
       {
         path: 'attendance',
-        loadComponent: () =>
-          import('./features/attendance/attendance')
-            .then(m => m.Attendance)
-      },
-      {
-        path: 'attendance/create',
-        loadComponent: () =>
-          import(
-            './features/attendance/attendance-form/attendance-form'
-          ).then(m => m.AttendanceForm)
+        loadChildren: () =>
+          import('./features/attendance/attendance.routes')
+            .then(m => m.ATTENDANCE_ROUTES),
       },
 
-      {
-        path: 'attendance/:id/edit',
-        loadComponent: () =>
-          import(
-            './features/attendance/attendance-form/attendance-form'
-          ).then(m => m.AttendanceForm)
-      },
-
-      {
-        path: 'attendance/:id',
-        loadComponent: () =>
-          import(
-            './features/attendance/attendance-details/attendance-details'
-          ).then(m => m.AttendanceDetails)
-      },
       {
         path: 'leaves',
-        children: [
-          {
-            path: '',
-            component: Leave,
-          },
-          {
-            path: 'create',
-            component: LeaveForm,
-          },
-          {
-            path: ':id/edit',
-            component: LeaveForm,
-          },
-          {
-            path: ':id',
-            component: LeaveDetails,
-          },
-        ],
+        loadChildren: () =>
+          import('./features/leaves/leave.routes')
+            .then(m => m.LEAVE_ROUTES),
       },
+
       {
         path: 'payroll',
-        loadComponent: () =>
-          import('./features/payroll/payroll')
-            .then(component => component.Payroll)
+        loadChildren: () =>
+          import('./features/payroll/payroll.routes')
+            .then(m => m.PAYROLL_ROUTES),
       },
 
       {
-        path: 'payroll/create',
-        loadComponent: () =>
-          import('./features/payroll/payroll-form/payroll-form')
-            .then(component => component.PayrollForm)
-      },
-
-      {
-        path: 'payroll/:id/edit',
-        loadComponent: () =>
-          import('./features/payroll/payroll-form/payroll-form')
-            .then(component => component.PayrollForm)
-      },
-
-      {
-        path: 'payroll/:id',
-        loadComponent: () =>
-          import('./features/payroll/payroll-details/payroll-details')
-            .then(component => component.PayrollDetails)
-      },
-       {
         path: 'organization',
         loadChildren: () =>
           import('./features/organization/organization.routes')
-            .then(m => m.ORGANIZATION_ROUTES)
-      }
+            .then(m => m.ORGANIZATION_ROUTES),
+      },
+
+      {
+        path: 'reports',
+        loadChildren: () =>
+          import('./features/reports/reports.routes')
+            .then(m => m.REPORTS_ROUTES),
+      },
+
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('./features/settings/settings.routes')
+            .then(m => m.SETTINGS_ROUTES),
+      },
     ],
-    },
-    {
+  },
+
+  {
     path: '',
     component: AuthLayout,
     children: [
       {
-        path: 'login',
-        component: Login,
-      },
-      {
-      path: 'forgot-password',
-      component: ForgotPassword,
-      },
-      {
-      path: 'reset-password',
-      component: ResetPassword,
+        path: '',
+        loadChildren: () =>
+          import('./features/auth/auth.routes')
+            .then(m => m.AUTH_ROUTES),
       },
     ],
-},
-{
-  path: 'reports',
-  loadChildren: () =>
-    import('./features/reports/reports.routes')
-      .then(routes => routes.REPORTS_ROUTES)
-},
-{
-  path: 'settings',
-  loadChildren: () =>
-    import('./features/settings/settings.routes')
-      .then((m) => m.SETTINGS_ROUTES),
-},
+  },
 ];

@@ -1,151 +1,207 @@
 <section class="designation-page">
   <div class="container-fluid px-0">
 
-    <!-- Page Header -->
-    <div class="page-header mb-4">
-      <div class="page-header-content">
-        <div>
-          <h1 class="page-title">Designation Management</h1>
-          <p class="page-subtitle mb-0">
-            Manage organizational job titles, roles, and workforce structure.
-          </p>
-        </div>
+<!-- Page Header -->
+<div class="hrms-page-header mb-4">
 
-        <div class="page-header-actions">
-          <button
-            routerLink="/designations/create"
-            class="btn btn-primary">
-            Create Designation
-          </button>
-        </div>
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-briefcase"></i>
       </div>
+
+      <h1 class="hrms-page-header__title">
+        Designation Management
+      </h1>
+
     </div>
 
-    <!-- Summary Cards -->
-    <div class="summary-grid mb-4">
+    <p class="hrms-page-header__description">
+      Manage organizational job titles, roles, and workforce structure.
+    </p>
 
-      <!-- Total -->
-      <div>
-        <div class="card summary-card h-100">
-          <div class="card-body">
-            <div class="summary-label">
-              Total Designations
-            </div>
+  </div>
 
-            <div class="summary-value">
-              {{ totalDesignations() }}
-            </div>
-          </div>
-        </div>
+  <div class="hrms-page-header__actions">
+
+    <button
+      routerLink="/designations/create"
+      type="button"
+      class="hrms-action-primary">
+
+      <i class="bi bi-plus-circle"></i>
+
+      Create Designation
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- Summary Cards -->
+<div class="hrms-summary-grid mb-4">
+
+  <!-- Total Designations -->
+  <article class="hrms-summary-card hrms-summary-card--primary">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Designations
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalDesignations() }}
+        </strong>
+
       </div>
 
-      <!-- Active -->
-      <div>
-        <div class="card summary-card h-100">
-          <div class="card-body">
-            <div class="summary-label">
-              Active Designations
-            </div>
-
-            <div class="summary-value">
-              {{ activeDesignations() }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Inactive -->
-      <div>
-        <div class="card summary-card h-100">
-          <div class="card-body">
-            <div class="summary-label">
-              Inactive Designations
-            </div>
-
-            <div class="summary-value">
-              {{ inactiveDesignations() }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Employees -->
-      <div>
-        <div class="card summary-card h-100">
-          <div class="card-body">
-            <div class="summary-label">
-              Total Employees
-            </div>
-
-            <div class="summary-value">
-              {{ totalEmployees() }}
-            </div>
-          </div>
-        </div>
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-briefcase"></i>
       </div>
 
     </div>
 
-    <!-- Filters -->
-    <div class="card filter-card mb-4">
-      <div class="card-body">
+  </article>
 
-        <div class="row g-3 align-items-end">
 
-          <!-- Search -->
-          <div class="col-12 col-lg-8">
-            <label
-              for="designation-search"
-              class="form-label">
-              Search designations
-            </label>
+  <!-- Active Designations -->
+  <article class="hrms-summary-card hrms-summary-card--success">
 
-            <input
-                id="designation-search"
-                type="search"
-                class="form-control"
-                placeholder="Search by designation, department..."
-                [value]="searchTerm()"
-                (input)="onSearchChange($event)"
-                autocomplete="off"
-                aria-label="Search designations by name, description, or department">
-          </div>
+    <div class="hrms-summary-card__top">
 
-          <!-- Status -->
-          <div class="col-12 col-lg-4">
-            <label
-              for="designation-status"
-              class="form-label">
-              Status
-            </label>
+      <div class="hrms-summary-card__content">
 
-            <select
-                id="designation-status"
-                class="form-select"
-                [value]="selectedStatus()"
-                (change)="onStatusChange($event)"
-                aria-label="Filter designations by status">
+        <span class="hrms-summary-card__label">
+          Active Designations
+        </span>
 
-              <option value="All">
-                All Statuses
-              </option>
-
-              <option value="Active">
-                Active
-              </option>
-
-              <option value="Inactive">
-                Inactive
-              </option>
-
-            </select>
-          </div>
-
-        </div>
+        <strong class="hrms-summary-card__value">
+          {{ activeDesignations() }}
+        </strong>
 
       </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
     </div>
 
+  </article>
+
+
+  <!-- Inactive Designations -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Inactive Designations
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ inactiveDesignations() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-pause-circle"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- Total Employees -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Employees
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalEmployees() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-people"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+</div>
+
+
+<!-- Filters -->
+<section class="hrms-filter mb-4">
+
+  <div class="hrms-filter__left">
+
+    <!-- Search -->
+    <div class="hrms-search">
+
+      <i class="bi bi-search hrms-search__icon"></i>
+
+      <input
+        id="designation-search"
+        type="search"
+        placeholder="Search by designation, department..."
+        [value]="searchTerm()"
+        (input)="onSearchChange($event)"
+        autocomplete="off"
+        aria-label="Search designations by name, description, or department">
+
+    </div>
+
+  </div>
+
+
+  <div class="hrms-filter__right">
+
+    <!-- Status -->
+    <select
+      id="designation-status"
+      class="hrms-filter-select"
+      [value]="selectedStatus()"
+      (change)="onStatusChange($event)"
+      aria-label="Filter designations by status">
+
+      <option value="All">
+        All Statuses
+      </option>
+
+      <option value="Active">
+        Active
+      </option>
+
+      <option value="Inactive">
+        Inactive
+      </option>
+
+    </select>
+
+  </div>
+
+</section>
     <!-- Designations Card -->
     <div class="card designation-card">
 
@@ -243,30 +299,53 @@
 
                     <!-- Actions -->
                     <td>
-                      <div class="table-actions justify-content-end">
+                    <div class="table-actions justify-content-end">
 
-                        <a
-                          [routerLink]="[
-                            '/designations',
-                            designation.id
-                          ]"
-                          class="btn btn-sm btn-light action-button"
-                          [attr.aria-label]="'View ' + designation.name">
-                          View
-                        </a>
+                      <!-- View -->
+                      <a
+                        [routerLink]="[
+                          '/designations',
+                          designation.id
+                        ]"
+                        class="action-btn action-btn--view"
+                        [attr.aria-label]="'View ' + designation.name"
+                        title="View Designation">
 
-                        <a
-                          [routerLink]="[
-                            '/designations',
-                            designation.id,
-                            'edit'
-                          ]"
-                          class="btn btn-sm btn-light action-button"
-                          [attr.aria-label]="'Edit ' + designation.name">
-                          Edit
-                        </a>
+                        <i
+                          class="bi bi-eye"
+                          aria-hidden="true">
+                        </i>
 
-                      </div>
+                        <span class="action-btn__label">
+                          
+                        </span>
+
+                      </a>
+
+
+                      <!-- Edit -->
+                      <a
+                        [routerLink]="[
+                          '/designations',
+                          designation.id,
+                          'edit'
+                        ]"
+                        class="action-btn action-btn--edit"
+                        [attr.aria-label]="'Edit ' + designation.name"
+                        title="Edit Designation">
+
+                        <i
+                          class="bi bi-pencil"
+                          aria-hidden="true">
+                        </i>
+
+                        <span class="action-btn__label">
+                          
+                        </span>
+
+                      </a>
+
+                    </div>
                     </td>
 
                   </tr>

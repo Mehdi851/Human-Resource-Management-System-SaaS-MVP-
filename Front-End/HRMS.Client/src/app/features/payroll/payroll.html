@@ -1,69 +1,185 @@
 <div class="payroll-page">
-  <div class="page-header">
-    <div>
-      <h1 class="page-title">Payroll</h1>
-      <p class="page-description">
-        Manage employee payroll, salary records, and payroll periods.
-      </p>
+<!-- Payroll Page Header -->
+<header class="hrms-page-header payroll-page-header">
+
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-wallet2"></i>
+      </div>
+
+      <h1 class="hrms-page-header__title">
+        Payroll
+      </h1>
+
     </div>
 
-    <a
-      class="btn btn-primary"
-      routerLink="/payroll/create">
-      Create Payroll
-    </a>
+    <p class="hrms-page-header__description">
+      Manage employee payroll, salary records, and payroll periods.
+    </p>
+
   </div>
 
-  <!-- Summary Cards -->
-  <section class="summary-grid" aria-label="Payroll summary">
-    <article class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Current Period</span>
+
+  <div class="hrms-page-header__actions">
+
+    <a
+      class="hrms-action-primary"
+      routerLink="/payroll/create"
+      aria-label="Create a new payroll record">
+
+      <i
+        class="bi bi-plus-circle"
+        aria-hidden="true">
+      </i>
+
+      <span>
+        Create Payroll
+      </span>
+
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- Payroll Summary -->
+<section
+  class="hrms-summary-grid payroll-summary"
+  aria-label="Payroll summary">
+
+  <!-- Current Period -->
+  <article class="hrms-summary-card hrms-summary-card--primary">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Current Period
+        </span>
+
+        <strong class="hrms-summary-card__value hrms-summary-card__value--text">
+          {{ currentPeriod() }}
+        </strong>
+
       </div>
 
-      <div class="summary-value summary-value-text">
-        {{ currentPeriod() }}
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-calendar3"></i>
       </div>
 
-      <span class="summary-meta">Payroll period</span>
-    </article>
+    </div>
 
-    <article class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Total Employees</span>
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Payroll period
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- Total Employees -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Employees
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalEmployees() }}
+        </strong>
+
       </div>
 
-      <div class="summary-value">
-        {{ totalEmployees() }}
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-people"></i>
       </div>
 
-      <span class="summary-meta">Payroll records</span>
-    </article>
+    </div>
 
-    <article class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Gross Payroll</span>
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Payroll records
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- Gross Payroll -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Gross Payroll
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ formatCurrency(grossPayroll()) }}
+        </strong>
+
       </div>
 
-      <div class="summary-value">
-        {{ formatCurrency(grossPayroll()) }}
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-cash-stack"></i>
       </div>
 
-      <span class="summary-meta">Before deductions</span>
-    </article>
+    </div>
 
-    <article class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Net Payroll</span>
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Before deductions
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- Net Payroll -->
+  <article class="hrms-summary-card hrms-summary-card--success">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Net Payroll
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ formatCurrency(netPayroll()) }}
+        </strong>
+
       </div>
 
-      <div class="summary-value">
-        {{ formatCurrency(netPayroll()) }}
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-wallet2"></i>
       </div>
 
-      <span class="summary-meta">After deductions</span>
-    </article>
-  </section>
+    </div>
+
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        After deductions
+      </span>
+    </div>
+
+  </article>
+
+</section>
+
 <!-- Payroll Processing Workflow -->
 <section class="workflow-card" aria-labelledby="workflow-title">
   <div class="workflow-header">
@@ -290,17 +406,48 @@
 
                 <td>
                   <div class="table-actions">
+
+                    <!-- View -->
                     <a
-                      class="btn btn-sm btn-outline-secondary"
-                      [routerLink]="['/payroll', record.id]">
-                      View
+                      class="action-btn action-btn--view"
+                      [routerLink]="['/payroll', record.id]"
+                      title="View Payroll"
+                      aria-label="View Payroll">
+
+                      <i
+                        class="bi bi-eye"
+                        aria-hidden="true">
+                      </i>
+
+                      <span class="action-btn__label">
+                       
+                      </span>
+
                     </a>
 
+
+                    <!-- Edit -->
                     <a
-                      class="btn btn-sm btn-outline-primary"
-                      [routerLink]="['/payroll', record.id, 'edit']">
-                      Edit
+                      class="action-btn action-btn--edit"
+                      [routerLink]="[
+                        '/payroll',
+                        record.id,
+                        'edit'
+                      ]"
+                      title="Edit Payroll"
+                      aria-label="Edit Payroll">
+
+                      <i
+                        class="bi bi-pencil"
+                        aria-hidden="true">
+                      </i>
+
+                      <span class="action-btn__label">
+                       
+                      </span>
+
                     </a>
+
                   </div>
                 </td>
               </tr>

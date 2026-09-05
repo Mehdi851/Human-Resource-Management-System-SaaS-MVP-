@@ -150,10 +150,10 @@ export class OrganizationForm {
       formValue
     );
 
-    this.router.navigate(['/organizations']);
+    this.router.navigate(['/organization']);
   }
 
   cancel(): void {
-    this.router.navigate(['/organizations']);
+    this.router.navigate(['/organization']);
   }
 }

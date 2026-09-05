@@ -1,78 +1,160 @@
 <div class="organizations-page">
+<!-- Organization Page Header -->
+<header class="hrms-page-header organization-page-header">
 
-  <!-- Page Header -->
-  <div class="page-header">
+  <div class="hrms-page-header__main">
 
-    <div>
-      <h1 class="page-title">Organizations</h1>
-      <p class="page-subtitle">
-        Manage organizations and their HRMS configuration.
-      </p>
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-building"></i>
+      </div>
+
+      <h1 class="hrms-page-header__title">
+        Organizations
+      </h1>
+
     </div>
 
-    <a
-      routerLink="/organization/create"
-      class="btn btn-primary">
-      <i class="bi bi-plus-lg me-2"></i>
-      Add Organization
-    </a>
+    <p class="hrms-page-header__description">
+      Manage organizations and their HRMS configuration.
+    </p>
 
   </div>
 
 
-  <!-- Summary Cards -->
-  <section class="summary-grid">
+  <div class="hrms-page-header__actions">
 
-  <article class="summary-card">
-    <div class="summary-card__content">
-      <span class="summary-card__label">
-        Total Organizations
+    <a
+      routerLink="/organization/create"
+      class="hrms-action-primary"
+      aria-label="Add a new organization">
+
+      <i
+        class="bi bi-plus-circle"
+        aria-hidden="true">
+      </i>
+
+      <span>
+        Add Organization
       </span>
 
-      <strong class="summary-card__value">
-        {{ totalOrganizations() }}
-      </strong>
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- Organization Summary -->
+<section
+  class="hrms-summary-grid organization-summary"
+  aria-label="Organization summary">
+
+  <!-- Total Organizations -->
+  <article class="hrms-summary-card hrms-summary-card--primary">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Organizations
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalOrganizations() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-building"></i>
+      </div>
+
     </div>
+
   </article>
 
-  <article class="summary-card">
-    <div class="summary-card__content">
-      <span class="summary-card__label">
-        Active Organizations
-      </span>
 
-      <strong class="summary-card__value">
-        {{ activeOrganizations() }}
-      </strong>
+  <!-- Active Organizations -->
+  <article class="hrms-summary-card hrms-summary-card--success">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Active Organizations
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ activeOrganizations() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
     </div>
+
   </article>
 
-  <article class="summary-card">
-    <div class="summary-card__content">
-      <span class="summary-card__label">
-        Inactive Organizations
-      </span>
 
-      <strong class="summary-card__value">
-        {{ inactiveOrganizations() }}
-      </strong>
+  <!-- Inactive Organizations -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Inactive Organizations
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ inactiveOrganizations() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-pause-circle"></i>
+      </div>
+
     </div>
+
   </article>
 
-  <article class="summary-card">
-    <div class="summary-card__content">
-      <span class="summary-card__label">
-        Total Employees
-      </span>
 
-      <strong class="summary-card__value">
-        {{ totalEmployees() }}
-      </strong>
+  <!-- Total Employees -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Employees
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalEmployees() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-people"></i>
+      </div>
+
     </div>
+
   </article>
 
 </section>
-
 
   <!-- Organization Table Card -->
   <div class="content-card">

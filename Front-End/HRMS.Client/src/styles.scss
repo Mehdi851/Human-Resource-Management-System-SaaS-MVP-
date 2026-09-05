@@ -240,6 +240,7 @@ button:focus-visible,
 .btn:focus-visible {
   outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
+  margin: 20px 20px !important;
 }
 
 /* ============================================
@@ -342,6 +343,7 @@ textarea {
   border-color: var(--color-primary-600);
   background-color: var(--color-primary-600);
   color: var(--color-white);
+  justify-content: center !important;
 }
 
 .btn-primary:hover {
@@ -582,4 +584,863 @@ textarea.form-control {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+// ============================================
+// Custom Styling
+// ============================================
+
+
+/* ============================================================
+   HRMS COMMON LIST PAGE DESIGN SYSTEM
+   ============================================================ */
+
+.hrms-list-page {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.hrms-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.hrms-page-header__main {
+  min-width: 0;
+}
+
+.hrms-page-header__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  margin-bottom: 0.45rem;
+
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.hrms-page-header__breadcrumb i {
+  font-size: 0.65rem;
+}
+
+.hrms-page-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hrms-page-header__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 10px;
+
+  background: #eaf3fb;
+  color: #2878b8;
+
+  font-size: 1.15rem;
+}
+
+.hrms-page-header__title {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 1.75rem;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.hrms-page-header__description {
+  margin: 0.45rem 0 0 3.25rem;
+
+  color: #64748b;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.hrms-page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   HEADER ACTION BUTTONS
+   ============================================================ */
+
+.hrms-action-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+
+  min-height: 42px;
+
+  padding: 0.65rem 1rem;
+
+  border: 1px solid #2878b8;
+  border-radius: 8px;
+
+  background: #2878b8;
+  color: #ffffff;
+
+  font-size: 0.875rem;
+  font-weight: 550;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hrms-action-primary:hover {
+  background: #21689f;
+  border-color: #21689f;
+  color: #ffffff;
+
+  box-shadow: 0 3px 8px rgba(40, 120, 184, 0.18);
+}
+
+.hrms-action-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  min-height: 42px;
+
+  padding: 0.65rem 0.9rem;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.hrms-action-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+
+/* ============================================================
+   SUMMARY GRID
+   ============================================================ */
+
+.hrms-summary-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 1rem;
+
+  margin-bottom: 1.25rem;
+}
+
+
+/* ============================================================
+   SUMMARY CARD
+   ============================================================ */
+
+.hrms-summary-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 1.15rem 1.2rem;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf0;
+  border-radius: 10px;
+
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hrms-summary-card:hover {
+  border-color: #d5dee7;
+
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+
+  transform: translateY(-1px);
+}
+
+.hrms-summary-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1rem;
+}
+
+.hrms-summary-card__content {
+  min-width: 0;
+}
+
+.hrms-summary-card__label {
+  display: block;
+
+  margin-bottom: 0.45rem;
+
+  color: #64748b;
+
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.hrms-summary-card__value {
+  display: block;
+
+  color: #0f172a;
+
+  font-size: 1.6rem;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.hrms-summary-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 9px;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 1rem;
+
+  flex-shrink: 0;
+}
+
+.hrms-summary-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  margin-top: 0.7rem;
+
+  font-size: 0.75rem;
+}
+
+.hrms-summary-card__meta {
+  color: #94a3b8;
+}
+
+.hrms-summary-card__positive {
+  color: #15803d;
+  font-weight: 550;
+}
+
+.hrms-summary-card__negative {
+  color: #dc2626;
+  font-weight: 550;
+}
+
+
+/* ============================================================
+   SUMMARY CARD ACCENTS
+   ============================================================ */
+
+.hrms-summary-card--primary .hrms-summary-card__icon {
+  background: #eaf3fb;
+  color: #2878b8;
+}
+
+.hrms-summary-card--success .hrms-summary-card__icon {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.hrms-summary-card--warning .hrms-summary-card__icon {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.hrms-summary-card--danger .hrms-summary-card__icon {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.hrms-summary-card--info .hrms-summary-card__icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+
+/* ============================================================
+   FILTER / TOOLBAR
+   ============================================================ */
+
+.hrms-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  margin-bottom: 1.25rem;
+
+  padding: 0.75rem;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf0;
+  border-radius: 10px;
+
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.hrms-filter__left {
+  display: flex;
+  align-items: center;
+
+  gap: 0.65rem;
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+.hrms-filter__right {
+  display: flex;
+  align-items: center;
+
+  gap: 0.65rem;
+
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+.hrms-search {
+  position: relative;
+
+  width: 100%;
+  max-width: 390px;
+}
+
+.hrms-search__icon {
+  position: absolute;
+
+  top: 50%;
+  left: 0.8rem;
+
+  transform: translateY(-50%);
+
+  color: #94a3b8;
+
+  font-size: 0.9rem;
+
+  pointer-events: none;
+}
+
+.hrms-search input {
+  width: 100%;
+
+  height: 40px;
+
+  padding: 0.55rem 0.8rem 0.55rem 2.35rem;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #1e293b;
+
+  font-size: 0.825rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hrms-search input::placeholder {
+  color: #a0aec0;
+}
+
+.hrms-search input:hover {
+  border-color: #cbd5e1;
+}
+
+.hrms-search input:focus {
+  border-color: #2878b8;
+
+  box-shadow: 0 0 0 3px rgba(40, 120, 184, 0.1);
+}
+
+
+/* ============================================================
+   FILTER SELECT
+   ============================================================ */
+
+.hrms-filter-select {
+  height: 40px;
+
+  min-width: 150px;
+
+  padding: 0.55rem 2rem 0.55rem 0.75rem;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #334155;
+
+  font-size: 0.825rem;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.hrms-filter-select:focus {
+  border-color: #2878b8;
+
+  box-shadow: 0 0 0 3px rgba(40, 120, 184, 0.1);
+}
+
+
+/* ============================================================
+   FILTER BUTTON
+   ============================================================ */
+
+.hrms-filter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  height: 40px;
+
+  padding: 0.55rem 0.8rem;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 0.825rem;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.hrms-filter-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+
+/* ============================================================
+   ACTIVE FILTER COUNT
+   ============================================================ */
+
+.hrms-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 0.35rem;
+
+  border-radius: 10px;
+
+  background: #eaf3fb;
+  color: #2878b8;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   PAGE-SPECIFIC ACCENT SYSTEM
+   ============================================================ */
+
+/* Employees */
+
+.hrms-list-page--employees
+  .hrms-page-header__icon {
+  background: #eaf3fb;
+  color: #2878b8;
+}
+
+
+/* Departments */
+
+.hrms-list-page--departments
+  .hrms-page-header__icon {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+
+/* Designations */
+
+.hrms-list-page--designations
+  .hrms-page-header__icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+
+/* Attendance */
+
+.hrms-list-page--attendance
+  .hrms-page-header__icon {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+
+/* Leaves */
+
+.hrms-list-page--leaves
+  .hrms-page-header__icon {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+
+/* Payroll */
+
+.hrms-list-page--payroll
+  .hrms-page-header__icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .hrms-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hrms-filter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hrms-filter__left,
+  .hrms-filter__right {
+    width: 100%;
+  }
+
+  .hrms-search {
+    max-width: none;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .hrms-page-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hrms-page-header__actions {
+    width: 100%;
+  }
+
+  .hrms-action-primary,
+  .hrms-action-secondary {
+    flex: 1;
+  }
+
+  .hrms-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hrms-filter__left,
+  .hrms-filter__right {
+    flex-wrap: wrap;
+  }
+
+  .hrms-search {
+    width: 100%;
+  }
+
+  .hrms-filter-select {
+    flex: 1;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .hrms-page-header__title {
+    font-size: 1.45rem;
+  }
+
+  .hrms-page-header__description {
+    margin-left: 0;
+  }
+
+  .hrms-page-header__title-row {
+    align-items: flex-start;
+  }
+
+  .hrms-page-header__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hrms-filter__right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hrms-filter-select,
+  .hrms-filter-button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   HRMS TABLE ACTIONS
+   Global action buttons for all feature tables
+   ========================================================= */
+
+.table-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   Base Action Button
+   --------------------------------------------------------- */
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+
+  min-width: 36px;
+  height: 36px;
+
+  padding: 0.45rem 0.65rem;
+
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+
+  background: transparent;
+  color: var(--bs-secondary-color);
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background-color: var(--bs-light);
+    color: var(--bs-primary);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  i {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Action Label
+   --------------------------------------------------------- */
+
+.action-btn__label {
+  line-height: 1;
+}
+
+
+/* ---------------------------------------------------------
+   View
+   --------------------------------------------------------- */
+
+.action-btn--view {
+
+  &:hover {
+    color: var(--bs-primary);
+    background-color: rgba(var(--bs-primary-rgb), 0.08);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Edit
+   --------------------------------------------------------- */
+
+.action-btn--edit {
+
+  &:hover {
+    color: var(--bs-warning);
+    background-color: rgba(var(--bs-warning-rgb), 0.1);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Delete / Danger
+   --------------------------------------------------------- */
+
+.action-btn--danger {
+
+  color: var(--bs-danger);
+
+  &:hover {
+    color: var(--bs-danger);
+    background-color: rgba(var(--bs-danger-rgb), 0.08);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Optional Success Action
+   --------------------------------------------------------- */
+
+.action-btn--success {
+
+  &:hover {
+    color: var(--bs-success);
+    background-color: rgba(var(--bs-success-rgb), 0.08);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Optional Secondary Action
+   --------------------------------------------------------- */
+
+.action-btn--secondary {
+
+  &:hover {
+    color: var(--bs-secondary);
+    background-color: rgba(var(--bs-secondary-rgb), 0.08);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Compact Table Variant
+   Use when tables are narrow
+   --------------------------------------------------------- */
+
+.table-actions--compact {
+
+  gap: 0.2rem;
+
+  .action-btn {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    .action-btn__label {
+      display: none;
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+  .table-actions {
+    gap: 0.2rem;
+  }
+
+  .action-btn {
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    .action-btn__label {
+      display: none;
+    }
+  }
+
 }

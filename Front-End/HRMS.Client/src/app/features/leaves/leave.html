@@ -1,73 +1,200 @@
 <div class="leaves-page">
 
-  <!-- Page Header -->
-  <div class="page-header">
-    <div>
-      <h1>Leave Management</h1>
-      <p>Manage employee leave requests and approvals.</p>
+<!-- Leave Management Page Header -->
+<header class="hrms-page-header leaves-page-header">
+
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-calendar-x"></i>
+      </div>
+
+      <h1 class="hrms-page-header__title">
+        Leave Management
+      </h1>
+
     </div>
 
-    <a
-      routerLink="/leaves/create"
-      class="btn btn-primary"
-    >
-      Apply Leave
-    </a>
+    <p class="hrms-page-header__description">
+      Manage employee leave requests and approvals.
+    </p>
+
   </div>
 
 
-  <!-- Summary Cards -->
-  <section class="summary-grid">
+  <div class="hrms-page-header__actions">
 
-    <article class="summary-card">
-      <div class="summary-card__content">
-        <span class="summary-card__label">
+    <a
+      routerLink="/leaves/create"
+      class="hrms-action-primary"
+      aria-label="Apply for leave">
+
+      <i
+        class="bi bi-calendar-plus"
+        aria-hidden="true">
+      </i>
+
+      <span>
+        Apply Leave
+      </span>
+
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- Leave Summary -->
+<section
+  class="hrms-summary-grid leave-summary"
+  aria-label="Leave summary">
+
+  <!-- Pending -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
           Pending Requests
         </span>
 
-        <strong class="summary-card__value">
+        <strong class="hrms-summary-card__value">
           {{ pendingCount() }}
         </strong>
-      </div>
-    </article>
 
-    <article class="summary-card">
-      <div class="summary-card__content">
-        <span class="summary-card__label">
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-hourglass-split"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+
+      <span class="hrms-summary-card__meta">
+        Awaiting approval
+      </span>
+
+    </div>
+
+  </article>
+
+
+  <!-- Approved -->
+  <article class="hrms-summary-card hrms-summary-card--success">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
           Approved
         </span>
 
-        <strong class="summary-card__value">
+        <strong class="hrms-summary-card__value">
           {{ approvedCount() }}
         </strong>
-      </div>
-    </article>
 
-    <article class="summary-card">
-      <div class="summary-card__content">
-        <span class="summary-card__label">
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+
+      <span class="hrms-summary-card__meta">
+        Approved requests
+      </span>
+
+    </div>
+
+  </article>
+
+
+  <!-- Rejected -->
+  <article class="hrms-summary-card hrms-summary-card--danger">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
           Rejected
         </span>
 
-        <strong class="summary-card__value">
+        <strong class="hrms-summary-card__value">
           {{ rejectedCount() }}
         </strong>
-      </div>
-    </article>
 
-    <article class="summary-card">
-      <div class="summary-card__content">
-        <span class="summary-card__label">
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+
+      <span class="hrms-summary-card__meta">
+        Rejected requests
+      </span>
+
+    </div>
+
+  </article>
+
+
+  <!-- On Leave Today -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
           On Leave Today
         </span>
 
-        <strong class="summary-card__value">
+        <strong class="hrms-summary-card__value">
           {{ onLeaveTodayCount() }}
         </strong>
-      </div>
-    </article>
 
-  </section>
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-calendar-event"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+
+      <span class="hrms-summary-card__meta">
+        Employees currently on leave
+      </span>
+
+    </div>
+
+  </article>
+
+</section>
+
+
+
+
+
+
+
 
 
   <!-- Filters -->
@@ -447,41 +574,92 @@
 
         <div class="leave-card__footer">
 
-          <a
-            [routerLink]="['/leaves', leave.id]"
-            class="btn btn-sm btn-outline-secondary"
-          >
-            View
-          </a>
+         <div class="table-actions">
 
-          @if (leave.status === 'Pending') {
+              <!-- View -->
+              <a
+                [routerLink]="['/leaves', leave.id]"
+                class="action-btn action-btn--view"
+                title="View Leave Request"
+                aria-label="View Leave Request">
 
-            <a
-              [routerLink]="[
-                '/leaves',
-                leave.id,
-                'edit'
-              ]"
-              class="btn btn-sm btn-outline-primary"
-            >
-              Edit
-            </a>
+                <i
+                  class="bi bi-eye"
+                  aria-hidden="true">
+                </i>
 
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-success"
-            >
-              Approve
-            </button>
+                <span class="action-btn__label">
+                 
+                </span>
 
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-danger"
-            >
-              Reject
-            </button>
+              </a>
 
-          }
+
+              @if (leave.status === 'Pending') {
+
+                <!-- Edit -->
+                <a
+                  [routerLink]="[
+                    '/leaves',
+                    leave.id,
+                    'edit'
+                  ]"
+                  class="action-btn action-btn--edit"
+                  title="Edit Leave Request"
+                  aria-label="Edit Leave Request">
+
+                  <i
+                    class="bi bi-pencil"
+                    aria-hidden="true">
+                  </i>
+
+                  <span class="action-btn__label">
+                   
+                  </span>
+
+                </a>
+
+
+                <!-- Approve -->
+                <button
+                  type="button"
+                  class="action-btn action-btn--success"
+                  title="Approve Leave Request"
+                  aria-label="Approve Leave Request">
+
+                  <i
+                    class="bi bi-check-circle"
+                    aria-hidden="true">
+                  </i>
+
+                  <span class="action-btn__label">
+                    
+                  </span>
+
+                </button>
+
+
+                <!-- Reject -->
+                <button
+                  type="button"
+                  class="action-btn action-btn--danger"
+                  title="Reject Leave Request"
+                  aria-label="Reject Leave Request">
+
+                  <i
+                    class="bi bi-x-circle"
+                    aria-hidden="true">
+                  </i>
+
+                  <span class="action-btn__label">
+                   
+                  </span>
+
+                </button>
+
+              }
+
+            </div>
 
         </div>
 

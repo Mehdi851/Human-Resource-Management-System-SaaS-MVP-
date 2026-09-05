@@ -1,65 +1,191 @@
 <section class="attendance-page">
 
-  <header class="page-header">
-    <div class="page-header__content">
-      <div>
-        <h1 class="page-header__title">
-          Attendance Management
-        </h1>
+<!-- Attendance Page Header -->
+<header class="hrms-page-header attendance-page-header">
 
-        <p class="page-header__description">
-          Monitor employee attendance, working hours, and daily attendance status.
-        </p>
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-calendar-check"></i>
       </div>
 
-      <div class="page-header__actions">
-        <button
-          type="button"
-          class="btn btn-primary"
-           routerLink="/attendance/create">
-          Mark Attendance
-        </button>
-      </div>
+      <h1 class="hrms-page-header__title">
+        Attendance Management
+      </h1>
+
     </div>
-  </header>
+
+    <p class="hrms-page-header__description">
+      Monitor employee attendance, working hours, and daily attendance status.
+    </p>
+
+  </div>
+
+
+  <div class="hrms-page-header__actions">
+
+    <a
+      routerLink="/attendance/create"
+      class="hrms-action-primary"
+      aria-label="Mark employee attendance">
+
+      <i
+        class="bi bi-calendar-plus"
+        aria-hidden="true">
+      </i>
+
+      <span>
+        Mark Attendance
+      </span>
+
+    </a>
+
+  </div>
+
+</header>
 
   <div class="attendance-content">
 
-    <!-- Summary -->
 
-    <section
-      class="summary-grid"
-      aria-label="Attendance summary">
 
-      <app-attendance-summary-card
-        title="Present Today"
-        [value]="42"
-        description="Employees present"
-        icon="✓">
-      </app-attendance-summary-card>
+<!-- Attendance Summary -->
+<section
+  class="hrms-summary-grid attendance-summary"
+  aria-label="Attendance summary">
 
-      <app-attendance-summary-card
-        title="Absent Today"
-        [value]="5"
-        description="Employees absent"
-        icon="−">
-      </app-attendance-summary-card>
+  <!-- Present -->
+  <article class="hrms-summary-card hrms-summary-card--success">
 
-      <app-attendance-summary-card
-        title="Late Today"
-        [value]="4"
-        description="Late arrivals"
-        icon="◷">
-      </app-attendance-summary-card>
+    <div class="hrms-summary-card__top">
 
-      <app-attendance-summary-card
-        title="On Leave"
-        [value]="3"
-        description="Employees on leave"
-        icon="○">
-      </app-attendance-summary-card>
+      <div class="hrms-summary-card__content">
 
-    </section>
+        <span class="hrms-summary-card__label">
+          Present Today
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          42
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-person-check"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Employees present
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- Absent -->
+  <article class="hrms-summary-card hrms-summary-card--danger">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Absent Today
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          5
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-person-x"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Employees absent
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- Late -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Late Today
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          4
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Late arrivals
+      </span>
+    </div>
+
+  </article>
+
+
+  <!-- On Leave -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          On Leave
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          3
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-calendar-x"></i>
+      </div>
+
+    </div>
+
+    <div class="hrms-summary-card__footer">
+      <span class="hrms-summary-card__meta">
+        Employees on leave
+      </span>
+    </div>
+
+  </article>
+
+</section>
+
+
+
 
     <!-- Filters -->
 
@@ -316,23 +442,52 @@
               </td>
 
               <td>
-               <div class="table-actions">
+              <div class="table-actions">
 
+                  <!-- View -->
                   <a
-                    class="btn btn-sm btn-outline-secondary"
-                    [routerLink]="['/attendance', record.id]">
-                    View
+                    class="action-btn action-btn--view"
+                    [routerLink]="[
+                      '/attendance',
+                      record.id
+                    ]"
+                    title="View Attendance"
+                    aria-label="View Attendance">
+
+                    <i
+                      class="bi bi-eye"
+                      aria-hidden="true">
+                    </i>
+
+                    <span class="action-btn__label">
+                      
+                    </span>
+
                   </a>
 
+
+                  <!-- Edit -->
                   <a
-                    class="btn btn-sm btn-outline-primary"
+                    class="action-btn action-btn--edit"
                     [routerLink]="[
                       '/attendance',
                       record.id,
                       'edit'
-                    ]">
-                    Edit
+                    ]"
+                    title="Edit Attendance"
+                    aria-label="Edit Attendance">
+
+                    <i
+                      class="bi bi-pencil"
+                      aria-hidden="true">
+                    </i>
+
+                    <span class="action-btn__label">
+                      
+                    </span>
+
                   </a>
+
                 </div>
               </td>
 

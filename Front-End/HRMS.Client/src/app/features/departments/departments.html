@@ -1,129 +1,233 @@
 <div class="department-page">
+<!-- Department Page Header -->
+<header class="hrms-page-header departments-page-header">
 
-  <!-- Page Header -->
-  <div class="page-header mb-4">
-    <div class="page-header-content">
-      <div>
-        <h1 class="page-title">Department Management</h1>
-        <p class="page-subtitle">
-          Manage organizational departments and workforce structure.
-        </p>
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-diagram-3"></i>
       </div>
 
-      <a
-        class="btn btn-primary"
-        routerLink="/departments/create">
-        Create Department
-      </a>
+      <h1 class="hrms-page-header__title">
+        Department Management
+      </h1>
+
     </div>
+
+    <p class="hrms-page-header__description">
+      Manage organizational departments and workforce structure.
+    </p>
+
   </div>
 
-  <!-- Filters -->
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
 
-      <div class="department-filter-grid">
+  <div class="hrms-page-header__actions">
 
-        <div class="department-search-field">
-          <label
-            for="departmentSearch"
-            class="form-label">
-            Search departments
-          </label>
+    <a
+      class="hrms-action-primary"
+      routerLink="/departments/create"
+      aria-label="Create a new department">
 
-          <input
-            id="departmentSearch"
-            type="search"
-            class="form-control"
-            placeholder="Search by department, description, or manager..."
-            [ngModel]="searchTerm()"
-            (ngModelChange)="updateSearch($event)">
-        </div>
+      <i
+        class="bi bi-plus-circle"
+        aria-hidden="true">
+      </i>
 
-        <div class="department-status-field">
-          <label
-            for="departmentStatus"
-            class="form-label">
-            Status
-          </label>
+      <span>
+        Create Department
+      </span>
 
-          <select
-            id="departmentStatus"
-            class="form-select"
-            [ngModel]="selectedStatus()"
-            (ngModelChange)="updateStatus($event)">
+    </a>
 
-            <option value="">All Statuses</option>
+  </div>
 
-            @for (status of statuses; track status) {
-              <option [value]="status">
-                {{ status }}
-              </option>
-            }
+</header>
 
-          </select>
-        </div>
+
+<!-- Department Summary -->
+<section class="hrms-summary-grid department-summary">
+
+  <!-- Total Departments -->
+  <article class="hrms-summary-card hrms-summary-card--primary">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Departments
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalDepartments() }}
+        </strong>
 
       </div>
 
-      @if (searchTerm() || selectedStatus()) {
-        <div class="filter-actions mt-3">
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-secondary"
-            (click)="clearFilters()">
-            Clear Filters
-          </button>
-        </div>
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-diagram-3"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- Active Departments -->
+  <article class="hrms-summary-card hrms-summary-card--success">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Active Departments
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ activeDepartments() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- Inactive Departments -->
+  <article class="hrms-summary-card hrms-summary-card--warning">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Inactive Departments
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ inactiveDepartments() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-pause-circle"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- Total Employees -->
+  <article class="hrms-summary-card hrms-summary-card--info">
+
+    <div class="hrms-summary-card__top">
+
+      <div class="hrms-summary-card__content">
+
+        <span class="hrms-summary-card__label">
+          Total Employees
+        </span>
+
+        <strong class="hrms-summary-card__value">
+          {{ totalEmployees() }}
+        </strong>
+
+      </div>
+
+      <div class="hrms-summary-card__icon">
+        <i class="bi bi-people"></i>
+      </div>
+
+    </div>
+
+  </article>
+
+</section>
+
+
+<!-- Department Filters -->
+<section class="hrms-filter department-filter">
+
+  <div class="hrms-filter__left">
+
+    <!-- Search -->
+    <div class="hrms-search">
+
+      <i
+        class="bi bi-search hrms-search__icon"
+        aria-hidden="true">
+      </i>
+
+      <input
+        id="departmentSearch"
+        type="search"
+        placeholder="Search by department, description, or manager..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="updateSearch($event)"
+        autocomplete="off"
+        aria-label="Search departments">
+
+    </div>
+
+  </div>
+
+
+  <div class="hrms-filter__right">
+
+    <!-- Status -->
+    <select
+      id="departmentStatus"
+      class="hrms-filter-select"
+      [ngModel]="selectedStatus()"
+      (ngModelChange)="updateStatus($event)"
+      aria-label="Filter departments by status">
+
+      <option value="">
+        All Statuses
+      </option>
+
+      @for (status of statuses; track status) {
+        <option [value]="status">
+          {{ status }}
+        </option>
       }
 
-    </div>
-  </div>
+    </select>
 
-  <!-- Summary Cards -->
-  <div class="department-summary-grid mb-4">
 
-    <div class="summary-card">
-      <div class="summary-label">
-        Total Departments
-      </div>
+    <!-- Clear Filters -->
+    @if (searchTerm() || selectedStatus()) {
 
-      <div class="summary-value">
-        {{ totalDepartments() }}
-      </div>
-    </div>
+      <button
+        type="button"
+        class="hrms-filter-button"
+        (click)="clearFilters()">
 
-    <div class="summary-card">
-      <div class="summary-label">
-        Active Departments
-      </div>
+        <i
+          class="bi bi-x-circle"
+          aria-hidden="true">
+        </i>
 
-      <div class="summary-value">
-        {{ activeDepartments() }}
-      </div>
-    </div>
+        Clear Filters
 
-    <div class="summary-card">
-      <div class="summary-label">
-        Inactive Departments
-      </div>
+      </button>
 
-      <div class="summary-value">
-        {{ inactiveDepartments() }}
-      </div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">
-        Total Employees
-      </div>
-
-      <div class="summary-value">
-        {{ totalEmployees() }}
-      </div>
-    </div>
+    }
 
   </div>
+
+</section>
+  
 
   <!-- Department Table -->
 <div class="card border-0 shadow-sm">
@@ -249,20 +353,33 @@
 
                 <div class="table-actions justify-content-end">
 
+                  <!-- View -->
                   <a
-                    class="btn btn-sm btn-outline-secondary"
+                    class="action-btn action-btn--view"
                     [routerLink]="[
                       '/departments',
                       department.id
                     ]"
                     [attr.aria-label]="
                       'View ' + department.name + ' department'
-                    ">
-                    View
+                    "
+                    title="View Department">
+
+                    <i
+                      class="bi bi-eye"
+                      aria-hidden="true">
+                    </i>
+
+                    <span class="action-btn__label">
+                      
+                    </span>
+
                   </a>
 
+
+                  <!-- Edit -->
                   <a
-                    class="btn btn-sm btn-outline-primary"
+                    class="action-btn action-btn--edit"
                     [routerLink]="[
                       '/departments',
                       department.id,
@@ -270,8 +387,18 @@
                     ]"
                     [attr.aria-label]="
                       'Edit ' + department.name + ' department'
-                    ">
-                    Edit
+                    "
+                    title="Edit Department">
+
+                    <i
+                      class="bi bi-pencil"
+                      aria-hidden="true">
+                    </i>
+
+                    <span class="action-btn__label">
+                      
+                    </span>
+
                   </a>
 
                 </div>

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { AttendanceSummaryCard } from './components/attendance-summary-card/attendance-summary-card';
 import { AttendanceStatus,AttendanceModel } from './models/attendance.model';
 import { ATTENDANCE_RECORDS } from './data/attendance.mock';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 @Component({
   imports: [FormsModule,
-    AttendanceSummaryCard,RouterLink],
+    RouterLink],
   standalone: true,
   selector: 'app-attendance',
   styleUrl: './attendance.scss',

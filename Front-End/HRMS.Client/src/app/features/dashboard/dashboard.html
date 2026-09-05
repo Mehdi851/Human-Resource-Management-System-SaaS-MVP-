@@ -1,28 +1,53 @@
 
 
 <div class="dashboard-page">
-  <section class="dashboard-header" aria-labelledby="dashboard-title">
-    <div class="dashboard-header__content">
-      <h1 id="dashboard-title" class="dashboard-header__title">
+  <!-- Dashboard Header -->
+<section
+  class="hrms-page-header dashboard-page-header"
+  aria-labelledby="dashboard-title">
+
+  <div class="hrms-page-header__main">
+
+    <div class="hrms-page-header__title-row">
+
+      <div class="hrms-page-header__icon">
+        <i class="bi bi-grid-1x2"></i>
+      </div>
+
+      <h1
+        id="dashboard-title"
+        class="hrms-page-header__title">
         Dashboard
       </h1>
 
-      <p class="dashboard-header__description">
-        Overview of your organization's workforce and HR activity.
-      </p>
     </div>
 
-    <div class="dashboard-header__actions">
-      <a
-        routerLink="/employees"
-        class="btn btn-primary dashboard-header__action"
-        aria-label="Add a new employee"
-      >
-        <span aria-hidden="true">+</span>
-        Add Employee
-      </a>
-    </div>
-  </section>
+    <p class="hrms-page-header__description">
+      Overview of your organization's workforce and HR activity.
+    </p>
+
+  </div>
+
+
+  <div class="hrms-page-header__actions">
+
+    <a
+      routerLink="/employees"
+      class="hrms-action-primary"
+      aria-label="Add a new employee">
+
+      <i
+        class="bi bi-person-plus"
+        aria-hidden="true">
+      </i>
+
+      Add Employee
+
+    </a>
+
+  </div>
+
+</section>
   <section
     class="dashboard-stats"
     aria-labelledby="dashboard-stats-title"
