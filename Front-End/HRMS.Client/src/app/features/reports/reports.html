@@ -1,0 +1,1543 @@
+<section class="reports-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div class="page-header__content">
+      <div>
+        <span class="page-header__eyebrow">
+          Workforce Intelligence
+        </span>
+
+        <h1 class="page-header__title">
+          Reports & Analytics
+        </h1>
+
+        <p class="page-header__description">
+          Monitor workforce data, attendance, leave and payroll performance.
+        </p>
+      </div>
+
+      <div class="page-header__actions">
+
+        <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="exportReport()">
+
+            <i class="bi bi-download me-2"></i>
+
+            Export
+
+            </button>
+
+        <button
+            type="button"
+            class="btn btn-primary"
+            (click)="printReport()">
+
+            <i class="bi bi-printer me-2"></i>
+
+            Print Report
+
+            </button>
+
+      </div>
+      @if (exportMessage()) {
+
+        <div class="report-feedback">
+
+            <i class="bi bi-info-circle"></i>
+
+            <span>
+            {{ exportMessage() }}
+            </span>
+
+            <button
+            type="button"
+            class="report-feedback__close"
+            (click)="exportMessage.set('')">
+
+            <i class="bi bi-x"></i>
+
+            </button>
+
+        </div>
+
+        }
+    </div>
+
+  </div>
+
+
+  <!-- Filters -->
+  <section class="filter-card">
+
+    <div class="filter-card__header">
+
+      <div>
+        <h2>Report Filters</h2>
+
+        <p>
+          Select the reporting period and report category.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-link btn-sm text-decoration-none"
+        (click)="resetFilters()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+        </button>
+
+    </div>
+
+
+    <div class="filter-card__body">
+
+      <div class="row g-3">
+
+        <!-- From Date -->
+        <div class="col-12 col-md-6 col-lg-3">
+
+          <label
+            for="fromDate"
+            class="form-label">
+            From Date
+          </label>
+
+          <input
+            id="fromDate"
+            type="date"
+            class="form-control"
+            [value]="fromDate()"
+            (change)="updateFromDate($any($event.target).value)">
+
+        </div>
+
+
+        <!-- To Date -->
+        <div class="col-12 col-md-6 col-lg-3">
+
+          <label
+            for="toDate"
+            class="form-label">
+            To Date
+          </label>
+
+          <input
+            id="toDate"
+            type="date"
+            class="form-control"
+            [value]="toDate()"
+            (change)="updateToDate($any($event.target).value)">
+
+        </div>
+
+
+        <!-- Department -->
+        <div class="col-12 col-md-6 col-lg-3">
+
+          <label
+            for="department"
+            class="form-label">
+            Department
+          </label>
+
+         <select
+            id="department"
+            class="form-select"
+            [value]="selectedDepartment()"
+            (change)="updateDepartment($any($event.target).value)">
+
+            <option value="all">
+                All Departments
+            </option>
+
+            <option value="Engineering">
+                Engineering
+            </option>
+
+            <option value="Human Resources">
+                Human Resources
+            </option>
+
+            <option value="Finance">
+                Finance
+            </option>
+
+            <option value="Sales">
+                Sales
+            </option>
+
+            <option value="Operations">
+                Operations
+            </option>
+
+            <option value="Administration">
+                Administration
+            </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Report Type -->
+        <div class="col-12 col-md-6 col-lg-3">
+
+          <label
+            for="reportType"
+            class="form-label">
+            Report Type
+          </label>
+
+          <select
+            id="reportType"
+            class="form-select"
+            [value]="selectedReport()"
+            (change)="setReportType($any($event.target).value)">
+
+            <option value="Overview">
+              Overview
+            </option>
+
+            <option value="Employees">
+              Employee Report
+            </option>
+
+            <option value="Attendance">
+              Attendance Report
+            </option>
+
+            <option value="Leave">
+              Leave Report
+            </option>
+
+            <option value="Payroll">
+              Payroll Report
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+        </div>
+    <div class="filter-note">
+
+    <i class="bi bi-info-circle"></i>
+
+    <span>
+        Filters are currently applied to the frontend demo data.
+        Live report filtering will be connected during API integration.
+    </span>
+
+    </div>
+  </section>
+
+
+  <!-- KPI Summary -->
+  <section class="summary-section">
+
+    <div class="section-heading">
+
+      <div>
+        <h2>Overview</h2>
+        <p>Current workforce summary</p>
+      </div>
+
+     <span class="period-label">
+        {{ fromDate() | date:'dd MMM yyyy' }}
+        –
+        {{ toDate() | date:'dd MMM yyyy' }}
+        </span>
+
+    </div>
+
+
+    <div class="summary-grid">
+
+      <!-- Total Employees -->
+      <article class="summary-card">
+
+        <div class="summary-card__icon">
+          <i class="bi bi-people"></i>
+        </div>
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Total Employees
+          </span>
+
+          <strong class="summary-card__value">
+            {{ summary().totalEmployees }}
+          </strong>
+
+          <span class="summary-card__trend">
+            <i class="bi bi-arrow-up"></i>
+            8.4% this month
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Present Today -->
+      <article class="summary-card">
+
+        <div class="summary-card__icon">
+          <i class="bi bi-person-check"></i>
+        </div>
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Present Today
+          </span>
+
+          <strong class="summary-card__value">
+            {{ summary().presentToday }}
+          </strong>
+
+          <span class="summary-card__trend">
+            {{ ((summary().presentToday / summary().totalEmployees) * 100).toFixed(1) }}%
+            attendance
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Pending Leaves -->
+      <article class="summary-card">
+
+        <div class="summary-card__icon">
+          <i class="bi bi-calendar2-week"></i>
+        </div>
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Pending Leaves
+          </span>
+
+          <strong class="summary-card__value">
+            {{ summary().pendingLeaves }}
+          </strong>
+
+          <span class="summary-card__trend">
+            Requires attention
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Payroll -->
+      <article class="summary-card">
+
+        <div class="summary-card__icon">
+          <i class="bi bi-cash-stack"></i>
+        </div>
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Payroll Amount
+          </span>
+
+          <strong class="summary-card__value summary-card__value--currency">
+            {{ formatCurrency(summary().payrollAmount) }}
+          </strong>
+
+          <span class="summary-card__trend">
+            Current payroll period
+          </span>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- Quick Reports -->
+  <section class="quick-reports">
+
+    <div class="section-heading">
+
+      <div>
+        <h2>Quick Reports</h2>
+
+        <p>
+          Access frequently used workforce reports.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="quick-report-grid">
+
+      <!-- Employee Report -->
+      <button
+        type="button"
+        class="quick-report-card"
+        (click)="setReportType('Employees')">
+
+        <span class="quick-report-card__icon">
+          <i class="bi bi-person-vcard"></i>
+        </span>
+
+        <span class="quick-report-card__content">
+          <strong>Employee Report</strong>
+          <small>Employee directory and status</small>
+        </span>
+
+        <i class="bi bi-chevron-right quick-report-card__arrow"></i>
+
+      </button>
+
+
+      <!-- Attendance -->
+      <button
+        type="button"
+        class="quick-report-card"
+        (click)="setReportType('Attendance')">
+
+        <span class="quick-report-card__icon">
+          <i class="bi bi-calendar-check"></i>
+        </span>
+
+        <span class="quick-report-card__content">
+          <strong>Attendance Report</strong>
+          <small>Attendance and absence trends</small>
+        </span>
+
+        <i class="bi bi-chevron-right quick-report-card__arrow"></i>
+
+      </button>
+
+
+      <!-- Leave -->
+      <button
+        type="button"
+        class="quick-report-card"
+        (click)="setReportType('Leave')">
+
+        <span class="quick-report-card__icon">
+          <i class="bi bi-calendar2-x"></i>
+        </span>
+
+        <span class="quick-report-card__content">
+          <strong>Leave Report</strong>
+          <small>Leave usage and requests</small>
+        </span>
+
+        <i class="bi bi-chevron-right quick-report-card__arrow"></i>
+
+      </button>
+
+
+      <!-- Payroll -->
+      <button
+        type="button"
+        class="quick-report-card"
+        (click)="setReportType('Payroll')">
+
+        <span class="quick-report-card__icon">
+          <i class="bi bi-wallet2"></i>
+        </span>
+
+        <span class="quick-report-card__content">
+          <strong>Payroll Report</strong>
+          <small>Payroll and compensation data</small>
+        </span>
+
+        <i class="bi bi-chevron-right quick-report-card__arrow"></i>
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- Analytics -->
+<section class="analytics-section">
+
+  <div class="section-heading">
+
+    <div>
+      <h2>Analytics</h2>
+
+      <p>
+        Workforce trends and organizational insights.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="analytics-grid">
+
+
+    <!-- Attendance Trend -->
+    <article class="analytics-card analytics-card--attendance">
+
+      <div class="analytics-card__header">
+
+        <div>
+          <h3>Attendance Trend</h3>
+
+          <p>
+            Daily attendance overview
+          </p>
+        </div>
+
+        <span class="analytics-card__badge">
+          {{ averageAttendance().toFixed(1) }}%
+        </span>
+
+      </div>
+
+
+      <div class="attendance-chart">
+
+        <div class="attendance-chart__scale">
+
+          <span>120</span>
+          <span>90</span>
+          <span>60</span>
+          <span>30</span>
+          <span>0</span>
+
+        </div>
+
+
+        <div class="attendance-chart__area">
+
+          <div
+            class="attendance-chart__grid-line"
+            style="top: 0">
+          </div>
+
+          <div
+            class="attendance-chart__grid-line"
+            style="top: 25%">
+          </div>
+
+          <div
+            class="attendance-chart__grid-line"
+            style="top: 50%">
+          </div>
+
+          <div
+            class="attendance-chart__grid-line"
+            style="top: 75%">
+          </div>
+
+          <div
+            class="attendance-chart__grid-line"
+            style="top: 100%">
+          </div>
+
+
+          <div class="attendance-bars">
+
+            @for (
+              record of attendanceReports();
+              track record.date
+            ) {
+
+              <div class="attendance-bar">
+
+                <div class="attendance-bar__value">
+                  {{ record.present }}
+                </div>
+
+                <div
+                  class="attendance-bar__fill"
+                  [style.height.%]="
+                    getAttendanceBarHeight(record.present)
+                  ">
+                </div>
+
+                <span class="attendance-bar__label">
+                  {{ record.date | date:'dd MMM' }}
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="chart-legend">
+
+        <span>
+          <i class="legend-dot legend-dot--present"></i>
+          Present
+        </span>
+
+        <span>
+          <i class="legend-dot legend-dot--absent"></i>
+          Absent
+        </span>
+
+        <span>
+          <i class="legend-dot legend-dot--leave"></i>
+          Leave
+        </span>
+
+      </div>
+
+    </article>
+
+
+    <!-- Department Distribution -->
+    <article class="analytics-card">
+
+      <div class="analytics-card__header">
+
+        <div>
+          <h3>Employees by Department</h3>
+
+          <p>
+            Current workforce distribution
+          </p>
+        </div>
+
+        <span class="analytics-card__icon">
+          <i class="bi bi-diagram-3"></i>
+        </span>
+
+      </div>
+
+
+      <div class="department-list">
+
+        @for (
+          department of departmentReports();
+          track department.department
+        ) {
+
+          <div class="department-item">
+
+            <div class="department-item__header">
+
+              <span>
+                {{ department.department }}
+              </span>
+
+              <strong>
+                {{ department.employeeCount }}
+              </strong>
+
+            </div>
+
+
+            <div class="department-item__progress">
+
+              <div
+                class="department-item__progress-bar"
+                [style.width.%]="
+                  getDepartmentPercentage(
+                    department.employeeCount
+                  )
+                ">
+              </div>
+
+            </div>
+
+
+            <span class="department-item__percentage">
+              {{ getDepartmentPercentage(
+                department.employeeCount
+              ).toFixed(1) }}%
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+    </article>
+
+
+    <!-- Leave Statistics -->
+    <article class="analytics-card">
+
+      <div class="analytics-card__header">
+
+        <div>
+          <h3>Leave Statistics</h3>
+
+          <p>
+            Leave requests by type
+          </p>
+        </div>
+
+        <span class="analytics-card__icon">
+          <i class="bi bi-calendar2-check"></i>
+        </span>
+
+      </div>
+
+
+      <div class="leave-summary">
+
+        <div class="leave-summary__total">
+
+          <strong>
+            {{ totalLeaveRequests() }}
+          </strong>
+
+          <span>
+            Total Requests
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="leave-list">
+
+        @for (
+          leave of leaveReports();
+          track leave.leaveType
+        ) {
+
+          <div class="leave-item">
+
+            <div class="leave-item__header">
+
+              <span>
+                {{ leave.leaveType }}
+              </span>
+
+              <strong>
+                {{ leave.count }}
+              </strong>
+
+            </div>
+
+
+            <div class="leave-item__progress">
+
+              <div
+                class="leave-item__progress-bar"
+                [style.width.%]="
+                  getLeavePercentage(leave.count)
+                ">
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </article>
+
+
+    <!-- Workforce Snapshot -->
+    <article class="analytics-card">
+
+      <div class="analytics-card__header">
+
+        <div>
+          <h3>Workforce Snapshot</h3>
+
+          <p>
+            Current workforce status
+          </p>
+        </div>
+
+        <span class="analytics-card__icon">
+          <i class="bi bi-bar-chart"></i>
+        </span>
+
+      </div>
+
+
+      <div class="snapshot-grid">
+
+        <div class="snapshot-item">
+
+          <span class="snapshot-item__icon">
+            <i class="bi bi-person-check"></i>
+          </span>
+
+          <div>
+            <strong>
+              {{ activeEmployees() }}
+            </strong>
+
+            <span>
+              Active Employees
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="snapshot-item">
+
+          <span class="snapshot-item__icon">
+            <i class="bi bi-building"></i>
+          </span>
+
+          <div>
+            <strong>
+              {{ departmentReports().length }}
+            </strong>
+
+            <span>
+              Departments
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="snapshot-item">
+
+          <span class="snapshot-item__icon">
+            <i class="bi bi-calendar-check"></i>
+          </span>
+
+          <div>
+            <strong>
+              {{ totalAttendanceRecords() }}
+            </strong>
+
+            <span>
+              Present Records
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="snapshot-item">
+
+          <span class="snapshot-item__icon">
+            <i class="bi bi-calendar-event"></i>
+          </span>
+
+          <div>
+            <strong>
+              {{ totalLeaveRequests() }}
+            </strong>
+
+            <span>
+              Leave Requests
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+<!-- Detailed Reports -->
+<section id="detailedReports" class="reports-table-section">
+
+  <div class="section-heading">
+
+    <div>
+      <h2>Detailed Reports</h2>
+
+      <p>
+        View and analyze detailed workforce records.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Report Tabs -->
+  <div class="report-tabs">
+
+    <button
+      type="button"
+      class="report-tab"
+      [class.active]="selectedReport() === 'Overview'"
+      (click)="setReportType('Overview')">
+
+      <i class="bi bi-grid"></i>
+      Overview
+
+    </button>
+
+
+    <button
+      type="button"
+      class="report-tab"
+      [class.active]="selectedReport() === 'Employees'"
+      (click)="setReportType('Employees')">
+
+      <i class="bi bi-people"></i>
+      Employees
+
+    </button>
+
+
+    <button
+      type="button"
+      class="report-tab"
+      [class.active]="selectedReport() === 'Attendance'"
+      (click)="setReportType('Attendance')">
+
+      <i class="bi bi-calendar-check"></i>
+      Attendance
+
+    </button>
+
+
+    <button
+      type="button"
+      class="report-tab"
+      [class.active]="selectedReport() === 'Leave'"
+      (click)="setReportType('Leave')">
+
+      <i class="bi bi-calendar2-week"></i>
+      Leave
+
+    </button>
+
+
+    <button
+      type="button"
+      class="report-tab"
+      [class.active]="selectedReport() === 'Payroll'"
+      (click)="setReportType('Payroll')">
+
+      <i class="bi bi-wallet2"></i>
+      Payroll
+
+    </button>
+
+  </div>
+
+
+  <!-- Employee Report -->
+  @if (selectedReport() === 'Employees') {
+
+    <article class="report-table-card">
+
+      <div class="report-table-card__header">
+
+        <div>
+          <h3>Employee Report</h3>
+
+          <p>
+            {{ filteredEmployees().length }} employees found
+          </p>
+        </div>
+
+
+        <div class="report-table-card__actions">
+
+          <div class="table-search">
+
+            <i class="bi bi-search"></i>
+
+            <input
+              type="text"
+              placeholder="Search employees..."
+              [value]="searchTerm()"
+              (input)="updateSearch($any($event.target).value)">
+
+          </div>
+
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm">
+
+            <i class="bi bi-download me-1"></i>
+            Export
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-responsive">
+
+        <table class="table report-table align-middle">
+
+          <thead>
+
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Joining Date</th>
+              <th>Status</th>
+              <th class="text-end">Action</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              employee of filteredEmployees();
+              track employee.id
+            ) {
+
+              <tr>
+
+                <td>
+
+                  <div class="employee-cell">
+
+                    <div class="employee-avatar">
+                      {{ employee.employeeName.charAt(0) }}
+                    </div>
+
+                    <div>
+                      <strong>
+                        {{ employee.employeeName }}
+                      </strong>
+
+                      <small>
+                        {{ employee.employeeCode }}
+                      </small>
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ employee.department }}
+                </td>
+
+
+                <td>
+                  {{ employee.designation }}
+                </td>
+
+
+                <td>
+                  {{ formatDate(employee.joiningDate) }}
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-badge--active]="
+                      employee.employmentStatus === 'Active'
+                    "
+                    [class.status-badge--inactive]="
+                      employee.employmentStatus === 'Inactive'
+                    ">
+
+                    {{ employee.employmentStatus }}
+
+                  </span>
+
+                </td>
+
+
+                <td class="text-end">
+
+                  <button
+                    type="button"
+                    class="table-action"
+                    title="View">
+
+                    <i class="bi bi-eye"></i>
+
+                  </button>
+
+                  <button
+                    type="button"
+                    class="table-action"
+                    title="Export">
+
+                    <i class="bi bi-download"></i>
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            }
+
+
+           @empty {
+
+                <tr>
+
+                    <td
+                    colspan="6"
+                    class="empty-state">
+
+                    <div class="empty-state__icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <strong>
+                        No employees found
+                    </strong>
+
+                    <span>
+                        Try changing your search or department filter.
+                    </span>
+
+                    </td>
+
+                </tr>
+
+                }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="report-table-card__footer">
+
+        <span>
+          Showing {{ filteredEmployees().length }} records
+        </span>
+
+        <span>
+          Employee report
+        </span>
+
+      </div>
+
+    </article>
+
+  }
+
+
+  <!-- Attendance Report -->
+  @if (selectedReport() === 'Attendance') {
+
+    <article class="report-table-card">
+
+      <div class="report-table-card__header">
+
+        <div>
+          <h3>Attendance Report</h3>
+
+          <p>
+            Daily attendance records
+          </p>
+        </div>
+
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm">
+
+          <i class="bi bi-download me-1"></i>
+          Export
+
+        </button>
+
+      </div>
+
+
+      <div class="table-responsive">
+
+        <table class="table report-table align-middle">
+
+          <thead>
+
+            <tr>
+              <th>Date</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Late</th>
+              <th>Leave</th>
+              <th>Attendance Rate</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              record of attendanceReports();
+              track record.date
+            ) {
+
+              <tr>
+
+                <td>
+                  <strong>
+                    {{ formatDate(record.date) }}
+                  </strong>
+                </td>
+
+                <td>
+                  <span class="metric-value">
+                    {{ record.present }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ record.absent }}
+                </td>
+
+                <td>
+                  {{ record.late }}
+                </td>
+
+                <td>
+                  {{ record.leave }}
+                </td>
+
+                <td>
+
+                  <div class="table-progress">
+
+                    <div class="table-progress__track">
+
+                      <div
+                        class="table-progress__bar"
+                        [style.width.%]="
+                          getAttendancePercentage(
+                            record.present,
+                            record.absent,
+                            record.leave
+                          )
+                        ">
+                      </div>
+
+                    </div>
+
+                    <span>
+                      {{ getAttendancePercentage(
+                        record.present,
+                        record.absent,
+                        record.leave
+                      ).toFixed(1) }}%
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <td>
+
+                  <span
+                    class="status-badge status-badge--active">
+
+                    {{ getAttendanceStatus(
+                      record.present,
+                      record.absent,
+                      record.leave
+                    ) }}
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="report-table-card__footer">
+
+        <span>
+          {{ attendanceReports().length }} daily records
+        </span>
+
+        <span>
+          Attendance report
+        </span>
+
+      </div>
+
+    </article>
+
+  }
+
+
+  <!-- Leave Report -->
+  @if (selectedReport() === 'Leave') {
+
+    <article class="report-table-card">
+
+      <div class="report-table-card__header">
+
+        <div>
+          <h3>Leave Report</h3>
+
+          <p>
+            Leave requests by category
+          </p>
+        </div>
+
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm">
+
+          <i class="bi bi-download me-1"></i>
+          Export
+
+        </button>
+
+      </div>
+
+
+      <div class="table-responsive">
+
+        <table class="table report-table align-middle">
+
+          <thead>
+
+            <tr>
+              <th>Leave Type</th>
+              <th>Requests</th>
+              <th>Distribution</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              leave of leaveReports();
+              track leave.leaveType
+            ) {
+
+              <tr>
+
+                <td>
+                  <strong>
+                    {{ leave.leaveType }}
+                  </strong>
+                </td>
+
+
+                <td>
+                  {{ leave.count }}
+                </td>
+
+
+                <td>
+
+                  <div class="table-progress">
+
+                    <div class="table-progress__track">
+
+                      <div
+                        class="table-progress__bar"
+                        [style.width.%]="
+                          getLeavePercentage(leave.count)
+                        ">
+                      </div>
+
+                    </div>
+
+                    <span>
+                      {{ getLeavePercentage(
+                        leave.count
+                      ).toFixed(1) }}%
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <span class="status-badge status-badge--active">
+                    Recorded
+                  </span>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="report-table-card__footer">
+
+        <span>
+          {{ totalLeaveRequests() }} total requests
+        </span>
+
+        <span>
+          Leave report
+        </span>
+
+      </div>
+
+    </article>
+
+  }
+
+
+  <!-- Payroll Report -->
+  @if (selectedReport() === 'Payroll') {
+
+    <article class="report-table-card report-table-card--placeholder">
+
+      <div class="placeholder-icon">
+        <i class="bi bi-wallet2"></i>
+      </div>
+
+      <h3>Payroll Report</h3>
+
+      <p>
+        Detailed payroll reporting will be connected to the
+        Payroll Management module during API integration.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-primary btn-sm">
+
+        <i class="bi bi-file-earmark-bar-graph me-1"></i>
+        Prepare Payroll Report
+
+      </button>
+
+    </article>
+
+  }
+
+
+  <!-- Overview -->
+  @if (selectedReport() === 'Overview') {
+
+    <article class="report-table-card report-table-card--overview">
+
+      <div class="overview-report">
+
+        <div class="overview-report__icon">
+          <i class="bi bi-grid-1x2"></i>
+        </div>
+
+        <div>
+
+          <h3>Reports Overview</h3>
+
+          <p>
+            Select a report category above to view detailed
+            workforce information.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="overview-links">
+
+        <button
+          type="button"
+          (click)="setReportType('Employees')">
+
+          <i class="bi bi-people"></i>
+          Employee Report
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <button
+          type="button"
+          (click)="setReportType('Attendance')">
+
+          <i class="bi bi-calendar-check"></i>
+          Attendance Report
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <button
+          type="button"
+          (click)="setReportType('Leave')">
+
+          <i class="bi bi-calendar2-week"></i>
+          Leave Report
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <button
+          type="button"
+          (click)="setReportType('Payroll')">
+
+          <i class="bi bi-wallet2"></i>
+          Payroll Report
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+      </div>
+
+    </article>
+
+  }
+
+</section>
+</section>

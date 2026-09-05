@@ -204,4 +204,10 @@ export const routes: Routes = [
       },
     ],
 },
+{
+  path: 'reports',
+  loadChildren: () =>
+    import('./features/reports/reports.routes')
+      .then(routes => routes.REPORTS_ROUTES)
+}
 ];
