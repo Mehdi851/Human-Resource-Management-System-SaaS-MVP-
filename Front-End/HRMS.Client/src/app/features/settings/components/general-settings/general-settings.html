@@ -1,0 +1,455 @@
+<section class="settings-section">
+
+  <!-- Header -->
+  <div class="settings-section__header">
+
+    <div>
+      <h2 class="settings-section__title">
+        General Settings
+      </h2>
+
+      <p class="settings-section__description">
+        Manage your organization's basic information and regional preferences.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Success Message -->
+  @if (saveSuccess()) {
+    <div
+      class="alert alert-success d-flex align-items-center gap-2 mb-3"
+      role="alert">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      <span>
+        General settings have been saved successfully.
+      </span>
+
+    </div>
+  }
+
+
+  <!-- Form -->
+  <form
+    class="settings-form"
+    [formGroup]="generalForm"
+    (ngSubmit)="saveSettings()"
+    novalidate>
+
+
+    <!-- Organization Information -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-building"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Organization Information
+          </h3>
+
+          <p class="settings-card__description">
+            Basic information about your organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Organization Name -->
+        <div class="col-12">
+
+          <label
+            for="organizationName"
+            class="form-label">
+
+            Organization Name
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <input
+            id="organizationName"
+            type="text"
+            class="form-control"
+            formControlName="organizationName"
+            placeholder="Enter organization name"
+            [class.is-invalid]="
+              organizationName.invalid &&
+              organizationName.touched
+            " />
+
+          @if (
+            organizationName.invalid &&
+            organizationName.touched
+          ) {
+            <div class="invalid-feedback">
+
+              @if (organizationName.errors?.['required']) {
+                Organization name is required.
+              }
+
+              @if (organizationName.errors?.['maxlength']) {
+                Organization name cannot exceed 100 characters.
+              }
+
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Contact Email -->
+        <div class="col-md-6">
+
+          <label
+            for="contactEmail"
+            class="form-label">
+
+            Contact Email
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <input
+            id="contactEmail"
+            type="email"
+            class="form-control"
+            formControlName="contactEmail"
+            placeholder="admin@example.com"
+            [class.is-invalid]="
+              contactEmail.invalid &&
+              contactEmail.touched
+            " />
+
+          @if (
+            contactEmail.invalid &&
+            contactEmail.touched
+          ) {
+            <div class="invalid-feedback">
+
+              @if (contactEmail.errors?.['required']) {
+                Contact email is required.
+              }
+
+              @if (contactEmail.errors?.['email']) {
+                Please enter a valid email address.
+              }
+
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Phone -->
+        <div class="col-md-6">
+
+          <label
+            for="phone"
+            class="form-label">
+
+            Phone Number
+
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            class="form-control"
+            formControlName="phone"
+            placeholder="+92 300 1234567"
+            [class.is-invalid]="
+              phone.invalid &&
+              phone.touched
+            " />
+
+          @if (phone.errors?.['maxlength']) {
+            <div class="invalid-feedback">
+              Phone number cannot exceed 30 characters.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Address -->
+        <div class="col-12">
+
+          <label
+            for="address"
+            class="form-label">
+
+            Address
+
+          </label>
+
+          <textarea
+            id="address"
+            rows="3"
+            class="form-control"
+            formControlName="address"
+            placeholder="Enter organization address"
+            [class.is-invalid]="
+              address.invalid &&
+              address.touched
+            "></textarea>
+
+          @if (address.errors?.['maxlength']) {
+            <div class="invalid-feedback">
+              Address cannot exceed 250 characters.
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Regional Preferences -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-globe2"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Regional Preferences
+          </h3>
+
+          <p class="settings-card__description">
+            Configure timezone, date format, and currency preferences.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Timezone -->
+        <div class="col-md-6">
+
+          <label
+            for="timezone"
+            class="form-label">
+
+            Time Zone
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="timezone"
+            class="form-select"
+            formControlName="timezone"
+            [class.is-invalid]="
+              timezone.invalid &&
+              timezone.touched
+            ">
+
+            <option value="">
+              Select time zone
+            </option>
+
+            <option value="Asia/Karachi">
+              Asia/Karachi (PKT)
+            </option>
+
+            <option value="Asia/Dubai">
+              Asia/Dubai (GST)
+            </option>
+
+            <option value="Asia/Kolkata">
+              Asia/Kolkata (IST)
+            </option>
+
+            <option value="Europe/London">
+              Europe/London (GMT)
+            </option>
+
+            <option value="America/New_York">
+              America/New_York (EST)
+            </option>
+
+            <option value="America/Los_Angeles">
+              America/Los_Angeles (PST)
+            </option>
+
+          </select>
+
+          @if (timezone.invalid && timezone.touched) {
+            <div class="invalid-feedback">
+              Time zone is required.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Date Format -->
+        <div class="col-md-6">
+
+          <label
+            for="dateFormat"
+            class="form-label">
+
+            Date Format
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="dateFormat"
+            class="form-select"
+            formControlName="dateFormat"
+            [class.is-invalid]="
+              dateFormat.invalid &&
+              dateFormat.touched
+            ">
+
+            <option value="">
+              Select date format
+            </option>
+
+            <option value="DD/MM/YYYY">
+              DD/MM/YYYY
+            </option>
+
+            <option value="MM/DD/YYYY">
+              MM/DD/YYYY
+            </option>
+
+            <option value="YYYY-MM-DD">
+              YYYY-MM-DD
+            </option>
+
+          </select>
+
+          @if (dateFormat.invalid && dateFormat.touched) {
+            <div class="invalid-feedback">
+              Date format is required.
+            </div>
+          }
+
+        </div>
+
+
+        <!-- Currency -->
+        <div class="col-md-6">
+
+          <label
+            for="currency"
+            class="form-label">
+
+            Currency
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="currency"
+            class="form-select"
+            formControlName="currency"
+            [class.is-invalid]="
+              currency.invalid &&
+              currency.touched
+            ">
+
+            <option value="">
+              Select currency
+            </option>
+
+            <option value="PKR">
+              PKR — Pakistani Rupee
+            </option>
+
+            <option value="USD">
+              USD — US Dollar
+            </option>
+
+            <option value="EUR">
+              EUR — Euro
+            </option>
+
+            <option value="GBP">
+              GBP — British Pound
+            </option>
+
+            <option value="AED">
+              AED — UAE Dirham
+            </option>
+
+          </select>
+
+          @if (currency.invalid && currency.touched) {
+            <div class="invalid-feedback">
+              Currency is required.
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="settings-form__actions">
+
+      <button
+        type="button"
+        class="btn btn-light border"
+        [disabled]="isSaving()"
+        (click)="resetSettings()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSaving()">
+
+        @if (isSaving()) {
+
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true">
+          </span>
+
+          Saving...
+
+        } @else {
+
+          <i class="bi bi-check2 me-1"></i>
+
+          Save Changes
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>

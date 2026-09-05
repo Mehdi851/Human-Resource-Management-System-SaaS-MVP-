@@ -1,0 +1,316 @@
+<section class="settings-section">
+
+  <!-- Header -->
+  <div class="settings-section__header">
+
+    <div>
+      <h2 class="settings-section__title">
+        System Settings
+      </h2>
+
+      <p class="settings-section__description">
+        Configure application language, appearance, and default dashboard preferences.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Success -->
+  @if (saveSuccess()) {
+
+    <div
+      class="alert alert-success d-flex align-items-center gap-2 mb-3"
+      role="alert">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      <span>
+        System settings have been saved successfully.
+      </span>
+
+    </div>
+
+  }
+
+
+  <form
+    class="settings-form"
+    [formGroup]="systemForm"
+    (ngSubmit)="saveSettings()"
+    novalidate>
+
+
+    <!-- Application Preferences -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-sliders"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Application Preferences
+          </h3>
+
+          <p class="settings-card__description">
+            Configure the basic application experience for your organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Language -->
+        <div class="col-md-6">
+
+          <label
+            for="language"
+            class="form-label">
+
+            Application Language
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="language"
+            class="form-select"
+            formControlName="language"
+            [class.is-invalid]="
+              systemForm.controls.language.invalid &&
+              systemForm.controls.language.touched
+            ">
+
+            <option value="">
+              Select language
+            </option>
+
+            <option value="English">
+              English
+            </option>
+
+            <option value="Urdu">
+              Urdu
+            </option>
+
+          </select>
+
+          @if (
+            systemForm.controls.language.invalid &&
+            systemForm.controls.language.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Application language is required.
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Theme -->
+        <div class="col-md-6">
+
+          <label
+            for="theme"
+            class="form-label">
+
+            Application Theme
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="theme"
+            class="form-select"
+            formControlName="theme"
+            [class.is-invalid]="
+              systemForm.controls.theme.invalid &&
+              systemForm.controls.theme.touched
+            ">
+
+            <option value="light">
+              Light
+            </option>
+
+            <option value="dark">
+              Dark
+            </option>
+
+            <option value="system">
+              System Default
+            </option>
+
+          </select>
+
+          @if (
+            systemForm.controls.theme.invalid &&
+            systemForm.controls.theme.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Application theme is required.
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Dashboard Preferences -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-grid-1x2"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Dashboard Preferences
+          </h3>
+
+          <p class="settings-card__description">
+            Select the dashboard users should see after signing in.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-md-6">
+
+          <label
+            for="defaultDashboard"
+            class="form-label">
+
+            Default Dashboard
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="defaultDashboard"
+            class="form-select"
+            formControlName="defaultDashboard"
+            [class.is-invalid]="
+              systemForm.controls.defaultDashboard.invalid &&
+              systemForm.controls.defaultDashboard.touched
+            ">
+
+            <option value="">
+              Select dashboard
+            </option>
+
+            <option value="HR Dashboard">
+              HR Dashboard
+            </option>
+
+            <option value="Employee Dashboard">
+              Employee Dashboard
+            </option>
+
+            <option value="Manager Dashboard">
+              Manager Dashboard
+            </option>
+
+          </select>
+
+          @if (
+            systemForm.controls.defaultDashboard.invalid &&
+            systemForm.controls.defaultDashboard.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Default dashboard is required.
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="settings-info">
+
+      <i class="bi bi-info-circle"></i>
+
+      <div>
+
+        <strong>
+          System preferences
+        </strong>
+
+        <p>
+          These settings control the application's user experience.
+          Regional settings such as timezone, date format, and currency
+          are managed under General Settings.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="settings-form__actions">
+
+      <button
+        type="button"
+        class="btn btn-light border"
+        [disabled]="isSaving()"
+        (click)="resetSettings()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSaving()">
+
+        @if (isSaving()) {
+
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true">
+          </span>
+
+          Saving...
+
+        } @else {
+
+          <i class="bi bi-check2 me-1"></i>
+
+          Save Changes
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>

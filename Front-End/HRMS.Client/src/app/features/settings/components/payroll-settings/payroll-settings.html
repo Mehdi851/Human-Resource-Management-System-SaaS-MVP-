@@ -1,0 +1,345 @@
+<section class="settings-section">
+
+  <!-- Header -->
+  <div class="settings-section__header">
+
+    <div>
+      <h2 class="settings-section__title">
+        Payroll Settings
+      </h2>
+
+      <p class="settings-section__description">
+        Configure payroll frequency, currency, and payment schedule.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Success Message -->
+  @if (saveSuccess()) {
+
+    <div
+      class="alert alert-success d-flex align-items-center gap-2 mb-3"
+      role="alert">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      <span>
+        Payroll settings have been saved successfully.
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- Form -->
+  <form
+    class="settings-form"
+    [formGroup]="payrollForm"
+    (ngSubmit)="saveSettings()"
+    novalidate>
+
+
+    <!-- Payroll Configuration -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-cash-stack"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Payroll Configuration
+          </h3>
+
+          <p class="settings-card__description">
+            Define the organization's standard payroll cycle and currency.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Pay Frequency -->
+        <div class="col-md-6">
+
+          <label
+            for="payFrequency"
+            class="form-label">
+
+            Pay Frequency
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="payFrequency"
+            class="form-select"
+            formControlName="payFrequency"
+            [class.is-invalid]="
+              payFrequency.invalid &&
+              payFrequency.touched
+            ">
+
+            <option value="">
+              Select pay frequency
+            </option>
+
+            <option value="Weekly">
+              Weekly
+            </option>
+
+            <option value="Bi-Weekly">
+              Bi-Weekly
+            </option>
+
+            <option value="Semi-Monthly">
+              Semi-Monthly
+            </option>
+
+            <option value="Monthly">
+              Monthly
+            </option>
+
+          </select>
+
+          @if (
+            payFrequency.invalid &&
+            payFrequency.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Pay frequency is required.
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Currency -->
+        <div class="col-md-6">
+
+          <label
+            for="currency"
+            class="form-label">
+
+            Payroll Currency
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <select
+            id="currency"
+            class="form-select"
+            formControlName="currency"
+            [class.is-invalid]="
+              currency.invalid &&
+              currency.touched
+            ">
+
+            <option value="">
+              Select currency
+            </option>
+
+            <option value="PKR">
+              PKR — Pakistani Rupee
+            </option>
+
+            <option value="USD">
+              USD — US Dollar
+            </option>
+
+            <option value="EUR">
+              EUR — Euro
+            </option>
+
+            <option value="GBP">
+              GBP — British Pound
+            </option>
+
+            <option value="AED">
+              AED — UAE Dirham
+            </option>
+
+          </select>
+
+          @if (
+            currency.invalid &&
+            currency.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Payroll currency is required.
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Payment Schedule -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-calendar-event"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Payment Schedule
+          </h3>
+
+          <p class="settings-card__description">
+            Configure the standard day on which payroll is processed.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-md-6">
+
+          <label
+            for="payDay"
+            class="form-label">
+
+            Pay Day
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <div class="input-group">
+
+            <input
+              id="payDay"
+              type="number"
+              min="1"
+              max="31"
+              class="form-control"
+              formControlName="payDay"
+              [class.is-invalid]="
+                payDay.invalid &&
+                payDay.touched
+              " />
+
+            <span class="input-group-text">
+              day of month
+            </span>
+
+          </div>
+
+          @if (
+            payDay.invalid &&
+            payDay.touched
+          ) {
+
+            <div class="settings-validation text-danger">
+
+              @if (payDay.errors?.['required']) {
+                Pay day is required.
+              }
+
+              @if (
+                payDay.errors?.['min'] ||
+                payDay.errors?.['max']
+              ) {
+                Enter a value between 1 and 31.
+              }
+
+            </div>
+
+          }
+
+          <div class="form-text">
+            Example: 25 means payroll is processed on the 25th.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Payroll Information -->
+    <div class="settings-info">
+
+      <i class="bi bi-info-circle"></i>
+
+      <div>
+
+        <strong>
+          Payroll configuration
+        </strong>
+
+        <p>
+          These settings define the organization's default payroll
+          schedule. Employee-specific salary, deductions, bonuses,
+          and tax rules can be configured separately.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="settings-form__actions">
+
+      <button
+        type="button"
+        class="btn btn-light border"
+        [disabled]="isSaving()"
+        (click)="resetSettings()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSaving()">
+
+        @if (isSaving()) {
+
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true">
+          </span>
+
+          Saving...
+
+        } @else {
+
+          <i class="bi bi-check2 me-1"></i>
+
+          Save Changes
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>

@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 import {
   ATTENDANCE_REPORT,
@@ -13,7 +12,7 @@ import {
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [RouterLink, DatePipe],
+  imports: [ DatePipe],
   templateUrl: './reports.html',
   styleUrl: './reports.scss'
 })

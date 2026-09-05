@@ -1,0 +1,281 @@
+<section class="settings-section">
+
+  <!-- Header -->
+  <div class="settings-section__header">
+
+    <div>
+      <h2 class="settings-section__title">
+        Notification Settings
+      </h2>
+
+      <p class="settings-section__description">
+        Control which HRMS events generate notifications for administrators and employees.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Success -->
+  @if (saveSuccess()) {
+
+    <div
+      class="alert alert-success d-flex align-items-center gap-2 mb-3"
+      role="alert">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      <span>
+        Notification settings have been saved successfully.
+      </span>
+
+    </div>
+
+  }
+
+
+  <form
+    class="settings-form"
+    [formGroup]="notificationForm"
+    (ngSubmit)="saveSettings()">
+
+
+    <!-- General Notifications -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-envelope"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            General Notifications
+          </h3>
+
+          <p class="settings-card__description">
+            Configure the organization's primary notification channel.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="notification-item">
+
+        <div class="notification-item__content">
+
+          <strong>
+            Email Notifications
+          </strong>
+
+          <span>
+            Send important HRMS alerts and updates through email.
+          </span>
+
+        </div>
+
+        <div class="form-check form-switch">
+
+          <input
+            id="emailNotifications"
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            formControlName="emailNotifications" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- HR Notifications -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-bell"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            HR Notifications
+          </h3>
+
+          <p class="settings-card__description">
+            Select the HR processes that should generate notifications.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- Leave -->
+      <div class="notification-item">
+
+        <div class="notification-item__content">
+
+          <strong>
+            Leave Notifications
+          </strong>
+
+          <span>
+            Notify relevant users when leave requests are submitted,
+            approved, rejected, or updated.
+          </span>
+
+        </div>
+
+        <div class="form-check form-switch">
+
+          <input
+            id="leaveNotifications"
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            formControlName="leaveNotifications" />
+
+        </div>
+
+      </div>
+
+
+      <div class="notification-divider"></div>
+
+
+      <!-- Attendance -->
+      <div class="notification-item">
+
+        <div class="notification-item__content">
+
+          <strong>
+            Attendance Notifications
+          </strong>
+
+          <span>
+            Notify users about attendance events, late arrivals,
+            and attendance-related updates.
+          </span>
+
+        </div>
+
+        <div class="form-check form-switch">
+
+          <input
+            id="attendanceNotifications"
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            formControlName="attendanceNotifications" />
+
+        </div>
+
+      </div>
+
+
+      <div class="notification-divider"></div>
+
+
+      <!-- Payroll -->
+      <div class="notification-item">
+
+        <div class="notification-item__content">
+
+          <strong>
+            Payroll Notifications
+          </strong>
+
+          <span>
+            Notify authorized users about payroll processing,
+            salary updates, and payroll-related events.
+          </span>
+
+        </div>
+
+        <div class="form-check form-switch">
+
+          <input
+            id="payrollNotifications"
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            formControlName="payrollNotifications" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="settings-info">
+
+      <i class="bi bi-info-circle"></i>
+
+      <div>
+
+        <strong>
+          Notification preferences
+        </strong>
+
+        <p>
+          Disabling a notification category prevents the corresponding
+          HRMS events from generating notifications. Critical system
+          and security alerts may still be delivered.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="settings-form__actions">
+
+      <button
+        type="button"
+        class="btn btn-light border"
+        [disabled]="isSaving()"
+        (click)="resetSettings()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSaving()">
+
+        @if (isSaving()) {
+
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true">
+          </span>
+
+          Saving...
+
+        } @else {
+
+          <i class="bi bi-check2 me-1"></i>
+
+          Save Changes
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>

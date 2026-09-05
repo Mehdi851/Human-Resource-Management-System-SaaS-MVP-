@@ -1,0 +1,470 @@
+<section class="settings-section">
+
+  <!-- Header -->
+  <div class="settings-section__header">
+
+    <div>
+      <h2 class="settings-section__title">
+        Work & Attendance
+      </h2>
+
+      <p class="settings-section__description">
+        Configure working days, office hours, and attendance rules.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Success -->
+  @if (saveSuccess()) {
+
+    <div
+      class="alert alert-success d-flex align-items-center gap-2 mb-3"
+      role="alert">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      <span>
+        Work and attendance settings have been saved successfully.
+      </span>
+
+    </div>
+
+  }
+
+
+  <form
+    class="settings-form"
+    [formGroup]="workForm"
+    (ngSubmit)="saveSettings()"
+    novalidate>
+
+
+    <!-- Working Days -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-calendar-week"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Working Days
+          </h3>
+
+          <p class="settings-card__description">
+            Select the days considered working days for your organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="working-days">
+
+        <!-- Monday -->
+        <label
+          class="day-option"
+          for="monday">
+
+          <input
+            id="monday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="monday" />
+
+          <span>Monday</span>
+
+        </label>
+
+
+        <!-- Tuesday -->
+        <label
+          class="day-option"
+          for="tuesday">
+
+          <input
+            id="tuesday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="tuesday" />
+
+          <span>Tuesday</span>
+
+        </label>
+
+
+        <!-- Wednesday -->
+        <label
+          class="day-option"
+          for="wednesday">
+
+          <input
+            id="wednesday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="wednesday" />
+
+          <span>Wednesday</span>
+
+        </label>
+
+
+        <!-- Thursday -->
+        <label
+          class="day-option"
+          for="thursday">
+
+          <input
+            id="thursday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="thursday" />
+
+          <span>Thursday</span>
+
+        </label>
+
+
+        <!-- Friday -->
+        <label
+          class="day-option"
+          for="friday">
+
+          <input
+            id="friday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="friday" />
+
+          <span>Friday</span>
+
+        </label>
+
+
+        <!-- Saturday -->
+        <label
+          class="day-option"
+          for="saturday">
+
+          <input
+            id="saturday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="saturday" />
+
+          <span>Saturday</span>
+
+        </label>
+
+
+        <!-- Sunday -->
+        <label
+          class="day-option"
+          for="sunday">
+
+          <input
+            id="sunday"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="sunday" />
+
+          <span>Sunday</span>
+
+        </label>
+
+      </div>
+
+      @if (!hasWorkingDaySelected()) {
+
+        <div class="settings-warning">
+          <i class="bi bi-info-circle"></i>
+
+          <span>
+            At least one working day should be selected.
+          </span>
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Work Hours -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-clock"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Work Hours
+          </h3>
+
+          <p class="settings-card__description">
+            Define the standard working hours for employees.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Start Time -->
+        <div class="col-md-6">
+
+          <label
+            for="workStartTime"
+            class="form-label">
+
+            Work Start Time
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <input
+            id="workStartTime"
+            type="time"
+            class="form-control"
+            formControlName="workStartTime"
+            [class.is-invalid]="
+              workStartTime.invalid &&
+              workStartTime.touched
+            " />
+
+          @if (
+            workStartTime.invalid &&
+            workStartTime.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Work start time is required.
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- End Time -->
+        <div class="col-md-6">
+
+          <label
+            for="workEndTime"
+            class="form-label">
+
+            Work End Time
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <input
+            id="workEndTime"
+            type="time"
+            class="form-control"
+            formControlName="workEndTime"
+            [class.is-invalid]="
+              workEndTime.invalid &&
+              workEndTime.touched
+            " />
+
+          @if (
+            workEndTime.invalid &&
+            workEndTime.touched
+          ) {
+
+            <div class="invalid-feedback">
+              Work end time is required.
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Attendance Rules -->
+    <div class="settings-card">
+
+      <div class="settings-card__header">
+
+        <div class="settings-card__icon">
+          <i class="bi bi-person-check"></i>
+        </div>
+
+        <div>
+          <h3 class="settings-card__title">
+            Attendance Rules
+          </h3>
+
+          <p class="settings-card__description">
+            Configure attendance and late-arrival behavior.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Grace Period -->
+        <div class="col-md-6">
+
+          <label
+            for="gracePeriodMinutes"
+            class="form-label">
+
+            Grace Period
+            <span class="text-danger">*</span>
+
+          </label>
+
+          <div class="input-group">
+
+            <input
+              id="gracePeriodMinutes"
+              type="number"
+              min="0"
+              max="120"
+              class="form-control"
+              formControlName="gracePeriodMinutes"
+              [class.is-invalid]="
+                gracePeriodMinutes.invalid &&
+                gracePeriodMinutes.touched
+              " />
+
+            <span class="input-group-text">
+              minutes
+            </span>
+
+          </div>
+
+          @if (
+            gracePeriodMinutes.invalid &&
+            gracePeriodMinutes.touched
+          ) {
+
+            <div class="text-danger settings-validation">
+
+              @if (
+                gracePeriodMinutes.errors?.['required']
+              ) {
+                Grace period is required.
+              }
+
+              @if (
+                gracePeriodMinutes.errors?.['min']
+              ) {
+                Grace period cannot be negative.
+              }
+
+              @if (
+                gracePeriodMinutes.errors?.['max']
+              ) {
+                Grace period cannot exceed 120 minutes.
+              }
+
+            </div>
+
+          }
+
+          <div class="form-text">
+            Employees arriving within this period will not be marked late.
+          </div>
+
+        </div>
+
+
+        <!-- Late Tracking -->
+        <div class="col-md-6">
+
+          <div class="settings-toggle">
+
+            <div class="settings-toggle__content">
+
+              <strong>
+                Late Attendance Tracking
+              </strong>
+
+              <span>
+                Automatically track employees who arrive after
+                the configured grace period.
+              </span>
+
+            </div>
+
+            <div class="form-check form-switch">
+
+              <input
+                id="enableLateTracking"
+                type="checkbox"
+                class="form-check-input"
+                role="switch"
+                formControlName="enableLateTracking" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="settings-form__actions">
+
+      <button
+        type="button"
+        class="btn btn-light border"
+        [disabled]="isSaving()"
+        (click)="resetSettings()">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+        Reset
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSaving()">
+
+        @if (isSaving()) {
+
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true">
+          </span>
+
+          Saving...
+
+        } @else {
+
+          <i class="bi bi-check2 me-1"></i>
+
+          Save Changes
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>
