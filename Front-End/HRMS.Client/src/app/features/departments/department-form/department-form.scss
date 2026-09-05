@@ -1,0 +1,256 @@
+.department-form-page {
+  width: 100%;
+}
+
+/* -----------------------------------------
+   Page Header
+----------------------------------------- */
+
+.page-header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  margin: 0.35rem 0 0;
+  color: #6c757d;
+  font-size: 0.925rem;
+}
+
+.back-link {
+  color: #6c757d;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+/* -----------------------------------------
+   Sections
+----------------------------------------- */
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.section-description {
+  color: #6c757d;
+  font-size: 0.825rem;
+}
+
+/* -----------------------------------------
+   Form Grid
+----------------------------------------- */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+}
+
+.form-field {
+  min-width: 0;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+/* -----------------------------------------
+   Form Controls
+----------------------------------------- */
+
+.form-label {
+  margin-bottom: 0.45rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.required-mark {
+  color: #dc3545;
+}
+
+.form-control,
+.form-select {
+  min-height: 42px;
+  border-color: #dee2e6;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.field-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.35rem;
+}
+
+.form-text {
+  color: #6c757d;
+  font-size: 0.75rem;
+}
+
+.character-count {
+  color: #6c757d;
+  font-size: 0.75rem;
+}
+
+/* -----------------------------------------
+   Status Information
+----------------------------------------- */
+
+.status-information {
+  max-width: 700px;
+}
+
+.status-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.65rem;
+}
+
+.status-preview-active {
+  background: #f3faf4;
+}
+
+.status-preview-inactive {
+  background: #f8f9fa;
+}
+
+.status-preview .status-indicator {
+  flex: 0 0 auto;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-top: 0.3rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-preview-active .status-indicator {
+  color: #2e7d32;
+}
+
+.status-preview-inactive .status-indicator {
+  color: #495057;
+}
+
+.status-preview-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.status-preview-description {
+  margin-top: 0.2rem;
+  color: #6c757d;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* -----------------------------------------
+   Form Actions
+----------------------------------------- */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+}
+
+/* -----------------------------------------
+   Not Found
+----------------------------------------- */
+
+.not-found-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.not-found-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  color: #6c757d;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.not-found-state h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.not-found-state p {
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+/* -----------------------------------------
+   Mobile
+----------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+  .page-header-content {
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-full {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .field-footer {
+    align-items: flex-start;
+  }
+
+}

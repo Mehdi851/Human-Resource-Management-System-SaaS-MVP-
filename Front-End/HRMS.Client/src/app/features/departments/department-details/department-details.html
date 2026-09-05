@@ -1,0 +1,260 @@
+<div class="department-details-page">
+
+  @if (department(); as department) {
+
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+
+      <div class="page-header-content">
+
+        <div>
+          <div class="breadcrumb-link mb-2">
+            <a
+              routerLink="/departments"
+              class="back-link">
+              ← Back to Departments
+            </a>
+          </div>
+
+          <h1 class="page-title">
+            {{ department.name }}
+          </h1>
+
+          <p class="page-subtitle">
+            View department information and workforce details.
+          </p>
+        </div>
+
+        <a
+          class="btn btn-primary"
+          [routerLink]="[
+            '/departments',
+            department.id,
+            'edit'
+          ]">
+          Edit Department
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- Department Profile -->
+    <div class="card border-0 shadow-sm mb-4">
+
+      <div class="card-body profile-card">
+
+        <div class="profile-main">
+
+          <div class="department-avatar">
+            {{ department.name.charAt(0) }}
+          </div>
+
+          <div class="profile-content">
+
+            <div class="profile-title-row">
+
+              <h2 class="department-name">
+                {{ department.name }}
+              </h2>
+
+              <span
+                class="status-badge"
+                [class.status-active]="department.status === 'Active'"
+                [class.status-inactive]="department.status === 'Inactive'">
+
+                <span
+                  class="status-indicator"
+                  aria-hidden="true">
+                </span>
+
+                {{ department.status }}
+
+              </span>
+
+            </div>
+
+            <p class="department-description">
+              {{ department.description }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Department Information -->
+    <div class="card border-0 shadow-sm mb-4">
+
+      <div class="card-header bg-white border-bottom py-3">
+
+        <h2 class="section-title mb-0">
+          Department Information
+        </h2>
+
+      </div>
+
+      <div class="card-body">
+
+        <div class="information-grid">
+
+          <div class="information-item">
+            <div class="information-label">
+              Department Name
+            </div>
+
+            <div class="information-value">
+              {{ department.name }}
+            </div>
+          </div>
+
+          <div class="information-item">
+            <div class="information-label">
+              Department Manager
+            </div>
+
+            <div class="information-value">
+              {{ department.manager }}
+            </div>
+          </div>
+
+          <div class="information-item">
+            <div class="information-label">
+              Employee Count
+            </div>
+
+            <div class="information-value">
+              {{ department.employeeCount }}
+            </div>
+          </div>
+
+          <div class="information-item">
+            <div class="information-label">
+              Status
+            </div>
+
+            <div class="information-value">
+
+              <span
+                class="status-badge"
+                [class.status-active]="department.status === 'Active'"
+                [class.status-inactive]="department.status === 'Inactive'">
+
+                <span
+                  class="status-indicator"
+                  aria-hidden="true">
+                </span>
+
+                {{ department.status }}
+
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Description -->
+    <div class="card border-0 shadow-sm mb-4">
+
+      <div class="card-header bg-white border-bottom py-3">
+
+        <h2 class="section-title mb-0">
+          Description
+        </h2>
+
+      </div>
+
+      <div class="card-body">
+
+        <p class="description-text">
+          {{ department.description }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- Audit Information -->
+    <div class="card border-0 shadow-sm">
+
+      <div class="card-header bg-white border-bottom py-3">
+
+        <h2 class="section-title mb-0">
+          Record Information
+        </h2>
+
+      </div>
+
+      <div class="card-body">
+
+        <div class="information-grid">
+
+          <div class="information-item">
+
+            <div class="information-label">
+              Created Date
+            </div>
+
+            <div class="information-value">
+              {{ department.createdAt }}
+            </div>
+
+          </div>
+
+          <div class="information-item">
+
+            <div class="information-label">
+              Last Updated
+            </div>
+
+            <div class="information-value">
+              {{ department.updatedAt }}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <!-- Department Not Found -->
+    <div class="not-found-state">
+
+      <div
+        class="not-found-icon"
+        aria-hidden="true">
+        !
+      </div>
+
+      <h1>
+        Department Not Found
+      </h1>
+
+      <p>
+        The department you're looking for doesn't exist
+        or is no longer available.
+      </p>
+
+      <a
+        routerLink="/departments"
+        class="btn btn-primary">
+        Back to Departments
+      </a>
+
+    </div>
+
+  }
+
+</div>

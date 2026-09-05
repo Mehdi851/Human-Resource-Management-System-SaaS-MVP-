@@ -48,17 +48,58 @@ export const routes: Routes = [
           },
         ],
       },
+       {
+    path: 'departments',
+    children: [
       {
-        path: 'departments',
+        path: '',
         loadComponent: () =>
           import('./features/departments/departments')
             .then(m => m.Departments)
       },
       {
-        path: 'designations',
+      path: 'create',
+      loadComponent: () =>
+        import('./features/departments/department-form/department-form')
+          .then(m => m.DepartmentForm)
+    },
+      
+      {
+        path: ':id',
         loadComponent: () =>
-          import('./features/designations/designations')
-            .then(m => m.Designations)
+          import('./features/departments/department-details/department-details')
+            .then(m => m.DepartmentDetails)
+      }
+    ]
+  },
+      {
+        path: 'designations',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/designations/designations')
+                .then(m => m.Designations)
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./features/designations/designation-form/designation-form')
+                .then(m => m.DesignationForm)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/designations/designation-form/designation-form')
+                .then(m => m.DesignationForm)
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/designations/designation-details/designation-details')
+                .then(m => m.DesignationDetails)
+          }
+        ]
       },
       {
         path: 'attendance',
@@ -137,11 +178,11 @@ export const routes: Routes = [
           import('./features/payroll/payroll-details/payroll-details')
             .then(component => component.PayrollDetails)
       },
-      {
+       {
         path: 'organization',
-        loadComponent: () =>
-          import('./features/organization/organization')
-            .then(m => m.Organization)
+        loadChildren: () =>
+          import('./features/organization/organization.routes')
+            .then(m => m.ORGANIZATION_ROUTES)
       }
     ],
     },

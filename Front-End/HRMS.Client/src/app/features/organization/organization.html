@@ -1,1 +1,495 @@
-<p>organization works!</p>
+<div class="organizations-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1 class="page-title">Organizations</h1>
+      <p class="page-subtitle">
+        Manage organizations and their HRMS configuration.
+      </p>
+    </div>
+
+    <a
+      routerLink="/organization/create"
+      class="btn btn-primary">
+      <i class="bi bi-plus-lg me-2"></i>
+      Add Organization
+    </a>
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <section class="summary-grid">
+
+  <article class="summary-card">
+    <div class="summary-card__content">
+      <span class="summary-card__label">
+        Total Organizations
+      </span>
+
+      <strong class="summary-card__value">
+        {{ totalOrganizations() }}
+      </strong>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <div class="summary-card__content">
+      <span class="summary-card__label">
+        Active Organizations
+      </span>
+
+      <strong class="summary-card__value">
+        {{ activeOrganizations() }}
+      </strong>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <div class="summary-card__content">
+      <span class="summary-card__label">
+        Inactive Organizations
+      </span>
+
+      <strong class="summary-card__value">
+        {{ inactiveOrganizations() }}
+      </strong>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <div class="summary-card__content">
+      <span class="summary-card__label">
+        Total Employees
+      </span>
+
+      <strong class="summary-card__value">
+        {{ totalEmployees() }}
+      </strong>
+    </div>
+  </article>
+
+</section>
+
+
+  <!-- Organization Table Card -->
+  <div class="content-card">
+
+  <!-- Toolbar -->
+  <div class="table-toolbar">
+
+    <div>
+      <h2 class="section-title">
+        Organization Directory
+      </h2>
+
+      <p class="section-subtitle">
+        {{ filteredOrganizations().length }}
+        organization(s) found
+      </p>
+    </div>
+
+    <div class="toolbar-filters">
+
+      <div class="search-box">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search organizations..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)" />
+
+      </div>
+
+      <select
+        class="form-select status-filter"
+        [value]="statusFilter()"
+        (change)="onStatusChange($event)">
+
+        <option value="All">
+          All Status
+        </option>
+
+        <option value="Active">
+          Active
+        </option>
+
+        <option value="Inactive">
+          Inactive
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <!-- Table -->
+  <div class="table-responsive">
+
+    <table class="table organizations-table">
+
+      <thead>
+
+        <tr>
+          <th>Organization</th>
+          <th>Contact</th>
+          <th>Location</th>
+          <th>Employees</th>
+          <th>Departments</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (
+          organization of paginatedOrganizations();
+          track organization.id
+        ) {
+
+          <tr>
+
+            <td>
+
+              <div class="organization-cell">
+
+                <div class="organization-avatar">
+                  {{ getInitials(organization.name) }}
+                </div>
+
+                <div>
+
+                  <div class="organization-name">
+                    {{ organization.name }}
+                  </div>
+
+                  <div class="organization-code">
+                    {{ organization.code }}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="contact-cell">
+
+                <span>
+                  {{ organization.email }}
+                </span>
+
+                <small>
+                  {{ organization.phone }}
+                </small>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="location-cell">
+
+                <span>
+                  {{ organization.city }}
+                </span>
+
+                <small>
+                  {{ organization.country }}
+                </small>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              <span class="metric-value">
+                {{ organization.employeeCount }}
+              </span>
+            </td>
+
+
+            <td>
+              <span class="metric-value">
+                {{ organization.departmentCount }}
+              </span>
+            </td>
+
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.status-active]="
+                  organization.status === 'Active'
+                "
+                [class.status-inactive]="
+                  organization.status === 'Inactive'
+                ">
+
+                <span class="status-dot"></span>
+
+                {{ organization.status }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="table-actions">
+
+                <a
+                  [routerLink]="['/organization',
+                    organization.id
+                  ]"
+                  class="action-btn"
+                  title="View Organization"
+                  aria-label="View Organization">
+
+                  <i class="bi bi-eye" aria-hidden="true"></i>
+                  <span class="action-btn__label">View</span>
+
+                </a>
+
+
+                <a
+                  [routerLink]="[
+                    '/organization',
+                    organization.id,
+                    'edit'
+                  ]"
+                  class="action-btn"
+                  title="Edit Organization"
+                  aria-label="Edit Organization">
+
+                  <i class="bi bi-pencil" aria-hidden="true"></i>
+                  <span class="action-btn__label">Edit</span>
+
+                </a>
+
+
+                <button
+                  type="button"
+                  class="action-btn action-btn--danger"
+                  title="Delete Organization"
+                  aria-label="Delete Organization"
+                  (click)="openDeleteConfirmation(organization)">
+
+                  <i class="bi bi-trash" aria-hidden="true"></i>
+                  <span class="action-btn__label">Delete</span>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        @if (paginatedOrganizations().length === 0) {
+
+          <tr>
+
+            <td
+              colspan="7"
+              class="empty-state">
+
+              <div class="empty-state-content">
+
+                <i class="bi bi-building"></i>
+
+                <h3>
+                  No organizations found
+                </h3>
+
+                <p>
+                  Try changing your search or
+                  status filter.
+                </p>
+
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="clearFilters()">
+
+                  Clear Filters
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- Pagination -->
+  @if (filteredOrganizations().length > 0) {
+
+    <div class="table-pagination">
+
+      <div class="pagination-info">
+
+        Showing
+        <strong>
+          {{ paginationStart() }}
+        </strong>
+        -
+        <strong>
+          {{ paginationEnd() }}
+        </strong>
+        of
+        <strong>
+          {{ filteredOrganizations().length }}
+        </strong>
+
+      </div>
+
+
+      <div class="pagination-controls">
+
+        <select
+          class="form-select page-size-select"
+          [value]="pageSize()"
+          (change)="onPageSizeChange($event)">
+
+          <option value="5">5 / page</option>
+          <option value="10">10 / page</option>
+          <option value="25">25 / page</option>
+
+        </select>
+
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage() === 1"
+          (click)="previousPage()">
+
+          <i class="bi bi-chevron-left"></i>
+
+        </button>
+
+
+        @for (
+          page of [].constructor(totalPages());
+          track $index
+        ) {
+
+          <button
+            type="button"
+            class="pagination-btn"
+            [class.pagination-btn--active]="
+              currentPage() === $index + 1
+            "
+            (click)="goToPage($index + 1)">
+
+            {{ $index + 1 }}
+
+          </button>
+
+        }
+
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="
+            currentPage() === totalPages()
+          "
+          (click)="nextPage()">
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+
+</div>
+
+@if (organizationToDelete(); as organization) {
+
+  <div
+    class="delete-modal-backdrop"
+    (click)="closeDeleteConfirmation()">
+
+    <div
+      class="delete-modal"
+      (click)="$event.stopPropagation()">
+
+      <div class="delete-modal__icon">
+        <i class="bi bi-trash"></i>
+      </div>
+
+      <h3 class="delete-modal__title">
+        Delete Organization?
+      </h3>
+
+      <p class="delete-modal__message">
+        Are you sure you want to delete
+        <strong>{{ organization.name }}</strong>?
+        This action cannot be undone.
+      </p>
+
+      <div class="delete-modal__actions">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closeDeleteConfirmation()">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteOrganization()">
+
+          Delete Organization
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

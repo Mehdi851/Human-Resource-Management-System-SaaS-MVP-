@@ -1,0 +1,233 @@
+<section class="designation-details-page">
+  <div class="container-fluid px-0">
+
+    @if (designation(); as designation) {
+
+      <!-- Page Header -->
+      <div class="page-header mb-4">
+
+        <div class="page-header-content">
+
+          <div>
+            <button
+              type="button"
+              class="back-link"
+              (click)="goBack()"
+              aria-label="Back to Designations">
+              <span aria-hidden="true">←</span>
+              Back to Designations
+            </button>
+
+            <h1 class="page-title mt-3">
+              {{ designation.name }}
+            </h1>
+
+            <p class="page-subtitle mb-0">
+              View designation details and workforce information.
+            </p>
+          </div>
+
+          <div class="page-header-actions">
+            <a
+              [routerLink]="[
+                '/designations',
+                designation.id,
+                'edit'
+              ]"
+              class="btn btn-primary">
+              Edit Designation
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Details Card -->
+      <div class="card details-card">
+
+        <div class="card-header details-card-header">
+          <h2 class="section-title mb-0">
+            Designation Information
+          </h2>
+        </div>
+
+        <div class="card-body">
+
+          <div class="row g-4">
+
+            <!-- Designation Name -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Designation
+                </div>
+
+                <div class="detail-value">
+                  {{ designation.name }}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Department -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Department
+                </div>
+
+                <div class="detail-value">
+                  {{ designation.department }}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Employees -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Employees
+                </div>
+
+                <div class="detail-value">
+                  {{ designation.employeeCount }}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Status
+                </div>
+
+                <div class="detail-value">
+
+                  @if (designation.status === 'Active') {
+                    <span class="status-badge status-active">
+                      <span
+                        class="status-dot"
+                        aria-hidden="true">
+                      </span>
+                      Active
+                    </span>
+                  } @else {
+                    <span class="status-badge status-inactive">
+                      <span
+                        class="status-dot"
+                        aria-hidden="true">
+                      </span>
+                      Inactive
+                    </span>
+                  }
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Description
+                </div>
+
+                <div class="detail-description">
+                  {{ designation.description }}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Created Date -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Created Date
+                </div>
+
+                <div class="detail-value">
+                  {{ designation.createdAt | date: 'dd MMM yyyy' }}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Updated Date -->
+            <div class="col-12 col-md-6">
+              <div class="detail-item">
+
+                <div class="detail-label">
+                  Last Updated
+                </div>
+
+                <div class="detail-value">
+                  {{ designation.updatedAt | date: 'dd MMM yyyy' }}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Action -->
+      <div class="details-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="goBack()">
+          Back to Designations
+        </button>
+      </div>
+
+    } @else {
+
+      <!-- Not Found -->
+      <div
+        class="not-found-card"
+        role="alert"
+        aria-live="polite">
+
+        <div
+          class="not-found-icon"
+          aria-hidden="true">
+          ?
+        </div>
+
+        <h1 class="not-found-title">
+          Designation Not Found
+        </h1>
+
+        <p class="not-found-description">
+          The designation you're looking for doesn't exist
+          or is no longer available.
+        </p>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="goBack()">
+          Back to Designations
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+</section>

@@ -1,1 +1,338 @@
-<p>departments works!</p>
+<div class="department-page">
+
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <div class="page-header-content">
+      <div>
+        <h1 class="page-title">Department Management</h1>
+        <p class="page-subtitle">
+          Manage organizational departments and workforce structure.
+        </p>
+      </div>
+
+      <a
+        class="btn btn-primary"
+        routerLink="/departments/create">
+        Create Department
+      </a>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="department-filter-grid">
+
+        <div class="department-search-field">
+          <label
+            for="departmentSearch"
+            class="form-label">
+            Search departments
+          </label>
+
+          <input
+            id="departmentSearch"
+            type="search"
+            class="form-control"
+            placeholder="Search by department, description, or manager..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="updateSearch($event)">
+        </div>
+
+        <div class="department-status-field">
+          <label
+            for="departmentStatus"
+            class="form-label">
+            Status
+          </label>
+
+          <select
+            id="departmentStatus"
+            class="form-select"
+            [ngModel]="selectedStatus()"
+            (ngModelChange)="updateStatus($event)">
+
+            <option value="">All Statuses</option>
+
+            @for (status of statuses; track status) {
+              <option [value]="status">
+                {{ status }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+      </div>
+
+      @if (searchTerm() || selectedStatus()) {
+        <div class="filter-actions mt-3">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            (click)="clearFilters()">
+            Clear Filters
+          </button>
+        </div>
+      }
+
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="department-summary-grid mb-4">
+
+    <div class="summary-card">
+      <div class="summary-label">
+        Total Departments
+      </div>
+
+      <div class="summary-value">
+        {{ totalDepartments() }}
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">
+        Active Departments
+      </div>
+
+      <div class="summary-value">
+        {{ activeDepartments() }}
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">
+        Inactive Departments
+      </div>
+
+      <div class="summary-value">
+        {{ inactiveDepartments() }}
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">
+        Total Employees
+      </div>
+
+      <div class="summary-value">
+        {{ totalEmployees() }}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Department Table -->
+<div class="card border-0 shadow-sm">
+
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center gap-3">
+
+      <div>
+        <h2 class="section-title mb-1">
+          Departments
+        </h2>
+
+        <p
+          class="section-description mb-0"
+          aria-live="polite">
+          {{ filteredDepartments().length }} department(s) found
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  @if (filteredDepartments().length > 0) {
+
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+
+        <caption class="visually-hidden">
+          List of departments including department name,
+          description, manager, employee count, status and actions.
+        </caption>
+
+        <thead>
+          <tr>
+
+            <th scope="col">
+              Department
+            </th>
+
+            <th scope="col">
+              Description
+            </th>
+
+            <th scope="col">
+              Manager
+            </th>
+
+            <th
+              scope="col"
+              class="text-center">
+              Employees
+            </th>
+
+            <th scope="col">
+              Status
+            </th>
+
+            <th
+              scope="col"
+              class="text-end">
+              Actions
+            </th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (
+            department of filteredDepartments();
+            track department.id
+          ) {
+
+            <tr>
+
+              <td>
+                <div class="department-name">
+                  {{ department.name }}
+                </div>
+              </td>
+
+              <td>
+                <div class="department-description">
+                  {{ department.description }}
+                </div>
+              </td>
+
+              <td>
+                {{ department.manager }}
+              </td>
+
+              <td class="text-center">
+                {{ department.employeeCount }}
+              </td>
+
+              <td>
+
+                <span
+                  class="status-badge"
+                  [class.status-active]="
+                    department.status === 'Active'
+                  "
+                  [class.status-inactive]="
+                    department.status === 'Inactive'
+                  "
+                  [attr.aria-label]="
+                    'Department status: ' + department.status
+                  ">
+
+                  <span
+                    class="status-indicator"
+                    aria-hidden="true">
+                  </span>
+
+                  {{ department.status }}
+
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="table-actions justify-content-end">
+
+                  <a
+                    class="btn btn-sm btn-outline-secondary"
+                    [routerLink]="[
+                      '/departments',
+                      department.id
+                    ]"
+                    [attr.aria-label]="
+                      'View ' + department.name + ' department'
+                    ">
+                    View
+                  </a>
+
+                  <a
+                    class="btn btn-sm btn-outline-primary"
+                    [routerLink]="[
+                      '/departments',
+                      department.id,
+                      'edit'
+                    ]"
+                    [attr.aria-label]="
+                      'Edit ' + department.name + ' department'
+                    ">
+                    Edit
+                  </a>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  } @else {
+
+    <!-- Empty State -->
+    <div
+      class="empty-state"
+      role="status"
+      aria-live="polite">
+
+      <div
+        class="empty-state-icon"
+        aria-hidden="true">
+        <span>⌁</span>
+      </div>
+
+      <h3>
+        No departments found
+      </h3>
+
+      <p>
+        Try adjusting your search or filter criteria.
+      </p>
+
+      @if (searchTerm() || selectedStatus()) {
+
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="clearFilters()">
+          Clear Filters
+        </button>
+
+      } @else {
+
+        <a
+          routerLink="/departments/create"
+          class="btn btn-primary">
+          Create Department
+        </a>
+
+      }
+
+    </div>
+
+  }
+
+</div>
+
+</div>

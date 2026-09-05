@@ -1,1 +1,308 @@
-<p>designations works!</p>
+<section class="designation-page">
+  <div class="container-fluid px-0">
+
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+      <div class="page-header-content">
+        <div>
+          <h1 class="page-title">Designation Management</h1>
+          <p class="page-subtitle mb-0">
+            Manage organizational job titles, roles, and workforce structure.
+          </p>
+        </div>
+
+        <div class="page-header-actions">
+          <button
+            routerLink="/designations/create"
+            class="btn btn-primary">
+            Create Designation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-grid mb-4">
+
+      <!-- Total -->
+      <div>
+        <div class="card summary-card h-100">
+          <div class="card-body">
+            <div class="summary-label">
+              Total Designations
+            </div>
+
+            <div class="summary-value">
+              {{ totalDesignations() }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active -->
+      <div>
+        <div class="card summary-card h-100">
+          <div class="card-body">
+            <div class="summary-label">
+              Active Designations
+            </div>
+
+            <div class="summary-value">
+              {{ activeDesignations() }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inactive -->
+      <div>
+        <div class="card summary-card h-100">
+          <div class="card-body">
+            <div class="summary-label">
+              Inactive Designations
+            </div>
+
+            <div class="summary-value">
+              {{ inactiveDesignations() }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employees -->
+      <div>
+        <div class="card summary-card h-100">
+          <div class="card-body">
+            <div class="summary-label">
+              Total Employees
+            </div>
+
+            <div class="summary-value">
+              {{ totalEmployees() }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Filters -->
+    <div class="card filter-card mb-4">
+      <div class="card-body">
+
+        <div class="row g-3 align-items-end">
+
+          <!-- Search -->
+          <div class="col-12 col-lg-8">
+            <label
+              for="designation-search"
+              class="form-label">
+              Search designations
+            </label>
+
+            <input
+                id="designation-search"
+                type="search"
+                class="form-control"
+                placeholder="Search by designation, department..."
+                [value]="searchTerm()"
+                (input)="onSearchChange($event)"
+                autocomplete="off"
+                aria-label="Search designations by name, description, or department">
+          </div>
+
+          <!-- Status -->
+          <div class="col-12 col-lg-4">
+            <label
+              for="designation-status"
+              class="form-label">
+              Status
+            </label>
+
+            <select
+                id="designation-status"
+                class="form-select"
+                [value]="selectedStatus()"
+                (change)="onStatusChange($event)"
+                aria-label="Filter designations by status">
+
+              <option value="All">
+                All Statuses
+              </option>
+
+              <option value="Active">
+                Active
+              </option>
+
+              <option value="Inactive">
+                Inactive
+              </option>
+
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Designations Card -->
+    <div class="card designation-card">
+
+      <div class="card-header designation-card-header">
+        <div>
+          <h2 class="section-title mb-1">
+            Designations
+          </h2>
+
+          <p
+            class="section-description mb-0"
+            aria-live="polite">
+            {{ filteredDesignations().length }} designation(s) found
+          </p>
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+
+        @if (filteredDesignations().length > 0) {
+
+          <div class="table-responsive">
+            <table class="table designation-table mb-0">
+
+              <caption class="visually-hidden">
+                Filtered organizational designations
+              </caption>
+
+              <thead>
+                <tr>
+                  <th scope="col">Designation</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Department</th>
+                  <th scope="col">Employees</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" class="text-end">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (
+                  designation of filteredDesignations();
+                  track designation.id
+                ) {
+                  <tr>
+
+                    <!-- Designation -->
+                    <td>
+                      <div class="designation-name">
+                        {{ designation.name }}
+                      </div>
+                    </td>
+
+                    <!-- Description -->
+                    <td>
+                      <div class="designation-description">
+                        {{ designation.description }}
+                      </div>
+                    </td>
+
+                    <!-- Department -->
+                    <td>
+                      <span class="department-name">
+                        {{ designation.department }}
+                      </span>
+                    </td>
+
+                    <!-- Employees -->
+                    <td>
+                      <span class="employee-count">
+                        {{ designation.employeeCount }}
+                      </span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      @if (designation.status === 'Active') {
+                        <span class="status-badge status-active">
+                          <span
+                            class="status-dot"
+                            aria-hidden="true">
+                          </span>
+                          Active
+                        </span>
+                      } @else {
+                        <span class="status-badge status-inactive">
+                          <span
+                            class="status-dot"
+                            aria-hidden="true">
+                          </span>
+                          Inactive
+                        </span>
+                      }
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+                      <div class="table-actions justify-content-end">
+
+                        <a
+                          [routerLink]="[
+                            '/designations',
+                            designation.id
+                          ]"
+                          class="btn btn-sm btn-light action-button"
+                          [attr.aria-label]="'View ' + designation.name">
+                          View
+                        </a>
+
+                        <a
+                          [routerLink]="[
+                            '/designations',
+                            designation.id,
+                            'edit'
+                          ]"
+                          class="btn btn-sm btn-light action-button"
+                          [attr.aria-label]="'Edit ' + designation.name">
+                          Edit
+                        </a>
+
+                      </div>
+                    </td>
+
+                  </tr>
+                }
+              </tbody>
+
+            </table>
+          </div>
+
+        } @else {
+
+          <!-- Filter Empty State -->
+          <div
+            class="empty-state"
+            aria-live="polite">
+
+            <div
+              class="empty-state-icon"
+              aria-hidden="true">
+              —
+            </div>
+
+            <h3 class="empty-state-title">
+              No designations found
+            </h3>
+
+            <p class="empty-state-description mb-0">
+              No designations match your current search or status filter.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+    </div>
+
+  </div>
+</section>

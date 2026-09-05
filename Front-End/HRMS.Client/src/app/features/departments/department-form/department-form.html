@@ -1,0 +1,365 @@
+<div class="department-form-page">
+
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+
+    <div class="page-header-content">
+
+      <div>
+
+        <div class="breadcrumb-link mb-2">
+          <a
+            routerLink="/departments"
+            class="back-link">
+            ← Back to Departments
+          </a>
+        </div>
+
+        <h1 class="page-title">
+          {{ pageTitle() }}
+        </h1>
+
+        <p class="page-subtitle">
+          {{ pageSubtitle() }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  @if (isEditMode() && !department()) {
+
+    <!-- Not Found -->
+    <div class="card border-0 shadow-sm">
+
+      <div class="not-found-state">
+
+        <div
+          class="not-found-icon"
+          aria-hidden="true">
+          !
+        </div>
+
+        <h2>
+          Department Not Found
+        </h2>
+
+        <p>
+          The department you're trying to edit doesn't exist
+          or is no longer available.
+        </p>
+
+        <a
+          routerLink="/departments"
+          class="btn btn-primary">
+          Back to Departments
+        </a>
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <form
+      [formGroup]="departmentForm"
+      (ngSubmit)="submit()"
+      novalidate>
+
+      <!-- Department Information -->
+      <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white border-bottom py-3">
+
+          <h2 class="section-title mb-1">
+            Department Information
+          </h2>
+
+          <p class="section-description mb-0">
+            Provide the basic information for this department.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="form-grid">
+
+            <!-- Department Name -->
+            <div class="form-field">
+
+              <label
+                for="departmentName"
+                class="form-label">
+                Department Name
+                <span
+                  class="required-mark"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <input
+                id="departmentName"
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="e.g. Engineering"
+                maxlength="100"
+                [class.is-invalid]="
+                  name.invalid &&
+                  (name.touched || submitted)
+                ">
+
+              @if (
+                name.invalid &&
+                (name.touched || submitted)
+              ) {
+
+                <div class="invalid-feedback">
+
+                  @if (name.errors?.['required']) {
+                    Department name is required.
+                  }
+
+                  @if (name.errors?.['maxlength']) {
+                    Department name cannot exceed 100 characters.
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- Department Manager -->
+            <div class="form-field">
+
+              <label
+                for="departmentManager"
+                class="form-label">
+                Department Manager
+                <span
+                  class="required-mark"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <input
+                id="departmentManager"
+                type="text"
+                class="form-control"
+                formControlName="manager"
+                placeholder="e.g. Ahmed Khan"
+                maxlength="100"
+                [class.is-invalid]="
+                  manager.invalid &&
+                  (manager.touched || submitted)
+                ">
+
+              @if (
+                manager.invalid &&
+                (manager.touched || submitted)
+              ) {
+
+                <div class="invalid-feedback">
+
+                  @if (manager.errors?.['required']) {
+                    Department manager is required.
+                  }
+
+                  @if (manager.errors?.['maxlength']) {
+                    Manager name cannot exceed 100 characters.
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- Status -->
+            <div class="form-field">
+
+              <label
+                for="departmentStatus"
+                class="form-label">
+                Status
+                <span
+                  class="required-mark"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <select
+                id="departmentStatus"
+                class="form-select"
+                formControlName="status"
+                [class.is-invalid]="
+                  status.invalid &&
+                  (status.touched || submitted)
+                ">
+
+                @for (departmentStatus of statuses; track departmentStatus) {
+                  <option [value]="departmentStatus">
+                    {{ departmentStatus }}
+                  </option>
+                }
+
+              </select>
+
+              @if (
+                status.invalid &&
+                (status.touched || submitted)
+              ) {
+
+                <div class="invalid-feedback">
+                  Department status is required.
+                </div>
+
+              }
+
+            </div>
+
+            <!-- Description -->
+            <div class="form-field form-field-full">
+
+              <label
+                for="departmentDescription"
+                class="form-label">
+                Description
+              </label>
+
+              <textarea
+                id="departmentDescription"
+                class="form-control"
+                formControlName="description"
+                rows="5"
+                maxlength="500"
+                placeholder="Describe the department's responsibilities and purpose..."></textarea>
+
+              <div class="field-footer">
+
+                <small class="form-text">
+                  Optional. Maximum 500 characters.
+                </small>
+
+                <small class="character-count">
+                  {{ description.value?.length ?? 0 }}/500
+                </small>
+
+              </div>
+
+              @if (
+                description.invalid &&
+                (description.touched || submitted)
+              ) {
+
+                <div class="invalid-feedback d-block">
+                  Description cannot exceed 500 characters.
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Status Information -->
+      <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white border-bottom py-3">
+
+          <h2 class="section-title mb-1">
+            Status
+          </h2>
+
+          <p class="section-description mb-0">
+            Control whether this department is currently active.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="status-information">
+
+            <div
+              class="status-preview"
+              [class.status-preview-active]="
+                status.value === 'Active'
+              "
+              [class.status-preview-inactive]="
+                status.value === 'Inactive'
+              ">
+
+              <span
+                class="status-indicator"
+                aria-hidden="true">
+              </span>
+
+              <div>
+
+                <div class="status-preview-title">
+                  {{ status.value }}
+                </div>
+
+                <div class="status-preview-description">
+
+                  @if (status.value === 'Active') {
+                    This department is currently active
+                    and available for organizational use.
+                  } @else {
+                    This department is currently inactive
+                    and should not be used for new assignments.
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary">
+
+          @if (isEditMode()) {
+            Save Changes
+          } @else {
+            Create Department
+          }
+
+        </button>
+
+      </div>
+
+    </form>
+
+  }
+
+</div>

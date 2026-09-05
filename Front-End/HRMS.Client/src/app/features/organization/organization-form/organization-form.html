@@ -1,0 +1,451 @@
+<div class="organization-form-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <a
+        routerLink="/organization"
+        class="back-link">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Organizations
+
+      </a>
+
+      <h1 class="page-title">
+        {{ pageTitle() }}
+      </h1>
+
+      <p class="page-subtitle">
+        {{ pageDescription() }}
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Form -->
+  <form
+    [formGroup]="organizationForm"
+    (ngSubmit)="save()"
+    novalidate>
+
+    <!-- Organization Information -->
+    <section class="form-card">
+
+      <div class="form-card__header">
+
+        <div>
+          <h2 class="form-card__title">
+            Organization Information
+          </h2>
+
+          <p class="form-card__description">
+            Basic information used to identify the organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="form-card__body">
+
+        <div class="row g-3">
+
+          <!-- Name -->
+          <div class="col-12 col-md-8">
+
+            <label
+              for="name"
+              class="form-label">
+
+              Organization Name
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              class="form-control"
+              formControlName="name"
+              placeholder="Enter organization name"
+              [class.is-invalid]="isInvalid('name')" />
+
+            @if (isInvalid('name')) {
+              <div class="invalid-feedback">
+                Organization name is required.
+              </div>
+            }
+
+          </div>
+
+
+          <!-- Code -->
+          <div class="col-12 col-md-4">
+
+            <label
+              for="code"
+              class="form-label">
+
+              Organization Code
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="code"
+              type="text"
+              class="form-control text-uppercase"
+              formControlName="code"
+              placeholder="e.g. TVS"
+              [class.is-invalid]="isInvalid('code')" />
+
+            @if (isInvalid('code')) {
+              <div class="invalid-feedback">
+                Organization code is required.
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Contact Information -->
+    <section class="form-card">
+
+      <div class="form-card__header">
+
+        <div>
+          <h2 class="form-card__title">
+            Contact Information
+          </h2>
+
+          <p class="form-card__description">
+            Contact details for the organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="form-card__body">
+
+        <div class="row g-3">
+
+          <!-- Email -->
+          <div class="col-12 col-md-6">
+
+            <label
+              for="email"
+              class="form-label">
+
+              Email Address
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="organization@example.com"
+              [class.is-invalid]="isInvalid('email')" />
+
+            @if (isInvalid('email')) {
+              <div class="invalid-feedback">
+                Enter a valid email address.
+              </div>
+            }
+
+          </div>
+
+
+          <!-- Phone -->
+          <div class="col-12 col-md-6">
+
+            <label
+              for="phone"
+              class="form-label">
+
+              Phone Number
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              class="form-control"
+              formControlName="phone"
+              placeholder="+92 300 1234567"
+              [class.is-invalid]="isInvalid('phone')" />
+
+            @if (isInvalid('phone')) {
+              <div class="invalid-feedback">
+                Phone number is required.
+              </div>
+            }
+
+          </div>
+
+
+          <!-- Website -->
+          <div class="col-12">
+
+            <label
+              for="website"
+              class="form-label">
+
+              Website
+              <span class="optional">
+                Optional
+              </span>
+
+            </label>
+
+            <input
+              id="website"
+              type="url"
+              class="form-control"
+              formControlName="website"
+              placeholder="https://www.example.com" />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Address -->
+    <section class="form-card">
+
+      <div class="form-card__header">
+
+        <div>
+          <h2 class="form-card__title">
+            Address
+          </h2>
+
+          <p class="form-card__description">
+            Primary location of the organization.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="form-card__body">
+
+        <div class="row g-3">
+
+          <!-- Address -->
+          <div class="col-12">
+
+            <label
+              for="address"
+              class="form-label">
+
+              Address
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="address"
+              type="text"
+              class="form-control"
+              formControlName="address"
+              placeholder="Enter street address"
+              [class.is-invalid]="isInvalid('address')" />
+
+            @if (isInvalid('address')) {
+              <div class="invalid-feedback">
+                Address is required.
+              </div>
+            }
+
+          </div>
+
+
+          <!-- City -->
+          <div class="col-12 col-md-6">
+
+            <label
+              for="city"
+              class="form-label">
+
+              City
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="city"
+              type="text"
+              class="form-control"
+              formControlName="city"
+              placeholder="Enter city"
+              [class.is-invalid]="isInvalid('city')" />
+
+            @if (isInvalid('city')) {
+              <div class="invalid-feedback">
+                City is required.
+              </div>
+            }
+
+          </div>
+
+
+          <!-- Country -->
+          <div class="col-12 col-md-6">
+
+            <label
+              for="country"
+              class="form-label">
+
+              Country
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="country"
+              type="text"
+              class="form-control"
+              formControlName="country"
+              placeholder="Enter country"
+              [class.is-invalid]="isInvalid('country')" />
+
+            @if (isInvalid('country')) {
+              <div class="invalid-feedback">
+                Country is required.
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Status -->
+    <section class="form-card">
+
+      <div class="form-card__header">
+
+        <div>
+          <h2 class="form-card__title">
+            Organization Status
+          </h2>
+
+          <p class="form-card__description">
+            Control whether this organization is active.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="form-card__body">
+
+        <div class="status-options">
+
+          <label
+            class="status-option"
+            [class.status-option--selected]="
+              organizationForm.controls.status.value === 'Active'
+            ">
+
+            <input
+              type="radio"
+              value="Active"
+              formControlName="status" />
+
+            <span class="status-option__content">
+
+              <strong>Active</strong>
+
+              <small>
+                Organization is active and available in the system.
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <label
+            class="status-option"
+            [class.status-option--selected]="
+              organizationForm.controls.status.value === 'Inactive'
+            ">
+
+            <input
+              type="radio"
+              value="Inactive"
+              formControlName="status" />
+
+            <span class="status-option__content">
+
+              <strong>Inactive</strong>
+
+              <small>
+                Organization is currently inactive.
+              </small>
+
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="cancel()">
+
+        Cancel
+
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-primary">
+
+        <i
+          class="bi"
+          [class.bi-check-lg]="isEditMode()"
+          [class.bi-plus-lg]="!isEditMode()">
+        </i>
+
+        {{ isEditMode() ? 'Update Organization' : 'Create Organization' }}
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

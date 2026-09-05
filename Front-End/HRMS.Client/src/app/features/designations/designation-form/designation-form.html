@@ -1,0 +1,311 @@
+<section class="designation-form-page">
+  <div class="container-fluid px-0">
+
+    @if (!isNotFound()) {
+
+      <!-- Page Header -->
+      <div class="page-header mb-4">
+        <div class="page-header-content">
+
+          <div>
+            <a
+              routerLink="/designations"
+              class="back-link">
+              <span aria-hidden="true">←</span>
+              Back to Designations
+            </a>
+
+            <h1 class="page-title mt-3">
+              {{ pageTitle() }}
+            </h1>
+
+            <p class="page-subtitle mb-0">
+              {{
+                isEditMode()
+                  ? 'Update designation information and workforce structure.'
+                  : 'Create a new organizational job designation.'
+              }}
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card form-card">
+
+        <div class="card-header form-card-header">
+          <h2 class="section-title mb-1">
+            Designation Information
+          </h2>
+
+          <p class="section-description mb-0">
+            Enter the designation details below.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <form
+            [formGroup]="designationForm"
+            (ngSubmit)="onSubmit()"
+            novalidate>
+
+            <div class="row g-4">
+
+              <!-- Designation Name -->
+              <div class="col-12">
+
+                <label
+                  for="designation-name"
+                  class="form-label">
+
+                  Designation Name
+
+                  <span
+                    class="required-marker"
+                    aria-hidden="true">
+                    *
+                  </span>
+
+                </label>
+
+                <input
+                  id="designation-name"
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                  maxlength="100"
+                  autocomplete="organization-title"
+                  [class.is-invalid]="isFieldInvalid('name')"
+                  [attr.aria-required]="true"
+                  [attr.aria-invalid]="isFieldInvalid('name')"
+                  aria-describedby="designation-name-help designation-name-error">
+
+                <div
+                  id="designation-name-help"
+                  class="form-text">
+                  Enter the organizational job title.
+                </div>
+
+                @if (isFieldInvalid('name')) {
+
+                  <div
+                    id="designation-name-error"
+                    class="invalid-feedback"
+                    role="alert">
+
+                    {{ getFieldError('name') }}
+
+                  </div>
+
+                }
+
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+
+                <label
+                  for="designation-description"
+                  class="form-label">
+
+                  Description
+
+                </label>
+
+                <textarea
+                  id="designation-description"
+                  class="form-control"
+                  rows="4"
+                  formControlName="description"
+                  maxlength="500"
+                  [class.is-invalid]="isFieldInvalid('description')"
+                  [attr.aria-invalid]="isFieldInvalid('description')"
+                  aria-describedby="designation-description-help designation-description-error">
+                </textarea>
+
+                <div
+                  id="designation-description-help"
+                  class="form-text">
+                  Optional. Describe the responsibilities associated with this designation.
+                </div>
+
+                @if (isFieldInvalid('description')) {
+
+                  <div
+                    id="designation-description-error"
+                    class="invalid-feedback"
+                    role="alert">
+
+                    {{ getFieldError('description') }}
+
+                  </div>
+
+                }
+
+              </div>
+
+              <!-- Department -->
+              <div class="col-12 col-md-6">
+
+                <label
+                  for="designation-department"
+                  class="form-label">
+
+                  Department
+
+                  <span
+                    class="required-marker"
+                    aria-hidden="true">
+                    *
+                  </span>
+
+                </label>
+
+                <input
+                  id="designation-department"
+                  type="text"
+                  class="form-control"
+                  formControlName="department"
+                  maxlength="100"
+                  autocomplete="organization"
+                  [class.is-invalid]="isFieldInvalid('department')"
+                  [attr.aria-required]="true"
+                  [attr.aria-invalid]="isFieldInvalid('department')"
+                  aria-describedby="designation-department-error">
+
+                @if (isFieldInvalid('department')) {
+
+                  <div
+                    id="designation-department-error"
+                    class="invalid-feedback"
+                    role="alert">
+
+                    {{ getFieldError('department') }}
+
+                  </div>
+
+                }
+
+              </div>
+
+              <!-- Status -->
+              <div class="col-12 col-md-6">
+
+                <label
+                  for="designation-status"
+                  class="form-label">
+
+                  Status
+
+                  <span
+                    class="required-marker"
+                    aria-hidden="true">
+                    *
+                  </span>
+
+                </label>
+
+                <select
+                  id="designation-status"
+                  class="form-select"
+                  formControlName="status"
+                  [class.is-invalid]="isFieldInvalid('status')"
+                  [attr.aria-required]="true"
+                  [attr.aria-invalid]="isFieldInvalid('status')"
+                  aria-describedby="designation-status-error">
+
+                  <option value="Active">
+                    Active
+                  </option>
+
+                  <option value="Inactive">
+                    Inactive
+                  </option>
+
+                </select>
+
+                @if (isFieldInvalid('status')) {
+
+                  <div
+                    id="designation-status-error"
+                    class="invalid-feedback"
+                    role="alert">
+
+                    {{ getFieldError('status') }}
+
+                  </div>
+
+                }
+
+              </div>
+
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="onCancel()">
+
+                Cancel
+
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-primary">
+
+                {{ submitButtonText() }}
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    } @else {
+
+      <!-- Not Found -->
+      <div
+        class="not-found-card"
+        role="alert"
+        aria-live="polite">
+
+        <div
+          class="not-found-icon"
+          aria-hidden="true">
+          ?
+        </div>
+
+        <h1 class="not-found-title">
+          Designation Not Found
+        </h1>
+
+        <p class="not-found-description">
+          The designation you're trying to edit doesn't exist
+          or is no longer available.
+        </p>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onCancel()">
+
+          Back to Designations
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+</section>

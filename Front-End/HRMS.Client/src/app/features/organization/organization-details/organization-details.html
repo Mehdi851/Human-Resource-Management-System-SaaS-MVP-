@@ -1,0 +1,436 @@
+<div class="organization-details-page">
+
+  @if (organization(); as organization) {
+
+    <!-- Page Header -->
+    <div class="page-header">
+
+      <div>
+
+        <a
+          routerLink="/organization"
+          class="back-link">
+
+          <i class="bi bi-arrow-left"></i>
+          Back to Organizations
+
+        </a>
+
+        <div class="page-heading">
+
+          <div class="organization-avatar">
+            {{ initials() }}
+          </div>
+
+          <div>
+            <h1 class="page-title">
+              {{ organization.name }}
+            </h1>
+
+            <p class="page-subtitle">
+              {{ organization.code }}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <a
+        [routerLink]="[
+          '/organization',
+          organization.id,
+          'edit'
+        ]"
+        class="btn btn-primary">
+
+        <i class="bi bi-pencil me-2"></i>
+        Edit Organization
+
+      </a>
+
+    </div>
+
+
+    <!-- Summary -->
+    <section class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Employees
+          </span>
+
+          <strong class="summary-card__value">
+            {{ organization.employeeCount }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Departments
+          </span>
+
+          <strong class="summary-card__value">
+            {{ organization.departmentCount }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Status
+          </span>
+
+          <strong
+            class="summary-card__value"
+            [class.text-success]="
+              organization.status === 'Active'
+            "
+            [class.text-secondary]="
+              organization.status === 'Inactive'
+            ">
+
+            {{ organization.status }}
+
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-card__content">
+
+          <span class="summary-card__label">
+            Created
+          </span>
+
+          <strong class="summary-card__value">
+            {{ organization.createdAt | date:'dd MMM yyyy' }}
+          </strong>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- Information Grid -->
+    <div class="details-grid">
+
+      <!-- Organization Information -->
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2 class="details-card__title">
+              Organization Information
+            </h2>
+
+            <p class="details-card__description">
+              Basic organization details.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="info-list">
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Organization Name
+              </span>
+
+              <span class="info-item__value">
+                {{ organization.name }}
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Organization Code
+              </span>
+
+              <span class="info-item__value">
+                {{ organization.code }}
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Status
+              </span>
+
+              <span
+                class="status-badge"
+                [class.status-active]="
+                  organization.status === 'Active'
+                "
+                [class.status-inactive]="
+                  organization.status === 'Inactive'
+                ">
+
+                <span class="status-dot"></span>
+
+                {{ organization.status }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Contact Information -->
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2 class="details-card__title">
+              Contact Information
+            </h2>
+
+            <p class="details-card__description">
+              Organization contact details.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="info-list">
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Email
+              </span>
+
+              <a
+                class="info-item__value info-link"
+                [href]="'mailto:' + organization.email">
+
+                {{ organization.email }}
+
+              </a>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Phone
+              </span>
+
+              <span class="info-item__value">
+                {{ organization.phone }}
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-item__label">
+                Website
+              </span>
+
+              @if (organization.website) {
+
+                <a
+                  class="info-item__value info-link"
+                  [href]="organization.website"
+                  target="_blank"
+                  rel="noopener noreferrer">
+
+                  {{ organization.website }}
+
+                </a>
+
+              } @else {
+
+                <span class="info-item__value text-muted">
+                  Not provided
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Address -->
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2 class="details-card__title">
+              Address
+            </h2>
+
+            <p class="details-card__description">
+              Primary organization location.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="address-content">
+
+            <div class="address-icon">
+              <i class="bi bi-geo-alt"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                {{ organization.address }}
+              </strong>
+
+              <span>
+                {{ organization.city }},
+                {{ organization.country }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- HRMS Overview -->
+      <section class="details-card">
+
+        <div class="details-card__header">
+
+          <div>
+            <h2 class="details-card__title">
+              HRMS Overview
+            </h2>
+
+            <p class="details-card__description">
+              Organization workforce information.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="details-card__body">
+
+          <div class="hrms-metrics">
+
+            <div class="hrms-metric">
+
+              <span class="hrms-metric__label">
+                Total Employees
+              </span>
+
+              <strong class="hrms-metric__value">
+                {{ organization.employeeCount }}
+              </strong>
+
+            </div>
+
+
+            <div class="hrms-metric">
+
+              <span class="hrms-metric__label">
+                Total Departments
+              </span>
+
+              <strong class="hrms-metric__value">
+                {{ organization.departmentCount }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  } @else {
+
+    <!-- Not Found -->
+    <div class="not-found">
+
+      <div class="not-found__icon">
+        <i class="bi bi-building-x"></i>
+      </div>
+
+      <h2>
+        Organization not found
+      </h2>
+
+      <p>
+        The organization you are looking for does not exist.
+      </p>
+
+      <a
+        routerLink="/organizations"
+        class="btn btn-primary">
+
+        Back to Organizations
+
+      </a>
+
+    </div>
+
+  }
+
+</div>
